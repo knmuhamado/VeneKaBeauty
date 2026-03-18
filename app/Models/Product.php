@@ -1,14 +1,14 @@
 <?php
+
 // David Alejandro Gutiérrez Leal
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-
     /**
      * PRODUCT ATTRIBUTES
      * $this->attributes['id'] - int - contains the product primary key (id)
@@ -140,10 +140,9 @@ class Product extends Model
 
     public function scopeFilterByName(Builder $query, string $nombre): Builder
     {
-        return $query->where('name', 'like', '%' . $nombre . '%');
+        return $query->where('name', 'like', '%'.$nombre.'%');
     }
 }
 
-// php artisan make:model Product 
+// php artisan make:model Product
 // php artisan make:migration create_products_table
-

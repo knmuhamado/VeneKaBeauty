@@ -21,6 +21,7 @@ class OrderController extends Controller
 
         return view('order.index')->with('viewData', $viewData);
     }
+
     public function show(string $id): View
     {
         $viewData = [];
@@ -34,6 +35,7 @@ class OrderController extends Controller
     {
         return view('order.create');
     }
+
     public function save(OrderRequest $request): RedirectResponse
     {
         Order::create($request->validated());

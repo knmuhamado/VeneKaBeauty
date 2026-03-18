@@ -25,9 +25,8 @@ class Order extends Model
         'date',
         'paid',
         'shipped',
-        'method_of_payment'
+        'method_of_payment',
     ];
-
 
     public function getId(): int
     {
@@ -89,7 +88,7 @@ class Order extends Model
         $this->attributes['method_of_payment'] = $methodOfPayment;
     }
 
-    /* 
+    /*
     public function getCreatedAt(): string
     {
         return $this->attributes['created_at'];

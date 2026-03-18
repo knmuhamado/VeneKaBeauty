@@ -1,4 +1,5 @@
 <?php
+
 // David Alejandro Gutiérrez Leal
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->boolean('available');
             $table->integer('price');
             $table->string('brand')->nullable();
-            $table->json('keyword'); 
+            $table->json('keyword');
             $table->enum('type', ['article', 'service']);
             $table->timestamps();
         });

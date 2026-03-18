@@ -1,5 +1,7 @@
 <?php
+
 // David Alejandro Gutiérrez Leal
+
 namespace App\Utils;
 
 use App\Interfaces\ImageStorage;

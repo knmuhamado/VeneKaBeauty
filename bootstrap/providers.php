@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\ImageServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\ImageServiceProvider::class,
+    AppServiceProvider::class,
+    ImageServiceProvider::class,
 ];

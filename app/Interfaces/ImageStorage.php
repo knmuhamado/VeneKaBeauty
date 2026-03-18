@@ -1,5 +1,7 @@
 <?php
+
 // David Alejandro Gutiérrez Leal
+
 namespace App\Interfaces;
 
 use Illuminate\Http\UploadedFile;

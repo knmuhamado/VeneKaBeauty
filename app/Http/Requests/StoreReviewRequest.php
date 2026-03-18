@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReviewRequest extends FormRequest
 {
-    //Determina si el usuario está autorizado para hacer el request
+    // Determina si el usuario está autorizado para hacer el request
     public function authorize(): bool
     {
         return true;

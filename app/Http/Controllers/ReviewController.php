@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreReviewRequest; //✅
-use App\Models\Review; //✅
-use Illuminate\Http\RedirectResponse; //✅
-use Illuminate\View\View;//✅
+use App\Http\Requests\StoreReviewRequest; // ✅
+use App\Models\Review; // ✅
+use Illuminate\Http\RedirectResponse; // ✅
+use Illuminate\View\View; // ✅
 
-//use Illuminate\Http\Request;
-
+// use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-    //tipo de retorno: View
+    // tipo de retorno: View
     public function create(): View
     {
         return view('reviews.create');
@@ -49,10 +48,8 @@ class ReviewController extends Controller
     }
      */
 
-
-
     // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
-    //tipo de retorno: View
+    // tipo de retorno: View
     public function index(): View
     {
         $viewData = [];
@@ -63,8 +60,8 @@ class ReviewController extends Controller
 
     // show() = shows us the information from a single review
     // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
-    //tipo de retorno view
-    //tipo de dato que recibe el método: int
+    // tipo de retorno view
+    // tipo de dato que recibe el método: int
     public function show(int $id): View
     {
         $viewData = [];
@@ -74,8 +71,8 @@ class ReviewController extends Controller
     }
 
     // destroy() = destroys or deletes a review from the database
-    //tipo de retorno RedirectResponse
-    //tipo de dato que recibe el método: int
+    // tipo de retorno RedirectResponse
+    // tipo de dato que recibe el método: int
     public function destroy(int $id): RedirectResponse
     {
         $review = Review::findOrFail($id);

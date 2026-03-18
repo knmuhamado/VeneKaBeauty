@@ -1,4 +1,5 @@
 <?php
+
 // David Alejandro Gutiérrez Leal
 
 namespace App\Http\Controllers;
