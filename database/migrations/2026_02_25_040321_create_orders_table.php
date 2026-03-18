@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->decimal('total', 10, 2);
+            $table->date('date');
+            $table->boolean('paid')->default(false);
+            $table->boolean('shipped')->default(false);
+            $table->enum('method_of_payment', ['card', 'cash', 'bank'])->default('cash');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
+};

@@ -1,0 +1,40 @@
+.bg-secondary {
+  background-color: #cd93e4 !important;
+}
+
+.bg-primary {
+  background-color: #bd4fdb !important;
+}
+
+nav {
+  font-weight: 700;
+}
+
+footer {
+  background-color: #bd4fdb;
+  color: white;
+  padding: 18px 0;
+  font-weight: 600;
+}
+
+.btn-lila {
+  background-color: #bd4fdb;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+.btn-lila:hover {
+  background-color: #a63cc5;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(189, 79, 219, 0.4);
+}
+
+
+.img-card {
+  height: 18vw;
+  object-fit: cover;
+}

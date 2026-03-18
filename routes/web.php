@@ -8,3 +8,12 @@ Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->n
 Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
 Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
 Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
+
+Route::get('/home', 'App\Http\Controllers\OrderController@home');
+Route::get('/orders', 'App\Http\Controllers\OrderController@home')->name('order.home');
+Route::get('/orders/list', 'App\Http\Controllers\OrderController@index')->name('order.list');
+Route::get('/orders/create', 'App\Http\Controllers\OrderController@create')->name('order.create');
+Route::post('/orders/save', 'App\Http\Controllers\OrderController@save')->name('order.save');
+Route::get('/orders/{id}', 'App\Http\Controllers\OrderController@show')->name('order.show');
+Route::get('/orders/delete/{id}', 'App\Http\Controllers\OrderController@delete')->name('order.delete');
+
