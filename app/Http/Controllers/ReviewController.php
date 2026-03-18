@@ -2,71 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
-use App\Models\Review;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreReviewRequest; //✅
+use App\Models\Review; //✅
+use Illuminate\Http\RedirectResponse; //✅
+use Illuminate\View\View;//✅
+
+//use Illuminate\Http\Request;
+
 
 class ReviewController extends Controller
 {
-    //home
-   public function home(): View
-    {
-        return view('reviews.home');
-    }
-
-
-    //create() = displays a form for inserting data
-    public function create()
+    //tipo de retorno: View
+    public function create(): View
     {
         return view('reviews.create');
     }
 
-
-    //store() = stores the data entered by the user
-    public function store(Request $request)
+    // store() = stores the data entered by the user
+    public function store(StoreReviewRequest $request): RedirectResponse
     {
-        //Validations to verify that the reviews and scores were written correctly
-        $request->validate([
-            'comment' => 'required|string',
-            'score' => 'required|integer|between:0,5'
-        ], [
-            'score.required' => 'Debe ingresar un puntaje.',
-            'score.integer' => 'El puntaje debe ser un número entero.',
-            'score.between' => 'El puntaje debe estar entre 0 y 5.',
-            'comment.required' => 'Debe ingresar un comentario.'
-            
-        ]);
+        try {
 
-        Review::create([
-            'comment' => $request->comment,
-            'score'   => $request->score
-        ]);
+            Review::create($request->only('comment', 'score'));
+
+            $success = 'Review was created successfully';
+
+            return redirect()->route('home.index')->with('success', $success);
+
+        } catch (\Exception $e) {
+
+            $error = 'Review could not be created';
+
+            return redirect()->route('home.index')->with('error', $error);
+        }
+    }
+
+    /*
+    public function store(StoreReviewRequest $request): RedirectResponse
+    {
+        Review::create(
+            $request->only('comment', 'score')
+        );
 
         return redirect('/')
-            ->with('success', 'Elemento creado satisfactoriamente');
+            ->with('success', 'Review creada correctamente');
     }
+     */
 
 
-    //index() = shows us a list with all the reviews created
-    public function index()
+
+    // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
+    //tipo de retorno: View
+    public function index(): View
     {
-        $reviews = Review::all();
+        $viewData = [];
+        $viewData['reviews'] = Review::all();
 
-        return view('reviews.index', compact('reviews'));
+        return view('reviews.index')->with('viewData', $viewData);
     }
 
-
-    //show() = shows us the information from a single review
-    public function show($id)
+    // show() = shows us the information from a single review
+    // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
+    //tipo de retorno view
+    //tipo de dato que recibe el método: int
+    public function show(int $id): View
     {
-        $review = Review::findOrFail($id);
+        $viewData = [];
+        $viewData['review'] = Review::findOrFail($id);
 
-        return view('reviews.show', compact('review'));
+        return view('reviews.show')->with('viewData', $viewData);
     }
 
-
-    //destroy() = destroys or deletes a review from the database
-    public function destroy($id)
+    // destroy() = destroys or deletes a review from the database
+    //tipo de retorno RedirectResponse
+    //tipo de dato que recibe el método: int
+    public function destroy(int $id): RedirectResponse
     {
         $review = Review::findOrFail($id);
         $review->delete();

@@ -2,11 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-$controller = 'App\Http\Controllers\ReviewController@';
-
-Route::get('/', $controller . 'home')->name('home.index'); //home
-Route::get('/reviews', $controller . 'index')->name('review.index'); //shows us a list with all the reviews created
-Route::get('/reviews/create', $controller . 'create')->name('review.create'); //create a review
-Route::post('/reviews/store', $controller . 'store')->name('review.store'); //The browser sends the form data
-Route::get('/reviews/{id}', $controller . 'show')->name('review.show'); //shows us the information from a single review
-Route::delete('/reviews/{id}', $controller . 'destroy')->name('review.destroy'); //A review is removed from the database
+Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index');
+Route::get('/reviews', 'App\Http\Controllers\ReviewController@index')->name('review.index');
+Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
+Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
+Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
+Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');

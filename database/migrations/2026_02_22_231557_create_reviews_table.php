@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
 
-    //Structure for creating reviews
+    // Structure for creating reviews
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {

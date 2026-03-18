@@ -7,11 +7,11 @@
 <h2>Detalle de la Review</h2>
 
 <ul>
-    <li><strong>ID:</strong> {{ $review->id }}</li>
-    <li><strong>Comentario:</strong> {{ $review->comment }}</li>
-    <li><strong>Puntaje:</strong> {{ $review->score }}</li>
-    <li><strong>Creado:</strong> {{ $review->created_at }}</li>
-    <li><strong>Actualizado:</strong> {{ $review->updated_at }}</li>
+    <li><strong>ID:</strong> {{ $viewData['review']->getId() }}</li>
+    <li><strong>Comentario:</strong> {{ $viewData['review']->getComment() }}</li>
+    <li><strong>Puntaje:</strong> {{ $viewData['review']->getScore() }}</li>
+    <li><strong>Creado:</strong> {{ $viewData['review']->created_at }}</li>
+    <li><strong>Actualizado:</strong> {{ $viewData['review']->updated_at }}</li>
 </ul>
 
 <br>
@@ -20,7 +20,7 @@
     Volver a la lista
 </a>
 
-<form action="{{ route('review.destroy', $review->id) }}" method="POST" style="margin-top: 15px;">
+<form action="{{ route('review.destroy', $viewData['review']->getId()) }}" method="POST" style="margin-top: 15px;">
     @csrf
     @method('DELETE')
 
