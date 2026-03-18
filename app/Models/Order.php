@@ -89,6 +89,7 @@ class Order extends Model
         $this->attributes['method_of_payment'] = $methodOfPayment;
     }
 
+    /* 
     public function getCreatedAt(): string
     {
         return $this->attributes['created_at'];
@@ -108,4 +109,5 @@ class Order extends Model
     {
         $this->attributes['updated_at'] = $updatedAt;
     }
+    */
 }
