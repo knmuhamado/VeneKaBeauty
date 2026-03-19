@@ -1,7 +1,8 @@
+{{-- David Alejandro Gutiérrez Leal --}}
 @extends('layouts.app')
 
 @section('content')
-{{-- David Alejandro Gutiérrez Leal --}}
+
 <div class="container mt-4">
     <h2>Detalle del Producto</h2>
 
@@ -15,6 +16,7 @@
             <p><strong>Precio:</strong> ${{ $product->getPrice() }}</p>
             <p><strong>Disponible:</strong> {{ $product->getAvailable() ? 'Sí' : 'No' }}</p>
             <p><strong>Marca:</strong> {{ $product->getBrand() ?? 'N/A' }}</p>
+            <p><strong>Categoría:</strong> {{ $product->getCategory()?->getName() ?? 'N/A' }}</p>
             <p><strong>Tipo:</strong> {{ $product->getType() }}</p>
 
             <p><strong>Keywords:</strong>
@@ -25,9 +27,12 @@
                 @endif
             </p>
 
-            <a href="{{ route('product.index') }}" class="btn btn-secondary">
-                Volver
-            </a>
+            @include('layouts._link_actions', [
+                'primaryRoute' => route('product.edit', $product->getId()),
+                'primaryText' => 'Editar',
+                'secondaryRoute' => route('product.index'),
+                'secondaryText' => 'Volver',
+            ])
         </div>
     </div>
 </div>

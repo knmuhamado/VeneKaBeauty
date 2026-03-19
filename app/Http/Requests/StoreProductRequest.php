@@ -15,9 +15,11 @@ class StoreProductRequest extends FormRequest
 
     public function rules(): array
     {
+        $imageRule = $this->isMethod('post') ? 'required|image' : 'nullable|image';
+
         return [
             'name' => 'required|string|max:255',
-            'image' => 'required|image',
+            'image' => $imageRule,
             'description' => 'required|string',
             'available' => 'required|boolean',
             'price' => 'required|numeric|gt:0',
@@ -25,6 +27,7 @@ class StoreProductRequest extends FormRequest
             'keyword' => 'nullable|array',
             'keyword.*' => 'string',
             'type' => 'required|in:article,service',
+            'category_id' => 'required|integer|exists:categories,id',
         ];
     }
 

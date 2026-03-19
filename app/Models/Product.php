@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
@@ -20,6 +21,9 @@ class Product extends Model
      * $this->attributes['brand'] - string|null - contains the product brand name
      * $this->attributes['keyword'] - array - contains the product keywords
      * $this->attributes['type'] - string - contains the product type (article/service)
+     * $this->attributes['category_id'] - int|null - contains the category id
+     * $this->attributes['created_at'] - timestamp - contains the product creation date
+     * $this->attributes['updated_at'] - timestamp - contains the product update date
      */
     protected $fillable = [
         'name',
@@ -30,11 +34,13 @@ class Product extends Model
         'brand',
         'keyword',
         'type',
+        'category_id',
     ];
 
     protected $casts = [
         'available' => 'boolean',
         'keyword' => 'array',
+        'category_id' => 'integer',
     ];
 
     public function getId(): ?int
@@ -138,11 +144,57 @@ class Product extends Model
         return $this;
     }
 
+    public function getCategoryId(): ?int
+    {
+        return $this->getAttribute('category_id');
+    }
+
+    public function setCategoryId(int $categoryId): self
+    {
+        $this->setAttribute('category_id', $categoryId);
+
+        return $this;
+    }
+
     public function scopeFilterByName(Builder $query, string $nombre): Builder
     {
         return $query->where('name', 'like', '%'.$nombre.'%');
     }
-}
 
-// php artisan make:model Product
-// php artisan make:migration create_products_table
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category): void
+    {
+        $this->category = $category;
+    }
+
+    /*
+    public function getCreatedAt(): string
+    {
+    return $this->attributes['created_at'];
+    }
+
+    public function setCreatedAt(string $createdAt): void
+    {
+    $this->attributes['created_at'] = $createdAt;
+    }
+
+    public function getUpdatedAt(): string
+    {
+    return $this->attributes['updated_at'];
+    }
+
+    public function setUpdatedAt(string $updatedAt): void
+    {
+    $this->attributes['updated_at'] = $updatedAt;
+    }
+    */
+}

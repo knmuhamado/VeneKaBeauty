@@ -22,5 +22,16 @@ Route::get('/products', 'App\Http\Controllers\ProductController@'.'index')->name
 Route::get('/products/search', 'App\Http\Controllers\ProductController@search')->name('product.search');
 Route::get('/products/create', 'App\Http\Controllers\ProductController@create')->name('product.create');
 Route::post('/products/save', 'App\Http\Controllers\ProductController@save')->name('product.save');
+Route::get('/products/{id}/edit', 'App\Http\Controllers\ProductController@edit')->name('product.edit');
+Route::put('/products/{id}', 'App\Http\Controllers\ProductController@update')->name('product.update');
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::delete('/products/{id}', 'App\Http\Controllers\ProductController@destroy')->name('product.destroy');
+
+// Category Routes
+Route::get('/categories', 'App\Http\Controllers\CategoryController@index')->name('category.index');
+Route::get('/categories/create', 'App\Http\Controllers\CategoryController@create')->name('category.create');
+Route::post('/categories/save', 'App\Http\Controllers\CategoryController@save')->name('category.save');
+Route::get('/categories/{id}/edit', 'App\Http\Controllers\CategoryController@edit')->name('category.edit');
+Route::put('/categories/{id}', 'App\Http\Controllers\CategoryController@update')->name('category.update');
+Route::get('/categories/{id}', 'App\Http\Controllers\CategoryController@show')->name('category.show');
+Route::delete('/categories/{id}', 'App\Http\Controllers\CategoryController@destroy')->name('category.destroy');
