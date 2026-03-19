@@ -38,3 +38,8 @@ footer {
   height: 18vw;
   object-fit: cover;
 }
+
+.product-filter-menu {
+  max-height: 220px;
+  overflow-y: auto;
+}

@@ -16,7 +16,16 @@ class SearchProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'query' => 'required|string|max:255',
+            'query' => 'nullable|string|max:255',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'nullable|integer|exists:categories,id',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if (empty($this->query) && empty($this->category_ids)) {
+            $this->merge(['query' => '']);
+        }
     }
 }

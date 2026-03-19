@@ -161,6 +161,11 @@ class Product extends Model
         return $query->where('name', 'like', '%'.$nombre.'%');
     }
 
+    public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
+    {
+        return $query->whereIn('category_id', $categoryIds);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

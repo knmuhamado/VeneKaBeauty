@@ -34,31 +34,35 @@
 
                 <td>{{ ucfirst($product->getType()) }}</td>
 
-                <td>
-                    <a href="{{ route('product.show', $product->getId()) }}"
-                       class="btn btn-info btn-sm">
-                        Ver
-                    </a>
+                <td class="text-nowrap">
+                    <div class="d-inline-flex align-items-center gap-2">
+                        <a href="{{ route('product.show', $product->getId()) }}"
+                           class="btn btn-primary btn-sm">
+                            Ver
+                        </a>
 
-                    <a href="{{ route('product.edit', $product->getId()) }}"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                        <a href="{{ route('product.edit', $product->getId()) }}"
+                           class="btn btn-outline-secondary btn-sm">
+                            Editar
+                        </a>
 
-                    @if($showDeleteButton)
-                        <form action="{{ route('product.destroy', $product->getId()) }}"
-                              method="POST"
-                              style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
+                        @if($showDeleteButton)
+                            <form action="{{ route('product.destroy', $product->getId()) }}"
+                                  method="POST"
+                                  class="d-inline-block m-0">
+                                @csrf
+                                @method('DELETE')
 
-                            <button type="submit"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
-                                Eliminar
-                            </button>
-                        </form>
-                    @endif
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm"
+                                        title="Eliminar producto"
+                                        aria-label="Eliminar producto"
+                                        onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
+                                    Eliminar
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                 </td>
             </tr>
         @empty

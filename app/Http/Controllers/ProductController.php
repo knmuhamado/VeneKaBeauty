@@ -6,22 +6,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchProductRequest;
 use App\Http\Requests\StoreProductRequest;
-use App\Interfaces\ImageStorage;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
     public function __construct(
-        private ImageStorage $imageStorage
+        private ProductService $productService
     ) {}
 
     public function index(): View
     {
         $viewData = [];
         $viewData['products'] = Product::with('category')->get();
+        $viewData['categories'] = $this->productService->prepareCategoriesWithSelection();
+        $viewData['query'] = '';
+        $viewData['selectedCategories'] = [];
+        $viewData['hasFilters'] = false;
 
         return view('products.index', $viewData);
     }
@@ -36,11 +40,26 @@ class ProductController extends Controller
 
     public function search(SearchProductRequest $request): View
     {
-        $query = $request->validated()['query'];
+        $validated = $request->validated();
+        $query = $validated['query'] ?? '';
+        $categoryIds = array_values(array_map('intval', array_filter($validated['category_ids'] ?? [])));
+
+        $productQuery = Product::with('category');
+
+        if (! empty($query)) {
+            $productQuery->filterByName($query);
+        }
+
+        if (! empty($categoryIds)) {
+            $productQuery->filterByCategories($categoryIds);
+        }
 
         $viewData = [];
-        $viewData['products'] = Product::with('category')->filterByName($query)->get();
+        $viewData['products'] = $productQuery->get();
         $viewData['query'] = $query;
+        $viewData['selectedCategories'] = $categoryIds;
+        $viewData['categories'] = $this->productService->prepareCategoriesWithSelection($categoryIds);
+        $viewData['hasFilters'] = ! empty($query) || ! empty($categoryIds);
 
         return view('products.search', $viewData);
     }
@@ -59,9 +78,7 @@ class ProductController extends Controller
     public function save(StoreProductRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $validated['image'] = $this->imageStorage->store($request->file('image'));
-
-        Product::create($validated);
+        $this->productService->storeProduct($validated, $request->file('image'));
 
         return redirect()->route('product.index')
             ->with('success', 'Elemento creado satisfactoriamente');
@@ -85,21 +102,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $this->imageStorage->delete($product->getImage());
-            $product->setImage($this->imageStorage->store($request->file('image')));
-        }
-
-        $product->setName($validated['name'])
-            ->setDescription($validated['description'])
-            ->setAvailable((bool) $validated['available'])
-            ->setPrice((int) $validated['price'])
-            ->setBrand($validated['brand'] ?? null)
-            ->setKeyword($validated['keyword'] ?? [])
-            ->setType($validated['type'])
-            ->setCategoryId((int) $validated['category_id']);
-
-        $product->save();
+        $this->productService->updateProduct($product, $validated, $request->file('image'));
 
         return redirect()->route('product.index')
             ->with('success', 'Producto actualizado correctamente');
@@ -108,10 +111,7 @@ class ProductController extends Controller
     public function destroy(int $id): RedirectResponse
     {
         $product = Product::findOrFail($id);
-
-        $this->imageStorage->delete($product->getImage());
-
-        $product->delete();
+        $this->productService->deleteProduct($product);
 
         return redirect()->route('product.index')
             ->with('success', 'Producto eliminado correctamente');

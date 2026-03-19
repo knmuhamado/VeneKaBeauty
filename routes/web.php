@@ -2,13 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index');
+// Home Route
+Route::redirect('/', '/products')->name('home.index');
+
+// Review Routes
 Route::get('/reviews', 'App\Http\Controllers\ReviewController@index')->name('review.index');
 Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
 Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
 Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
 Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
+// Order Routes
 Route::get('/home', 'App\Http\Controllers\OrderController@home');
 Route::get('/orders', 'App\Http\Controllers\OrderController@home')->name('order.home');
 Route::get('/orders/list', 'App\Http\Controllers\OrderController@index')->name('order.list');
@@ -18,7 +22,7 @@ Route::get('/orders/{id}', 'App\Http\Controllers\OrderController@show')->name('o
 Route::get('/orders/delete/{id}', 'App\Http\Controllers\OrderController@delete')->name('order.delete');
 
 // Product Routes
-Route::get('/products', 'App\Http\Controllers\ProductController@'.'index')->name('product.index');
+Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('product.index');
 Route::get('/products/search', 'App\Http\Controllers\ProductController@search')->name('product.search');
 Route::get('/products/create', 'App\Http\Controllers\ProductController@create')->name('product.create');
 Route::post('/products/save', 'App\Http\Controllers\ProductController@save')->name('product.save');

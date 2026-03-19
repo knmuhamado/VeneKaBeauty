@@ -4,18 +4,17 @@
 @section('content')
 
 <div class="container mt-4">
-    <h2 class="mb-3">Lista de Productos</h2>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+        <h2 class="mb-0">Lista de Productos</h2>
+
+        <a href="{{ route('product.create') }}" class="btn btn-primary btn-lg d-inline-flex align-items-center gap-2">
+            <span>Crear producto</span>
+        </a>
+    </div>
 
     @include('layouts._success_alert')
 
-    <a href="{{ route('product.create') }}" class="btn btn-primary mb-3">
-        Crear nuevo producto
-    </a>
-
-    <form method="GET" action="{{ route('product.search') }}" class="mb-3 d-flex gap-2">
-        <input type="text" name="query" class="form-control" placeholder="Buscar por nombre...">
-        <button type="submit" class="btn btn-outline-primary">Buscar</button>
-    </form>
+    @include('products._filter')
 
     @include('products._table', [
         'showDeleteButton' => true,
