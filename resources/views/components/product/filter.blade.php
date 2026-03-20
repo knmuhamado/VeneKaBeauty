@@ -1,14 +1,25 @@
 {{-- David Alejandro Gutiérrez Leal --}}
-<form method="GET" action="{{ route('product.search') }}" class="mb-2">
+@props([
+    'actionRoute',
+    'query' => '',
+    'categories' => collect(),
+    'hasFilters' => false,
+    'queryInputId' => 'query',
+    'categoryIdPrefix' => 'category',
+    'searchPlaceholder' => 'Buscar productos...',
+    'clearRoute' => null,
+])
+
+<form method="GET" action="{{ route($actionRoute) }}" class="mb-2">
     <div class="border rounded-3 p-3">
         <div class="row g-2 align-items-end">
             <div class="col-lg-5">
-                <label for="query" class="form-label mb-1">Buscar</label>
+                <label for="{{ $queryInputId }}" class="form-label mb-1">Buscar</label>
                 <input type="text"
-                       id="query"
+                       id="{{ $queryInputId }}"
                        name="query"
                        class="form-control @error('query') is-invalid @enderror"
-                       placeholder="Buscar productos..."
+                       placeholder="{{ $searchPlaceholder }}"
                        value="{{ old('query', $query) }}">
                 @error('query')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -30,10 +41,10 @@
                                        type="checkbox"
                                        name="category_ids[]"
                                        value="{{ $category->getId() }}"
-                                       id="category-{{ $category->getId() }}"
-                                    {{ $category->isSelected ? 'checked' : '' }}>
+                                       id="{{ $categoryIdPrefix }}-{{ $category->getId() }}"
+                                    {{ ($category->isSelected ?? false) ? 'checked' : '' }}>
 
-                                <label class="form-check-label text-capitalize" for="category-{{ $category->getId() }}">
+                                <label class="form-check-label text-capitalize" for="{{ $categoryIdPrefix }}-{{ $category->getId() }}">
                                     {{ $category->getName() }}
                                 </label>
                             </div>
@@ -52,7 +63,7 @@
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary flex-grow-1">Buscar</button>
                     @if($hasFilters)
-                        <a href="{{ route('product.index') }}" class="btn btn-outline-secondary">Limpiar</a>
+                        <a href="{{ route($clearRoute ?? $actionRoute) }}" class="btn btn-outline-secondary">Limpiar</a>
                     @endif
                 </div>
             </div>

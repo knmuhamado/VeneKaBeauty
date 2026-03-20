@@ -16,9 +16,6 @@ class ProductService
         private ImageStorage $imageStorage
     ) {}
 
-    /**
-     * Prepare categories with selection status
-     */
     public function prepareCategoriesWithSelection(array $selectedIds = []): Collection
     {
         return Category::query()->orderBy('name')->get()->map(function ($category) use ($selectedIds) {
@@ -28,9 +25,6 @@ class ProductService
         });
     }
 
-    /**
-     * Store a new product with image handling
-     */
     public function storeProduct(array $validated, ?UploadedFile $image = null): Product
     {
         if ($image) {
@@ -40,9 +34,6 @@ class ProductService
         return Product::create($validated);
     }
 
-    /**
-     * Update an existing product with image handling
-     */
     public function updateProduct(Product $product, array $validated, ?UploadedFile $image = null): void
     {
         if ($image) {
@@ -53,9 +44,6 @@ class ProductService
         $product->update($validated);
     }
 
-    /**
-     * Delete a product and its image
-     */
     public function deleteProduct(Product $product): void
     {
         $this->imageStorage->delete($product->getImage());

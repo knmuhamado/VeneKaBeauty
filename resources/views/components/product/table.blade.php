@@ -1,4 +1,13 @@
 {{-- David Alejandro Gutiérrez Leal --}}
+@props([
+    'products' => collect(),
+    'emptyMessage' => 'No hay productos',
+    'showAdminActions' => false,
+    'viewRoute' => 'product.show',
+    'editRoute' => 'admin.product.edit',
+    'deleteRoute' => 'admin.product.destroy',
+])
+
 <table class="table table-bordered table-striped align-middle">
     <thead class="table-dark">
         <tr>
@@ -35,19 +44,19 @@
                 <td>{{ ucfirst($product->getType()) }}</td>
 
                 <td class="text-nowrap">
-                    <div class="d-inline-flex align-items-center gap-2">
-                        <a href="{{ route('product.show', $product->getId()) }}"
-                           class="btn btn-primary btn-sm">
-                            Ver
-                        </a>
+                    @if($showAdminActions)
+                        <div class="d-inline-flex align-items-center gap-2">
+                            <a href="{{ route($viewRoute, $product->getId()) }}"
+                               class="btn btn-primary btn-sm">
+                                Ver
+                            </a>
 
-                        <a href="{{ route('product.edit', $product->getId()) }}"
-                           class="btn btn-outline-secondary btn-sm">
-                            Editar
-                        </a>
+                            <a href="{{ route($editRoute, $product->getId()) }}"
+                               class="btn btn-outline-secondary btn-sm">
+                                Editar
+                            </a>
 
-                        @if($showDeleteButton)
-                            <form action="{{ route('product.destroy', $product->getId()) }}"
+                            <form action="{{ route($deleteRoute, $product->getId()) }}"
                                   method="POST"
                                   class="d-inline-block m-0">
                                 @csrf
@@ -61,8 +70,13 @@
                                     Eliminar
                                 </button>
                             </form>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <a href="{{ route($viewRoute, $product->getId()) }}"
+                           class="btn btn-primary btn-sm">
+                            Ver
+                        </a>
+                    @endif
                 </td>
             </tr>
         @empty

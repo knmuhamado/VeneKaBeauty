@@ -13,7 +13,7 @@
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
     <div class="container">
-      <a class="navbar-brand" href="{{ route('order.home') }}">VeneKa Beauty</a>
+      <a class="navbar-brand" href="{{ route('home.index') }}">VeneKa Beauty</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup"
@@ -23,6 +23,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="{{ route('product.index') }}">Productos</a>
+          <a class="nav-link" href="{{ route('admin.product.index') }}">Admin</a>
         </div>
       </div>
     </div>
