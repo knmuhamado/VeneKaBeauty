@@ -4,7 +4,13 @@
 
 @section('content')
 
-<h2>Lista de Reviews</h2>
+<h2>
+    @if(!empty($viewData['product']))
+        Reviews de: {{ $viewData['product']->getName() }}
+    @else
+        Lista de Reviews
+    @endif
+</h2>
 
 {{-- Mensajes de sesión --}}
 @if(session('success'))
@@ -27,6 +33,7 @@
         <tr>
             <th>ID</th>
             <th>Comentario</th>
+            <th>Puntaje</th>
         </tr>
     </thead>
     <tbody>
@@ -39,10 +46,25 @@
                 </a>
             </td>
             <td>{{ $review->getComment() }}</td>
+            <td>{{ $review->getScore() }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
+@else
+<p>
+    @if(!empty($viewData['product']))
+        No hay reviews para este producto.
+    @else
+        No hay reviews registradas.
+    @endif
+</p>
+@endif
+
+@if(!empty($viewData['product']))
+    <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
+        Crear review para este producto
+    </a>
 @endif
 
 <a href="{{ route('home.index') }}" class="btn btn-secondary mt-3">

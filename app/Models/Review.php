@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
@@ -14,7 +15,11 @@ class Review extends Model
      * $this->attributes['created_at'] - timestamp - contains the review creation date
      * $this->attributes['updated_at'] - timestamp - contains the review update date
      */
-    protected $fillable = ['score', 'comment'];
+    protected $fillable = ['score', 'comment', 'product_id'];
+
+    protected $casts = [
+        'product_id' => 'integer',
+    ];
 
     public function getId(): int
     {
@@ -44,6 +49,21 @@ class Review extends Model
     public function setComment(string $comment): void
     {
         $this->attributes['comment'] = $comment;
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function getProductId(): ?int
+    {
+        return $this->getAttribute('product_id');
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
     }
 
     /*

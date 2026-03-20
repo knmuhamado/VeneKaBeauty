@@ -24,6 +24,7 @@ Route::get('/orders/delete/{id}', 'App\Http\Controllers\OrderController@delete')
 // User Product Routes
 Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('product.index');
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
+Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
 // Admin Routes
 Route::get('/admin/products', 'App\Http\Controllers\Admin\ProductController@index')->name('admin.product.index');

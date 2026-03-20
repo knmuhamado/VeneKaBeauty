@@ -16,9 +16,15 @@
 
 <br>
 
-<a href="{{ route('review.index') }}" class="btn btn-secondary">
-    Volver a la lista
-</a>
+@if($viewData['review']->getProductId())
+    <a href="{{ route('product.review.index', $viewData['review']->getProductId()) }}" class="btn btn-secondary">
+        Volver a reviews del producto
+    </a>
+@else
+    <a href="{{ route('review.index') }}" class="btn btn-secondary">
+        Volver a la lista
+    </a>
+@endif
 
 <form action="{{ route('review.destroy', $viewData['review']->getId()) }}" method="POST" style="margin-top: 15px;">
     @csrf

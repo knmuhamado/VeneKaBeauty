@@ -19,6 +19,10 @@
 <form method="POST" action="{{ route('review.store') }}" novalidate>
     @csrf
 
+    @if(!empty($viewData['productId']))
+        <input type="hidden" name="product_id" value="{{ $viewData['productId'] }}">
+    @endif
+
     <div class="mb-3">
         <label class="form-label">Comentario</label>
         <textarea class="form-control" name="comment">{{ old('comment') }}</textarea>
@@ -34,9 +38,15 @@
             Guardar
         </button>
 
-        <a href="{{ route('home.index') }}" class="btn btn-secondary">
-            Volver al inicio
-        </a>
+        @if(!empty($viewData['productId']))
+            <a href="{{ route('product.review.index', $viewData['productId']) }}" class="btn btn-secondary">
+                Volver a reviews del producto
+            </a>
+        @else
+            <a href="{{ route('home.index') }}" class="btn btn-secondary">
+                Volver al inicio
+            </a>
+        @endif
     </div>
 </form>
 

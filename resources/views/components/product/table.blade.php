@@ -72,10 +72,17 @@
                             </form>
                         </div>
                     @else
-                        <a href="{{ route($viewRoute, $product->getId()) }}"
-                           class="btn btn-primary btn-sm">
-                            Ver
-                        </a>
+                        <div class="d-inline-flex align-items-center gap-2">
+                            <a href="{{ route($viewRoute, $product->getId()) }}"
+                               class="btn btn-primary btn-sm">
+                                Ver
+                            </a>
+
+                            <a href="{{ route('product.review.index', $product->getId()) }}"
+                               class="btn btn-outline-primary btn-sm">
+                                Ver comentarios
+                            </a>
+                        </div>
                     @endif
                 </td>
             </tr>

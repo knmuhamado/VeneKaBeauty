@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -144,6 +145,16 @@ class Product extends Model
         return $this;
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function getCategoryId(): ?int
     {
         return $this->getAttribute('category_id');
@@ -162,11 +173,6 @@ class Product extends Model
     public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
     {
         return $query->whereIn('category_id', $categoryIds);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
     }
 
     /*

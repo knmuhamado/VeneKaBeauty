@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreReviewRequest; // ✅
-use App\Models\Review; // ✅
-use Illuminate\Http\RedirectResponse; // ✅
-use Illuminate\View\View; // ✅
-
-// use Illuminate\Http\Request;
+use App\Http\Requests\StoreReviewRequest;
+use App\Models\Product;
+use App\Models\Review;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
-    // tipo de retorno: View
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('reviews.create');
+        $viewData = [];
+        $viewData['productId'] = $request->integer('product_id') ?: null;
+
+        return view('reviews.create')->with('viewData', $viewData);
     }
 
-    // store() = stores the data entered by the user
     public function store(StoreReviewRequest $request): RedirectResponse
     {
         try {
 
-            Review::create($request->only('comment', 'score'));
+            Review::create($request->reviewData());
 
             $success = 'Review was created successfully';
 
@@ -53,7 +54,21 @@ class ReviewController extends Controller
     public function index(): View
     {
         $viewData = [];
-        $viewData['reviews'] = Review::all();
+        $viewData['reviews'] = Review::with('product')->get();
+        $viewData['product'] = null;
+
+        return view('reviews.index')->with('viewData', $viewData);
+    }
+
+    public function productReviews(int $productId): View
+    {
+        $product = Product::findOrFail($productId);
+
+        $viewData = [];
+        $viewData['product'] = $product;
+        $viewData['reviews'] = Review::with('product')
+            ->where('product_id', $productId)
+            ->get();
 
         return view('reviews.index')->with('viewData', $viewData);
     }
@@ -76,7 +91,13 @@ class ReviewController extends Controller
     public function destroy(int $id): RedirectResponse
     {
         $review = Review::findOrFail($id);
+        $productId = $review->getProductId();
         $review->delete();
+
+        if ($productId !== null) {
+            return redirect()->route('product.review.index', $productId)
+                ->with('success', 'Review eliminada correctamente');
+        }
 
         return redirect()->route('review.index')
             ->with('success', 'Review eliminada correctamente');
