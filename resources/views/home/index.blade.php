@@ -8,11 +8,6 @@
         Descubre productos de belleza seleccionados para ti. Desde aquí puedes explorar el catálogo público
         o gestionar el contenido desde el panel administrativo.
     </p>
-
-    <div class="d-flex flex-wrap gap-2">
-        <a href="{{ route('product.index') }}" class="btn btn-primary">Ver productos</a>
-        <a href="{{ route('admin.product.index') }}" class="btn btn-outline-secondary">Ir al panel admin</a>
-    </div>
 </section>
 
 <section>

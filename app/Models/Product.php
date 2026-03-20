@@ -149,11 +149,9 @@ class Product extends Model
         return $this->getAttribute('category_id');
     }
 
-    public function setCategoryId(int $categoryId): self
+    public function getCategory(): ?Category
     {
-        $this->setAttribute('category_id', $categoryId);
-
-        return $this;
+        return $this->category;
     }
 
     public function scopeFilterByName(Builder $query, string $nombre): Builder
@@ -169,16 +167,6 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory($category): void
-    {
-        $this->category = $category;
     }
 
     /*

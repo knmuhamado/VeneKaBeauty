@@ -1,5 +1,6 @@
 <?php
-//Mariamny Del Valle Ramírez Telles
+
+// Mariamny Del Valle Ramírez Telles
 
 namespace App\Http\Controllers\Auth;
 

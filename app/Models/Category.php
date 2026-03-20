@@ -48,11 +48,6 @@ class Category extends Model
         return $this->products;
     }
 
-    public function setProducts(Collection $products): void
-    {
-        $this->products = $products;
-    }
-
     /*
     public function getCreatedAt(): string
     {

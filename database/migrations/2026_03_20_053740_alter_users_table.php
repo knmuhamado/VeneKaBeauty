@@ -15,7 +15,7 @@ return new class extends Migration
             $table->String('address');
             $table->String('phoneNumber');
             $table->String('role')->default('client');
-        }); 
+        });
     }
 
     /**

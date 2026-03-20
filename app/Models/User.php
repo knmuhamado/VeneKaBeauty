@@ -1,6 +1,6 @@
 <?php
 
-//Mariamny Del Valle Ramírez Telles
+// Mariamny Del Valle Ramírez Telles
 
 namespace App\Models;
 
@@ -59,7 +59,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
 
     public function getId(): int
     {
@@ -120,27 +119,28 @@ class User extends Authenticatable
     {
         $this->attributes['role'] = $role;
     }
-/* 
-    public function getCreatedAt(): string
-    {
-        return $this->attributes['created_at'];
-    }
 
-    public function setCreatedAt(string $createdAt): void
-    {
-        $this->attributes['created_at'] = $createdAt;
-    }
+    /*
+        public function getCreatedAt(): string
+        {
+            return $this->attributes['created_at'];
+        }
 
-    public function getUpdatedAt(): string
-    {
-        return $this->attributes['updated_at'];
-    }
+        public function setCreatedAt(string $createdAt): void
+        {
+            $this->attributes['created_at'] = $createdAt;
+        }
 
-    public function setUpdatedAt(string $updatedAt): void
-    {
-        $this->attributes['updated_at'] = $updatedAt;
-    }
-*/
+        public function getUpdatedAt(): string
+        {
+            return $this->attributes['updated_at'];
+        }
+
+        public function setUpdatedAt(string $updatedAt): void
+        {
+            $this->attributes['updated_at'] = $updatedAt;
+        }
+    */
     public function isAdmin(): bool
     {
         return $this->attributes['role'] === 'admin';
