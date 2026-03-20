@@ -3,12 +3,12 @@
 
 @section('content')
     @include('layouts._crud_form_page', [
-        'title' => 'Editar Categoría',
+        'title' => __('category.edit_title'),
         'action' => route('admin.category.update', $category->getId()),
         'method' => 'PUT',
         'formView' => 'admin.category._form',
-        'submitText' => 'Actualizar Categoría',
+        'submitText' => __('category.update_submit'),
         'backRoute' => route('admin.category.index'),
-        'backText' => 'Cancelar',
+        'backText' => __('category.cancel'),
     ])
 @endsection

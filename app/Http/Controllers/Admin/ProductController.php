@@ -62,7 +62,7 @@ class ProductController extends Controller
         $this->productService->storeProduct($validated, $request->file('image'));
 
         return redirect()->route('admin.product.index')
-            ->with('success', 'Elemento creado satisfactoriamente');
+            ->with('success', __('product.created_success'));
     }
 
     public function edit(int $id): View
@@ -86,7 +86,7 @@ class ProductController extends Controller
         $this->productService->updateProduct($product, $validated, $request->file('image'));
 
         return redirect()->route('admin.product.index')
-            ->with('success', 'Producto actualizado correctamente');
+            ->with('success', __('product.updated_success'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -95,6 +95,6 @@ class ProductController extends Controller
         $this->productService->deleteProduct($product);
 
         return redirect()->route('admin.product.index')
-            ->with('success', 'Producto eliminado correctamente');
+            ->with('success', __('product.deleted_success'));
     }
 }

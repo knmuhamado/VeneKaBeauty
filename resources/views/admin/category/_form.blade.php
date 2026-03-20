@@ -1,6 +1,6 @@
 {{-- David Alejandro Gutiérrez Leal --}}
 <div class="mb-3">
-    <label>Nombre</label>
+    <label>{{ __('category.name') }}</label>
     <input type="text"
            name="name"
            class="form-control @error('name') is-invalid @enderror"

@@ -6,7 +6,7 @@
     'hasFilters' => false,
     'queryInputId' => 'query',
     'categoryIdPrefix' => 'category',
-    'searchPlaceholder' => 'Buscar productos...',
+    'searchPlaceholder' => __('product.search_placeholder'),
     'clearRoute' => null,
 ])
 
@@ -14,7 +14,7 @@
     <div class="border rounded-3 p-3">
         <div class="row g-2 align-items-end">
             <div class="col-lg-5">
-                <label for="{{ $queryInputId }}" class="form-label mb-1">Buscar</label>
+                <label for="{{ $queryInputId }}" class="form-label mb-1">{{ __('product.search') }}</label>
                 <input type="text"
                        id="{{ $queryInputId }}"
                        name="query"
@@ -27,11 +27,11 @@
             </div>
 
             <div class="col-lg-4">
-                <label class="form-label mb-1">Categorías</label>
+                <label class="form-label mb-1">{{ __('product.categories') }}</label>
 
                 <div class="dropdown w-100" data-bs-auto-close="outside">
                     <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Seleccionar categorías
+                        {{ __('product.select_categories') }}
                     </button>
 
                     <div class="dropdown-menu w-100 p-2 product-filter-menu">
@@ -49,7 +49,7 @@
                                 </label>
                             </div>
                         @empty
-                            <span class="text-muted small">No hay categorías disponibles</span>
+                            <span class="text-muted small">{{ __('product.empty_categories_available') }}</span>
                         @endforelse
                     </div>
                 </div>
@@ -61,9 +61,9 @@
 
             <div class="col-lg-3">
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-grow-1">Buscar</button>
+                    <button type="submit" class="btn btn-primary flex-grow-1">{{ __('product.search') }}</button>
                     @if($hasFilters)
-                        <a href="{{ route($clearRoute ?? $actionRoute) }}" class="btn btn-outline-secondary">Limpiar</a>
+                        <a href="{{ route($clearRoute ?? $actionRoute) }}" class="btn btn-outline-secondary">{{ __('product.clear') }}</a>
                     @endif
                 </div>
             </div>

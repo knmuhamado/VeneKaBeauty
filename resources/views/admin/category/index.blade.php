@@ -3,15 +3,15 @@
 
 @section('content')
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-    <h2 class="mb-0">Administrar Categorías</h2>
+    <h2 class="mb-0">{{ __('category.admin_manage') }}</h2>
 
     <div class="d-flex flex-wrap gap-2">
         <a href="{{ route('admin.product.index') }}" class="btn btn-outline-secondary">
-            Ir a productos
+            {{ __('category.go_to_products') }}
         </a>
 
         <a href="{{ route('admin.category.create') }}" class="btn btn-primary">
-            Crear nueva categoría
+            {{ __('category.create') }}
         </a>
     </div>
 </div>
@@ -21,9 +21,9 @@
 <table class="table table-bordered table-striped align-middle">
     <thead class="table-dark">
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
+            <th>{{ __('category.id') }}</th>
+            <th>{{ __('category.name') }}</th>
+            <th>{{ __('category.actions') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
                 <td>{{ $category->getName() }}</td>
                 <td>
                     <a href="{{ route('admin.category.edit', $category->getId()) }}" class="btn btn-outline-secondary btn-sm">
-                        Editar
+                        {{ __('category.edit') }}
                     </a>
 
                     <form action="{{ route('admin.category.destroy', $category->getId()) }}"
@@ -41,11 +41,12 @@
                           style="display:inline-block;">
                         @csrf
                         @method('DELETE')
+                        @php($deleteConfirm = __('category.delete_confirm'))
 
                         <button type="submit"
                                 class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">
-                            Eliminar
+                                onclick="return confirm('{{ $deleteConfirm }}')">
+                            {{ __('category.delete') }}
                         </button>
                     </form>
                 </td>
@@ -53,7 +54,7 @@
         @empty
             <tr>
                 <td colspan="3" class="text-center">
-                    No hay categorías registradas
+                    {{ __('category.empty_registered') }}
                 </td>
             </tr>
         @endforelse

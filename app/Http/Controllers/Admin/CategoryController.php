@@ -33,7 +33,7 @@ class CategoryController extends Controller
         Category::create($request->validated());
 
         return redirect()->route('admin.category.index')
-            ->with('success', 'Categoría creada satisfactoriamente');
+            ->with('success', __('category.created_success'));
     }
 
     public function edit(int $id): View
@@ -52,7 +52,7 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect()->route('admin.category.index')
-            ->with('success', 'Categoría actualizada correctamente');
+            ->with('success', __('category.updated_success'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -61,6 +61,6 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->route('admin.category.index')
-            ->with('success', 'Categoría eliminada correctamente');
+            ->with('success', __('category.deleted_success'));
     }
 }

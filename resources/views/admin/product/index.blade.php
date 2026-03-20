@@ -3,15 +3,15 @@
 
 @section('content')
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
-    <h2 class="mb-0">Administrar Productos</h2>
+    <h2 class="mb-0">{{ __('product.admin_manage') }}</h2>
 
     <div class="d-flex flex-wrap gap-2">
         <a href="{{ route('admin.category.index') }}" class="btn btn-outline-secondary btn-lg">
-            Ir a categorías
+            {{ __('product.go_to_categories') }}
         </a>
 
         <a href="{{ route('admin.product.create') }}" class="btn btn-primary btn-lg d-inline-flex align-items-center gap-2">
-            <span>Crear producto</span>
+            <span>{{ __('product.create') }}</span>
         </a>
     </div>
 </div>
@@ -29,7 +29,7 @@
 
 <x-product.table
     :products="$products"
-    empty-message="No hay productos registrados"
+    :empty-message="__('product.empty_registered')"
     :show-admin-actions="true"
 />
 @endsection
