@@ -39,3 +39,7 @@ Route::post('/admin/categories', 'App\Http\Controllers\Admin\CategoryController@
 Route::get('/admin/categories/{id}/edit', 'App\Http\Controllers\Admin\CategoryController@edit')->name('admin.category.edit');
 Route::put('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@update')->name('admin.category.update');
 Route::delete('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@destroy')->name('admin.category.destroy');
+
+Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
