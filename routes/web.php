@@ -27,19 +27,26 @@ Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->nam
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
 // Admin Routes
-Route::get('/admin/products', 'App\Http\Controllers\Admin\ProductController@index')->name('admin.product.index');
-Route::get('/admin/products/create', 'App\Http\Controllers\Admin\ProductController@create')->name('admin.product.create');
-Route::post('/admin/products', 'App\Http\Controllers\Admin\ProductController@store')->name('admin.product.store');
-Route::get('/admin/products/{id}/edit', 'App\Http\Controllers\Admin\ProductController@edit')->name('admin.product.edit');
-Route::put('/admin/products/{id}', 'App\Http\Controllers\Admin\ProductController@update')->name('admin.product.update');
-Route::delete('/admin/products/{id}', 'App\Http\Controllers\Admin\ProductController@destroy')->name('admin.product.destroy');
+// Admin Routes protegidas
+Route::middleware(['admin'])->group(function () {
 
-Route::get('/admin/categories', 'App\Http\Controllers\Admin\CategoryController@index')->name('admin.category.index');
-Route::get('/admin/categories/create', 'App\Http\Controllers\Admin\CategoryController@create')->name('admin.category.create');
-Route::post('/admin/categories', 'App\Http\Controllers\Admin\CategoryController@store')->name('admin.category.store');
-Route::get('/admin/categories/{id}/edit', 'App\Http\Controllers\Admin\CategoryController@edit')->name('admin.category.edit');
-Route::put('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@update')->name('admin.category.update');
-Route::delete('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@destroy')->name('admin.category.destroy');
+    // Productos
+    Route::get('/admin/products', 'App\Http\Controllers\Admin\ProductController@index')->name('admin.product.index');
+    Route::get('/admin/products/create', 'App\Http\Controllers\Admin\ProductController@create')->name('admin.product.create');
+    Route::post('/admin/products', 'App\Http\Controllers\Admin\ProductController@store')->name('admin.product.store');
+    Route::get('/admin/products/{id}/edit', 'App\Http\Controllers\Admin\ProductController@edit')->name('admin.product.edit');
+    Route::put('/admin/products/{id}', 'App\Http\Controllers\Admin\ProductController@update')->name('admin.product.update');
+    Route::delete('/admin/products/{id}', 'App\Http\Controllers\Admin\ProductController@destroy')->name('admin.product.destroy');
+
+    // Categorías
+    Route::get('/admin/categories', 'App\Http\Controllers\Admin\CategoryController@index')->name('admin.category.index');
+    Route::get('/admin/categories/create', 'App\Http\Controllers\Admin\CategoryController@create')->name('admin.category.create');
+    Route::post('/admin/categories', 'App\Http\Controllers\Admin\CategoryController@store')->name('admin.category.store');
+    Route::get('/admin/categories/{id}/edit', 'App\Http\Controllers\Admin\CategoryController@edit')->name('admin.category.edit');
+    Route::put('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@update')->name('admin.category.update');
+    Route::delete('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@destroy')->name('admin.category.destroy');
+
+});
 
 Auth::routes();
 
