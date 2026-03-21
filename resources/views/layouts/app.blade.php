@@ -23,8 +23,27 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="{{ route('product.index') }}">{{ __('app.nav_products') }}</a>
-          <a class="nav-link" href="{{ route('admin.product.index') }}">{{ __('app.nav_admin') }}</a>
+
+          <a class="nav-link" href="{{ route('product.index') }}">
+              {{ __('app.nav_products') }}
+          </a>
+
+          <a class="nav-link" href="{{ route('admin.product.index') }}">
+              {{ __('app.nav_admin') }}
+          </a>
+
+          @guest
+              <a class="nav-link" href="{{ route('login') }}">Login</a>
+              <a class="nav-link" href="{{ route('register') }}">Register</a>
+          @else
+              <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                  @csrf
+                  <button type="submit" class="nav-link btn btn-link" style="border:none;">
+                      Logout
+                  </button>
+              </form>
+          @endguest
+
         </div>
       </div>
     </div>
