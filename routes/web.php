@@ -26,8 +26,7 @@ Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('p
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
-// Admin Routes
-// Admin Routes protegidas
+// Admin Routes protegidas 
 Route::middleware(['admin'])->group(function () {
 
     // Productos
