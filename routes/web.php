@@ -7,9 +7,9 @@ Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index')
 
 // Review Routes
 Route::get('/reviews', 'App\Http\Controllers\ReviewController@index')->name('review.index');
-Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
-Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
-Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
+//Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
+//Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
+//Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
 Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
 // Order Routes
@@ -26,7 +26,7 @@ Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('p
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
-// Admin Routes protegidas 
+// Protected Admin Routes 
 Route::middleware(['admin'])->group(function () {
 
     // Productos
@@ -44,6 +44,16 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/categories/{id}/edit', 'App\Http\Controllers\Admin\CategoryController@edit')->name('admin.category.edit');
     Route::put('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@update')->name('admin.category.update');
     Route::delete('/admin/categories/{id}', 'App\Http\Controllers\Admin\CategoryController@destroy')->name('admin.category.destroy');
+
+});
+
+//Review actions for logged-in users
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
+    Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
+    Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
+    //Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
 });
 

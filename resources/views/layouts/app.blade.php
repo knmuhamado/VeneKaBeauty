@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
   <link href="{{ asset('/css/app.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <title>@yield('title', __('app.site_name'))</title>
 </head>
 
@@ -13,7 +14,10 @@
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
     <div class="container">
-      <a class="navbar-brand" href="{{ route('home.index') }}">{{ __('app.site_name') }}</a>
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home.index') }}">
+          <i class="bi bi-house-door-fill"></i>
+          {{ __('app.site_name') }}
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup"
@@ -28,9 +32,13 @@
               {{ __('app.nav_products') }}
           </a>
 
-          <a class="nav-link" href="{{ route('admin.product.index') }}">
-              {{ __('app.nav_admin') }}
-          </a>
+          @auth
+            @if(Auth::user()->role === 'admin')
+                <a class="nav-link" href="{{ route('admin.product.index') }}">
+                    {{ __('app.nav_admin') }}
+                </a>
+            @endif
+          @endauth
 
           @guest
               <a class="nav-link" href="{{ route('login') }}">Login</a>

@@ -1,4 +1,5 @@
 <?php
+//Mariamny Del Valle Ramírez Telles
 
 namespace App\Models;
 
@@ -15,7 +16,7 @@ class Review extends Model
      * $this->attributes['created_at'] - timestamp - contains the review creation date
      * $this->attributes['updated_at'] - timestamp - contains the review update date
      */
-    protected $fillable = ['score', 'comment', 'product_id'];
+    protected $fillable = ['score', 'comment', 'product_id', 'user_id'];
 
     protected $casts = [
         'product_id' => 'integer',
@@ -66,25 +67,44 @@ class Review extends Model
         return $this->product;
     }
 
-    /*
-    public function getCreatedAt(): string
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->getAttribute('user_id');
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    
+    public function getCreatedAt()
     {
     return $this->attributes['created_at'];
     }
 
+    public function getUpdatedAt()
+    {
+    return $this->attributes['updated_at'];
+    }
+
+    /*
     public function setCreatedAt(string $createdAt): void
     {
     $this->attributes['created_at'] = $createdAt;
     }
 
-    public function getUpdatedAt(): string
-    {
-    return $this->attributes['updated_at'];
-    }
 
     public function setUpdatedAt(string $updatedAt): void
     {
     $this->attributes['updated_at'] = $updatedAt;
     }
     */
+    
+    
 }

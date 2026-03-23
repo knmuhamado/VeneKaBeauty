@@ -1,4 +1,5 @@
 <?php
+//Mariamny Del Valle Ramírez Telles
 
 namespace App\Http\Controllers;
 
@@ -8,6 +9,7 @@ use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -19,42 +21,27 @@ class ReviewController extends Controller
         return view('reviews.create')->with('viewData', $viewData);
     }
 
+    
     public function store(StoreReviewRequest $request): RedirectResponse
     {
-        try {
-
-            Review::create($request->reviewData());
-
-            $success = 'Review was created successfully';
-
-            return redirect()->route('home.index')->with('success', $success);
-
-        } catch (\Exception $e) {
-
-            $error = 'Review could not be created';
-
-            return redirect()->route('home.index')->with('error', $error);
-        }
-    }
-
-    /*
-    public function store(StoreReviewRequest $request): RedirectResponse
-    {
-        Review::create(
-            $request->only('comment', 'score')
-        );
+        Review::create([
+            'comment' => $request->comment,
+            'score' => $request->score,
+            'product_id' => $request->product_id,
+            'user_id' => Auth::id(),
+        ]);
 
         return redirect('/')
             ->with('success', 'Review creada correctamente');
     }
-     */
+     
 
     // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
     // tipo de retorno: View
     public function index(): View
     {
         $viewData = [];
-        $viewData['reviews'] = Review::with('product')->get();
+        $viewData['reviews'] = Review::with(['product', 'user'])->get();
         $viewData['product'] = null;
 
         return view('reviews.index')->with('viewData', $viewData);
@@ -66,7 +53,7 @@ class ReviewController extends Controller
 
         $viewData = [];
         $viewData['product'] = $product;
-        $viewData['reviews'] = Review::with('product')
+        $viewData['reviews'] = Review::with(['product', 'user'])
             ->where('product_id', $productId)
             ->get();
 
