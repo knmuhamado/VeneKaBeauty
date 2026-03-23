@@ -8,6 +8,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -120,27 +121,29 @@ class User extends Authenticatable
         $this->attributes['role'] = $role;
     }
 
-    /*
-        public function getCreatedAt(): string
-        {
-            return $this->attributes['created_at'];
-        }
+    
+    public function getCreatedAt(): string
+    {
+        return $this->attributes['created_at'];
+    }
 
+    public function getUpdatedAt(): string
+    {
+        return $this->attributes['updated_at'];
+    }
+
+        /*
         public function setCreatedAt(string $createdAt): void
         {
             $this->attributes['created_at'] = $createdAt;
-        }
-
-        public function getUpdatedAt(): string
-        {
-            return $this->attributes['updated_at'];
         }
 
         public function setUpdatedAt(string $updatedAt): void
         {
             $this->attributes['updated_at'] = $updatedAt;
         }
-    */
+        */
+    
     public function isAdmin(): bool
     {
         return $this->attributes['role'] === 'admin';
@@ -149,5 +152,10 @@ class User extends Authenticatable
     public function isClient(): bool
     {
         return $this->attributes['role'] === 'client';
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

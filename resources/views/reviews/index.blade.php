@@ -1,3 +1,4 @@
+{{-- David Alejandro Gutiérrez Leal --}}
 @extends('layouts.app')
 
 @section('title', 'Listar Reviews')
@@ -13,11 +14,7 @@
 </h2>
 
 {{-- Mensajes de sesión --}}
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+@include('layouts._success_alert')
 
 @if(session('error'))
     <div class="alert alert-danger">
@@ -32,6 +29,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Usuario</th>
             <th>Comentario</th>
             <th>Puntaje</th>
         </tr>
@@ -45,6 +43,7 @@
                     {{ $review->getId() }}
                 </a>
             </td>
+            <td>{{ $review->user?->getName() ?? 'Anónimo' }}</td>
             <td>{{ $review->getComment() }}</td>
             <td>{{ $review->getScore() }}</td>
         </tr>

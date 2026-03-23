@@ -20,6 +20,7 @@ class Review extends Model
 
     protected $casts = [
         'product_id' => 'integer',
+        'user_id' => 'integer',
     ];
 
     public function getId(): int
