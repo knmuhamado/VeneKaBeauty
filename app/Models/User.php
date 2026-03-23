@@ -6,9 +6,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -65,7 +65,7 @@ class User extends Authenticatable
     {
         return $this->attributes['id'];
     }
-    
+
     public function getName(): string
     {
         return $this->attributes['name'];
@@ -116,7 +116,6 @@ class User extends Authenticatable
         $this->attributes['role'] = $role;
     }
 
-    
     public function getCreatedAt(): string
     {
         return $this->attributes['created_at'];
@@ -126,7 +125,7 @@ class User extends Authenticatable
     {
         return $this->attributes['updated_at'];
     }
-    
+
     public function isAdmin(): bool
     {
         return $this->attributes['role'] === 'admin';

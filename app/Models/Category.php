@@ -46,13 +46,12 @@ class Category extends Model
         return $this->products;
     }
 
-    
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];
     }
 
-     public function getUpdatedAt()
+    public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
     }

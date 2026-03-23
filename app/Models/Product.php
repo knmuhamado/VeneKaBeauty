@@ -49,7 +49,6 @@ class Product extends Model
         return $this->attributes['id'];
     }
 
-
     public function getName(): string
     {
         return $this->attributes['name'];
@@ -67,7 +66,7 @@ class Product extends Model
 
     public function setImage(string $image): void
     {
-         $this->attributes['image'] = $image;
+        $this->attributes['image'] = $image;
     }
 
     public function getDescription(): string
@@ -77,7 +76,7 @@ class Product extends Model
 
     public function setDescription(string $description): void
     {
-       $this->attributes['description'] = $description;
+        $this->attributes['description'] = $description;
     }
 
     public function getAvailable(): bool
@@ -129,9 +128,8 @@ class Product extends Model
 
     public function setType(string $type): void
     {
-       $this->attributes['type'] = $type;
+        $this->attributes['type'] = $type;
     }
-
 
     public function category(): BelongsTo
     {
@@ -163,15 +161,13 @@ class Product extends Model
         return $query->whereIn('category_id', $categoryIds);
     }
 
-    
     public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
-    
 }

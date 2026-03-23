@@ -1,5 +1,6 @@
 <?php
-//Mariamny Del Valle Ramírez Telles
+
+// Mariamny Del Valle Ramírez Telles
 
 namespace App\Models;
 
@@ -78,7 +79,6 @@ class Review extends Model
         return $this->user;
     }
 
-    
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];
@@ -88,5 +88,4 @@ class Review extends Model
     {
         return $this->attributes['updated_at'];
     }
-
 }

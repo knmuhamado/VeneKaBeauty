@@ -1,5 +1,6 @@
 <?php
-//Mariamny Del Valle Ramírez Telles
+
+// Mariamny Del Valle Ramírez Telles
 
 namespace App\Http\Controllers;
 
@@ -8,8 +9,8 @@ use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
@@ -21,7 +22,6 @@ class ReviewController extends Controller
         return view('reviews.create')->with('viewData', $viewData);
     }
 
-    
     public function store(StoreReviewRequest $request): RedirectResponse
     {
         Review::create([
@@ -34,7 +34,6 @@ class ReviewController extends Controller
         return redirect('/')
             ->with('success', 'Review creada correctamente');
     }
-     
 
     // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
     // tipo de retorno: View

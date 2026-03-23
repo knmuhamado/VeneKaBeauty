@@ -23,7 +23,7 @@ Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('p
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
-// Protected Admin Routes 
+// Protected Admin Routes
 Route::middleware(['admin'])->group(function () {
 
     // Productos
@@ -44,13 +44,13 @@ Route::middleware(['admin'])->group(function () {
 
 });
 
-//Review actions for logged-in users
+// Review actions for logged-in users
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
     Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
     Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
-    //Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
+    // Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
 });
 
