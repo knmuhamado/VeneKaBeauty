@@ -23,14 +23,9 @@ class Review extends Model
         'user_id' => 'integer',
     ];
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->attributes['id'];
-    }
-
-    public function setId(int $id): void
-    {
-        $this->attributes['id'] = $id;
     }
 
     public function getScore(): int
@@ -60,7 +55,7 @@ class Review extends Model
 
     public function getProductId(): ?int
     {
-        return $this->getAttribute('product_id');
+        return $this->attributes['product_id'] ?? null;
     }
 
     public function getProduct(): ?Product
@@ -75,7 +70,7 @@ class Review extends Model
 
     public function getUserId(): ?int
     {
-        return $this->getAttribute('user_id');
+        return $this->attributes['user_id'] ?? null;
     }
 
     public function getUser(): ?User
@@ -86,26 +81,12 @@ class Review extends Model
     
     public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
 
-    /*
-    public function setCreatedAt(string $createdAt): void
-    {
-    $this->attributes['created_at'] = $createdAt;
-    }
-
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-    $this->attributes['updated_at'] = $updatedAt;
-    }
-    */
-    
-    
 }

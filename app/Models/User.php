@@ -65,12 +65,7 @@ class User extends Authenticatable
     {
         return $this->attributes['id'];
     }
-
-    public function setId(int $id): void
-    {
-        $this->attributes['id'] = $id;
-    }
-
+    
     public function getName(): string
     {
         return $this->attributes['name'];
@@ -131,18 +126,6 @@ class User extends Authenticatable
     {
         return $this->attributes['updated_at'];
     }
-
-        /*
-        public function setCreatedAt(string $createdAt): void
-        {
-            $this->attributes['created_at'] = $createdAt;
-        }
-
-        public function setUpdatedAt(string $updatedAt): void
-        {
-            $this->attributes['updated_at'] = $updatedAt;
-        }
-        */
     
     public function isAdmin(): bool
     {

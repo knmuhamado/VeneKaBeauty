@@ -33,11 +33,6 @@ class Order extends Model
         return $this->attributes['id'];
     }
 
-    public function setId(int $id): void
-    {
-        $this->attributes['id'] = $id;
-    }
-
     public function getTotal(): int
     {
         return $this->attributes['total'];
@@ -88,25 +83,14 @@ class Order extends Model
         $this->attributes['method_of_payment'] = $methodOfPayment;
     }
 
-    /*
-    public function getCreatedAt(): string
+    public function getCreatedAt()
     {
         return $this->attributes['created_at'];
     }
 
-    public function setCreatedAt(string $createdAt): void
-    {
-        $this->attributes['created_at'] = $createdAt;
-    }
-
-    public function getUpdatedAt(): string
+    public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
     }
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-        $this->attributes['updated_at'] = $updatedAt;
-    }
-    */
+    
 }

@@ -46,104 +46,92 @@ class Product extends Model
 
     public function getId(): ?int
     {
-        return $this->getAttribute('id');
+        return $this->attributes['id'];
     }
 
-    public function getName(): ?string
+
+    public function getName(): string
     {
-        return $this->getAttribute('name');
+        return $this->attributes['name'];
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
-        $this->setAttribute('name', $name);
-
-        return $this;
+        $this->attributes['name'] = $name;
     }
 
-    public function getImage(): ?string
+    public function getImage(): string
     {
-        return $this->getAttribute('image');
+        return $this->attributes['image'];
     }
 
-    public function setImage(string $image): self
+    public function setImage(string $image): void
     {
-        $this->setAttribute('image', $image);
-
-        return $this;
+         $this->attributes['image'] = $image;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
-        return $this->getAttribute('description');
+        return $this->attributes['description'];
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): void
     {
-        $this->setAttribute('description', $description);
-
-        return $this;
+       $this->attributes['description'] = $description;
     }
 
-    public function getAvailable(): ?bool
+    public function getAvailable(): bool
     {
-        return $this->getAttribute('available');
+        return $this->attributes['available'];
     }
 
-    public function setAvailable(bool $available): self
+    public function setAvailable(bool $available): void
     {
-        $this->setAttribute('available', $available);
-
-        return $this;
+        $this->attributes['available'] = $available;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
-        return $this->getAttribute('price');
+        return $this->attributes['price'];
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(int $price): void
     {
-        $this->setAttribute('price', $price);
-
-        return $this;
+        $this->attributes['price'] = $price;
     }
 
     public function getBrand(): ?string
     {
-        return $this->getAttribute('brand');
+        return $this->attributes['brand'];
     }
 
-    public function setBrand(?string $brand): self
+    public function setBrand(?string $brand): void
     {
-        $this->setAttribute('brand', $brand);
-
-        return $this;
+        $this->attributes['brand'] = $brand;
     }
 
     public function getKeyword(): array
     {
-        return $this->getAttribute('keyword') ?? [];
+        $value = $this->attributes['keyword'] ?? [];
+
+        return is_array($value) ? $value : json_decode($value, true) ?? [];
     }
 
-    public function setKeyword(array $keyword): self
+    public function setKeyword(array $keyword): void
     {
-        $this->setAttribute('keyword', $keyword);
-
-        return $this;
+        $this->attributes['keyword'] = $keyword;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
-        return $this->getAttribute('type');
+        return $this->attributes['type'];
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
-        $this->setAttribute('type', $type);
-
-        return $this;
+       $this->attributes['type'] = $type;
     }
+
 
     public function category(): BelongsTo
     {
@@ -157,7 +145,7 @@ class Product extends Model
 
     public function getCategoryId(): ?int
     {
-        return $this->getAttribute('category_id');
+        return $this->attributes['category_id'] ?? null;
     }
 
     public function getCategory(): ?Category
@@ -175,25 +163,15 @@ class Product extends Model
         return $query->whereIn('category_id', $categoryIds);
     }
 
-    /*
-    public function getCreatedAt(): string
+    
+    public function getCreatedAt()
     {
     return $this->attributes['created_at'];
     }
 
-    public function setCreatedAt(string $createdAt): void
-    {
-    $this->attributes['created_at'] = $createdAt;
-    }
-
-    public function getUpdatedAt(): string
+    public function getUpdatedAt()
     {
     return $this->attributes['updated_at'];
     }
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-    $this->attributes['updated_at'] = $updatedAt;
-    }
-    */
+    
 }

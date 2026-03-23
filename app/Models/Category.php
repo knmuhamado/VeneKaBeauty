@@ -23,19 +23,17 @@ class Category extends Model
 
     public function getId(): ?int
     {
-        return $this->getAttribute('id');
+        return $this->attributes['id'];
     }
 
     public function getName(): ?string
     {
-        return $this->getAttribute('name');
+        return $this->attributes['name'];
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
-        $this->setAttribute('name', $name);
-
-        return $this;
+        $this->attributes['name'] = $name;
     }
 
     public function products(): HasMany
@@ -48,25 +46,14 @@ class Category extends Model
         return $this->products;
     }
 
-    /*
-    public function getCreatedAt(): string
+    
+    public function getCreatedAt()
     {
         return $this->attributes['created_at'];
     }
 
-    public function setCreatedAt(string $createdAt): void
-    {
-        $this->attributes['created_at'] = $createdAt;
-    }
-
-    public function getUpdatedAt(): string
+     public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
     }
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-        $this->attributes['updated_at'] = $updatedAt;
-    }
-    */
 }
