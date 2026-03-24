@@ -1,0 +1,100 @@
+.bg-secondary {
+  background-color: #cd93e4 !important;
+}
+
+.bg-primary {
+  background-color: #bd4fdb !important;
+}
+
+nav {
+  font-weight: 700;
+}
+
+footer {
+  background-color: #bd4fdb;
+  color: white;
+  padding: 18px 0;
+  font-weight: 600;
+}
+
+.btn-lila {
+  background-color: #bd4fdb;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+.btn-lila:hover {
+  background-color: #a63cc5;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(189, 79, 219, 0.4);
+}
+
+
+.img-card {
+  height: 18vw;
+  object-fit: cover;
+}
+
+.product-filter-menu {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.cart-float {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #6c757d;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.cart-float:hover {
+    background-color: #5a6268;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.cart-float--active {
+    background-color: #4a4a8a;
+}
+
+.cart-float--active:hover {
+    background-color: #3a3a7a;
+    color: white;
+}
+
+.cart-float__icon {
+    font-size: 1.2rem;
+}
+
+.cart-float__badge {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.cart-float__label {
+    font-size: 0.9rem;
+}
