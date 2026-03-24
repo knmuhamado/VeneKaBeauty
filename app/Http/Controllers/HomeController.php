@@ -15,8 +15,11 @@ class HomeController extends Controller
         $viewData = [];
 
         try {
-            $viewData['featuredProducts'] = Product::getTopRatedProducts();
-        } catch (QueryException $e) {
+            $viewData['featuredProducts'] = Product::with('category')
+                ->latest('created_at')
+                ->take(6)
+                ->get();
+        } catch (QueryException) {
             $viewData['featuredProducts'] = collect();
         }
 
