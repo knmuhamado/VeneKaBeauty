@@ -32,43 +32,54 @@ class Item extends Model
         'product_id' => 'integer',
     ];
 
-    public function getId(): ?int
+    public function getId(): int
     {
-        return $this->getAttribute('id');
+        return $this->attributes['id'];
     }
 
-    public function getQuantity(): ?int
+    public function setId(int $id): void
     {
-        return $this->getAttribute('quantity');
+        $this->attributes['id'] = $id;
     }
 
-    public function setQuantity(int $quantity): self
+    public function getQuantity(): int
     {
-        $this->setAttribute('quantity', $quantity);
-
-        return $this;
+        return $this->attributes['quantity'];
     }
 
-    public function getPrice(): ?int
+    public function setQuantity(int $quantity): void
     {
-        return $this->getAttribute('price');
+        $this->attributes['quantity'] = $quantity;
     }
 
-    public function setPrice(int $price): self
+    public function getPrice(): int
     {
-        $this->setAttribute('price', $price);
+        return $this->attributes['price'];
+    }
 
-        return $this;
+    public function setPrice(int $price): void
+    {
+        $this->attributes['price'] = $price;
     }
 
     public function getOrderId(): ?int
     {
-        return $this->getAttribute('order_id');
+        return $this->attributes['order_id'];
+    }
+
+    public function setOrderId(?int $orderId): void
+    {
+        $this->attributes['order_id'] = $orderId;
     }
 
     public function getProductId(): ?int
     {
-        return $this->getAttribute('product_id');
+        return $this->attributes['product_id'];
+    }
+
+    public function setProductId(?int $productId): void
+    {
+        $this->attributes['product_id'] = $productId;
     }
 
     public function order(): BelongsTo

@@ -47,105 +47,94 @@ class Product extends Model
         'category_id' => 'integer',
     ];
 
-    public function getId(): ?int
+    public function getId(): int
     {
-        return $this->getAttribute('id');
+        return $this->attributes['id'];
     }
 
-    public function getName(): ?string
+    public function setId(int $id): void
     {
-        return $this->getAttribute('name');
+        $this->attributes['id'] = $id;
     }
 
-    public function setName(string $name): self
+    public function getName(): string
     {
-        $this->setAttribute('name', $name);
-
-        return $this;
+        return $this->attributes['name'];
     }
 
-    public function getImage(): ?string
+    public function setName(string $name): void
     {
-        return $this->getAttribute('image');
+        $this->attributes['name'] = $name;
     }
 
-    public function setImage(string $image): self
+    public function getImage(): string
     {
-        $this->setAttribute('image', $image);
-
-        return $this;
+        return $this->attributes['image'];
     }
 
-    public function getDescription(): ?string
+    public function setImage(string $image): void
     {
-        return $this->getAttribute('description');
+        $this->attributes['image'] = $image;
     }
 
-    public function setDescription(string $description): self
+    public function getDescription(): string
     {
-        $this->setAttribute('description', $description);
-
-        return $this;
+        return $this->attributes['description'];
     }
 
-    public function getAvailable(): ?bool
+    public function setDescription(string $description): void
     {
-        return $this->getAttribute('available');
+        $this->attributes['description'] = $description;
     }
 
-    public function setAvailable(bool $available): self
+    public function getAvailable(): bool
     {
-        $this->setAttribute('available', $available);
-
-        return $this;
+        return $this->attributes['available'];
     }
 
-    public function getPrice(): ?int
+    public function setAvailable(bool $available): void
     {
-        return $this->getAttribute('price');
+        $this->attributes['available'] = $available;
     }
 
-    public function setPrice(int $price): self
+    public function getPrice(): int
     {
-        $this->setAttribute('price', $price);
+        return $this->attributes['price'];
+    }
 
-        return $this;
+    public function setPrice(int $price): void
+    {
+        $this->attributes['price'] = $price;
     }
 
     public function getBrand(): ?string
     {
-        return $this->getAttribute('brand');
+        return $this->attributes['brand'];
     }
 
-    public function setBrand(?string $brand): self
+    public function setBrand(?string $brand): void
     {
-        $this->setAttribute('brand', $brand);
-
-        return $this;
+        $this->attributes['brand'] = $brand;
     }
 
     public function getKeyword(): array
     {
-        return $this->getAttribute('keyword') ?? [];
+        return $this->attributes['keyword'] ?? [];
     }
 
-    public function setKeyword(array $keyword): self
+    public function setKeyword(array $keyword): void
     {
-        $this->setAttribute('keyword', $keyword);
-
-        return $this;
+        $this->attributes['keyword'] = $keyword;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
-        return $this->getAttribute('type');
+        return $this->attributes['type'];
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
-        $this->setAttribute('type', $type);
-
-        return $this;
+        $this->attributes['type'] = $type;
     }
 
     public function category(): BelongsTo
@@ -160,7 +149,12 @@ class Product extends Model
 
     public function getCategoryId(): ?int
     {
-        return $this->getAttribute('category_id');
+        return $this->attributes['category_id'];
+    }
+
+    public function setCategoryId(?int $categoryId): void
+    {
+        $this->attributes['category_id'] = $categoryId;
     }
 
     public function getCategory(): ?Category
