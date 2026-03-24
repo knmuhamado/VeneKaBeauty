@@ -41,16 +41,20 @@
           @endauth
 
           @guest
-              <a class="nav-link" href="{{ route('login') }}">Login</a>
-              <a class="nav-link" href="{{ route('register') }}">Register</a>
+            <a class="nav-link" href="{{ route('login') }}">
+                {{ __('user.login') }}
+            </a>
+            <a class="nav-link" href="{{ route('register') }}">
+                {{ __('user.register') }}
+            </a>
           @else
-              <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                  @csrf
-                  <button type="submit" class="nav-link btn btn-link" style="border:none;">
-                      Logout
-                  </button>
-              </form>
-          @endguest
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="nav-link btn btn-link" style="border:none;">
+                    {{ __('user.logout') }}
+                </button>
+            </form>
+         @endguest
 
         </div>
       </div>

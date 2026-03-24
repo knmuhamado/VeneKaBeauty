@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Detalle Review')
+@section('title', __('review.detail_title'))
 
 @section('content')
 
-<h2>Detalle de la Review</h2>
+<h2>{{ __('review.detail_title') }}</h2>
 
 <ul>
     <li><strong>ID:</strong> {{ $viewData['review']->getId() }}</li>
-    <li><strong>Comentario:</strong> {{ $viewData['review']->getComment() }}</li>
-    <li><strong>Puntaje:</strong> {{ $viewData['review']->getScore() }}</li>
-    <li><strong>Creado:</strong> {{ $viewData['review']->created_at }}</li>
-    <li><strong>Actualizado:</strong> {{ $viewData['review']->updated_at }}</li>
+    <li><strong>{{ __('review.comment') }}:</strong> {{ $viewData['review']->getComment() }}</li>
+    <li><strong>{{ __('review.score') }}:</strong> {{ $viewData['review']->getScore() }}</li>
+    <li><strong>{{ __('review.created_at') }}:</strong> {{ $viewData['review']->getCreatedAt() }}</li>
+    <li><strong>{{ __('review.updated_at') }}:</strong> {{ $viewData['review']->getUpdatedAt() }}</li>
 </ul>
 
 <br>

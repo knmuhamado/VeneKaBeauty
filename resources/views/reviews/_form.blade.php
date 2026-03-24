@@ -5,11 +5,11 @@
 @endif
 
 <div class="mb-3">
-    <label class="form-label">Comentario</label>
+    <label class="form-label">{{ __('review.comment') }}</label>
     <textarea class="form-control" name="comment">{{ old('comment') }}</textarea>
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Puntaje</label>
+    <label class="form-label">{{ __('review.score') }}</label>
     <input type="number" name="score" min="0" max="5" class="form-control" value="{{ old('score') }}">
 </div>

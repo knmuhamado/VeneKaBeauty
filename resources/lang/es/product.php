@@ -64,4 +64,9 @@ return [
     'created_success' => 'Producto creado satisfactoriamente',
     'updated_success' => 'Producto actualizado correctamente',
     'deleted_success' => 'Producto eliminado correctamente',
+
+    'home_top' => 'Top 5 artículos mejor calificados',
+    'home_view_catalog' => 'Ver catálogo completo',
+    'home_empty_featured' => 'Aún no hay productos destacados disponibles.',
+    'home_description' => 'Descubre productos de belleza seleccionados para ti. Desde aquí puedes explorar el catálogo público o gestionar el contenido desde el panel administrativo.',
 ];

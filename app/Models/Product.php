@@ -141,7 +141,7 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    /// Method for calculating the average rating of product reviews
+    // / Method for calculating the average rating of product reviews
     public function getAverageScore(): int
     {
         if ($this->reviews->count() == 0) {
@@ -161,14 +161,15 @@ class Product extends Model
         // Calculate average
         $products = $products->map(function ($product) {
             $product->average_score = $product->getAverageScore();
+
             return $product;
         });
 
         // Filter and sort
-        return $products->filter(fn($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
+        return $products->filter(fn ($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
     }
 
-    //This function counts how many reviews a comment has
+    // This function counts how many reviews a comment has
     public function getRating(): string
     {
         $count = $this->reviews->count();
@@ -179,7 +180,7 @@ class Product extends Model
 
         $text = $count === 1 ? 'comentario' : 'comentarios';
 
-        return $this->getAverageScore() . " - ($count $text)";
+        return $this->getAverageScore()." - ($count $text)";
     }
 
     public function getCategoryId(): ?int

@@ -1,15 +1,15 @@
 {{-- David Alejandro Gutiérrez Leal --}}
 @extends('layouts.app')
 
-@section('title', 'Listar Reviews')
+@section('title', __('review.title_list'))
 
 @section('content')
 
 <h2>
     @if(!empty($viewData['product']))
-        Reviews de: {{ $viewData['product']->getName() }}
+        {{ __('review.title_product') }} {{ $viewData['product']->getName() }}
     @else
-        Lista de Reviews
+        {{ __('review.title_list') }}
     @endif
 </h2>
 
@@ -28,22 +28,21 @@
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Comentario</th>
-            <th>Puntaje</th>
+            <th>{{ __('review.id') }}</th>
+            <th>{{ __('review.user') }}</th>
+            <th>{{ __('review.comment') }}</th>
+            <th>{{ __('review.score') }}</th>
         </tr>
     </thead>
     <tbody>
         @foreach($viewData['reviews'] as $review)
         <tr>
             <td>
-                <!-- An object's ID is connected to display its information. -->
                 <a href="{{ route('review.show', $review->getId()) }}">
                     {{ $review->getId() }}
                 </a>
             </td>
-            <td>{{ $review->user?->getName() ?? 'Anónimo' }}</td>
+            <td>{{ $review->user?->getName() ?? __('review.anonymous') }}</td>
             <td>{{ $review->getComment() }}</td>
             <td>{{ $review->getScore() }}</td>
         </tr>
@@ -53,21 +52,21 @@
 @else
 <p>
     @if(!empty($viewData['product']))
-        No hay reviews para este producto.
+        {{ __('review.empty_product') }}
     @else
-        No hay reviews registradas.
+        {{ __('review.empty_all') }}
     @endif
 </p>
 @endif
 
 @if(!empty($viewData['product']))
     <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
-        Crear review para este producto
+        {{ __('review.create') }}
     </a>
 @endif
 
 <a href="{{ route('home.index') }}" class="btn btn-secondary mt-3">
-    Volver al inicio
+    {{ __('review.back_home') }}
 </a>
 
 @endsection
