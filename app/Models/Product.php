@@ -16,18 +16,18 @@ class Product extends Model
 {
     /**
      * PRODUCT ATTRIBUTES
-     * $this->attributes['id'] - int - contains the product primary key (id)
-     * $this->attributes['name'] - string - contains the product name
-     * $this->attributes['image'] - string - contains the product image path or filename
-     * $this->attributes['description'] - string - contains the product description
-     * $this->attributes['available'] - bool - indicates if the product is available
-     * $this->attributes['price'] - int - contains the product price
-     * $this->attributes['brand'] - string|null - contains the product brand name
-     * $this->attributes['keyword'] - array - contains the product keywords
-     * $this->attributes['type'] - string - contains the product type (article/service)
-     * $this->attributes['category_id'] - int|null - contains the category id
-     * $this->attributes['created_at'] - timestamp - contains the product creation date
-     * $this->attributes['updated_at'] - timestamp - contains the product update date
+     * $this->attributes['id'];- int - contains the product primary key (id)
+     * $this->attributes['name'];- string - contains the product name
+     * $this->attributes['image'];- string - contains the product image path or filename
+     * $this->attributes['description'];- string - contains the product description
+     * $this->attributes['available'];- bool - indicates if the product is available
+     * $this->attributes['price'];- int - contains the product price
+     * $this->attributes['brand'];- string|null - contains the product brand name
+     * $this->attributes['keyword'];- array - contains the product keywords
+     * $this->attributes['type'];- string - contains the product type (article/service)
+     * $this->attributes['category_id'];- int|null - contains the category id
+     * $this->attributes['created_at'];- timestamp - contains the product creation date
+     * $this->attributes['updated_at'];- timestamp - contains the product update date
      */
     protected $fillable = [
         'name',
@@ -49,101 +49,101 @@ class Product extends Model
 
     public function getId(): ?int
     {
-        return $this->getAttribute('id');
+        return $this->attributes['id'];
     }
 
     public function getName(): ?string
     {
-        return $this->getAttribute('name');
+        return $this->attributes['name'];
     }
 
     public function setName(string $name): self
     {
-        $this->setAttribute('name', $name);
+        $this->attributes['name'] = $name;
 
         return $this;
     }
 
     public function getImage(): ?string
     {
-        return $this->getAttribute('image');
+        return $this->attributes['image'];
     }
 
     public function setImage(string $image): self
     {
-        $this->setAttribute('image', $image);
+        $this->attributes['image'] = $image;
 
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->getAttribute('description');
+        return $this->attributes['description'];
     }
 
     public function setDescription(string $description): self
     {
-        $this->setAttribute('description', $description);
+        $this->attributes['description'] = $description;
 
         return $this;
     }
 
     public function getAvailable(): ?bool
     {
-        return $this->getAttribute('available');
+        return $this->attributes['available'];
     }
 
     public function setAvailable(bool $available): self
     {
-        $this->setAttribute('available', $available);
+        $this->attributes['available'] = $available;
 
         return $this;
     }
 
     public function getPrice(): ?int
     {
-        return $this->getAttribute('price');
+        return $this->attributes['price'];
     }
 
     public function setPrice(int $price): self
     {
-        $this->setAttribute('price', $price);
+        $this->attributes['price'] = $price;
 
         return $this;
     }
 
     public function getBrand(): ?string
     {
-        return $this->getAttribute('brand');
+        return $this->attributes['brand'];
     }
 
     public function setBrand(?string $brand): self
     {
-        $this->setAttribute('brand', $brand);
+        $this->attributes['brand'] = $brand;
 
         return $this;
     }
 
     public function getKeyword(): array
     {
-        return $this->getAttribute('keyword') ?? [];
+        return $this->keyword ?? [];
     }
 
     public function setKeyword(array $keyword): self
     {
-        $this->setAttribute('keyword', $keyword);
+        $this->keyword = $keyword;
 
         return $this;
     }
 
     public function getType(): ?string
     {
-        return $this->getAttribute('type');
+        return $this->attributes['type'];
     }
 
     public function setType(string $type): self
     {
-        $this->setAttribute('type', $type);
+        $this->attributes['type'] = $type;
 
         return $this;
     }
@@ -202,7 +202,7 @@ class Product extends Model
 
     public function getCategoryId(): ?int
     {
-        return $this->getAttribute('category_id');
+        return $this->attributes['category_id'];
     }
 
     public function getCategory(): ?Category

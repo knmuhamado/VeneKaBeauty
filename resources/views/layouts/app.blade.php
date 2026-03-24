@@ -18,7 +18,7 @@
                 data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup"
                 aria-expanded="false"
-                aria-label="Toggle navigation">
+                aria-label="{{ __('app.toggle_navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -29,40 +29,37 @@
                         {{ __('app.nav_products') }}
                     </a>
 
+                    @guest
+                        <a class="nav-link" href="{{ route('login') }}">
+                            {{ __('user.login') }}
+                        </a>
 
-          @guest
-            <a class="nav-link" href="{{ route('login') }}">
-                {{ __('user.login') }}
-            </a>
+                        <a class="nav-link" href="{{ route('register') }}">
+                            {{ __('user.register') }}
+                        </a>
+                    @else
+                        {{-- Admin --}}
+                        @if(auth()->user()->isAdmin())
+                            <a class="nav-link" href="{{ route('admin.product.index') }}">
+                                {{ __('app.nav_admin') }}
+                            </a>
+                        @endif
 
-            <a class="nav-link" href="{{ route('register') }}">
-                {{ __('user.register') }}
-            </a>
-         @else
+                        {{-- Cliente --}}
+                        @if(auth()->user()->isClient())
+                            <a class="nav-link" href="{{ route('order.list') }}">
+                                {{ __('app.nav_my_orders') }}
+                            </a>
+                        @endif
 
-            {{-- Admin --}}
-            @if(auth()->user()->isAdmin())
-                <a class="nav-link" href="{{ route('admin.product.index') }}">
-                    {{ __('app.nav_admin') }}
-                </a>
-            @endif
-
-            {{-- Cliente --}}
-            @if(auth()->user()->isClient())
-                <a class="nav-link" href="{{ route('order.list') }}">
-                    {{ __('app.nav_my_orders') }}
-                </a>
-            @endif
-
-            {{-- Logout --}}
-            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="nav-link btn btn-link" style="border:none;">
-                    {{ __('user.logout') }}
-                </button>
-            </form>
-
-          @endguest
+                        {{-- Logout --}}
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="nav-link btn btn-link" style="border:none;">
+                                {{ __('user.logout') }}
+                            </button>
+                        </form>
+                    @endguest
 
                 </div>
             </div>
