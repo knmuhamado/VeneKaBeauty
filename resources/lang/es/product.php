@@ -64,4 +64,9 @@ return [
     'created_success' => 'Producto creado satisfactoriamente',
     'updated_success' => 'Producto actualizado correctamente',
     'deleted_success' => 'Producto eliminado correctamente',
+
+    'rating_no' => 'Sin calificaciones',
+    'rating_comment_singular' => 'comentario',
+    'rating_comment_plural' => 'comentarios',
+
 ];

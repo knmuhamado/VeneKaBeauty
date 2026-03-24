@@ -7,7 +7,7 @@
     <p class="text-muted mb-3">{{ __('home.welcome_subtitle') }}</p>
 </section>
 
-<section>
+<section class="mb-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">{{ __('home.featured_products') }}</h3>
         <a href="{{ route('product.index') }}" class="btn btn-sm btn-outline-primary">
@@ -84,5 +84,27 @@
             @endforeach
         </div>
     @endif
+</section>
+
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">{{ __('product.title') }}</h3>
+        <a href="{{ route('product.index') }}" class="btn btn-sm btn-outline-primary">
+            {{ __('home.view_catalog') }}
+        </a>
+    </div>
+
+    <x-product.filter
+        action-route="home.index"
+        :query="$query"
+        :categories="$categories"
+        :has-filters="$hasFilters"
+        clear-route="home.index"
+    />
+
+    <x-product.table
+        :products="$products"
+        :empty-message="__('product.empty_not_found')"
+    />
 </section>
 @endsection

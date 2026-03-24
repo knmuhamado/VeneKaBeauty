@@ -6,22 +6,20 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <x-auth.card title="Register">
+            <x-auth.card title="{{ __('user.register') }}">
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
 
-                    <x-auth.input label="Name" name="name" type="text" />
-                    <x-auth.input label="Email" name="email" type="email" />
-                    <x-auth.input label="Password" name="password" type="password" />
-                    <x-auth.input label="Confirm Password" name="password_confirmation" type="password" />
-                    <x-auth.input label="Address" name="address" type="text" />
-                    <x-auth.input label="Phone Number" name="phoneNumber" type="text" />
+                    <x-auth.input label="{{ __('user.name') }}" name="name" type="text" />
+                    <x-auth.input label="{{ __('user.email') }}" name="email" type="email" />
+                    <x-auth.input label="{{ __('user.password') }}" name="password" type="password" />
+                    <x-auth.input label="{{ __('user.confirm_password') }}" name="password_confirmation" type="password" />
+                    <x-auth.input label="{{ __('user.address') }}" name="address" type="text" />
+                    <x-auth.input label="{{ __('user.phone') }}" name="phoneNumber" type="text" />
 
                     <div class="mt-3">
-                        <x-auth.button>
-                            Register
-                        </x-auth.button>
+                        <x-auth.button>{{ __('user.register_button') }}</x-auth.button>
                     </div>
 
                 </form>

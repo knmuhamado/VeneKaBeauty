@@ -21,7 +21,7 @@ class Category extends Model
         'name',
     ];
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->attributes['id'];
     }
@@ -51,4 +51,15 @@ class Category extends Model
         return $this->products;
     }
 
+    public function getCreatedAt()
+    {
+        return $this->attributes['created_at'];
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
+    }
+
 }
+

@@ -6,22 +6,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <x-auth.card title="Login">
+            <x-auth.card title="{{ __('user.login') }}">
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <x-auth.input 
-                        label="Email Address" 
-                        name="email" 
-                        type="email" 
-                    />
+                   <x-auth.input label="{{ __('user.email') }}" name="email" type="email" />
 
-                    <x-auth.input 
-                        label="Password" 
-                        name="password" 
-                        type="password" 
-                    />
+                   <x-auth.input label="{{ __('user.password') }}" name="password" type="password" />
 
                     <div class="mb-3">
                         <input 
@@ -30,17 +22,15 @@
                             id="remember"
                             {{ old('remember') ? 'checked' : '' }}
                         >
-                        <label for="remember">Remember Me</label>
+                        <label for="remember">{{ __('user.remember') }}</label>
                     </div>
 
                     <div class="d-flex align-items-center gap-3">
-                        <x-auth.button>
-                            Login
-                        </x-auth.button>
+                        <x-auth.button>{{ __('user.login_button') }}</x-auth.button>
 
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}">
-                                Forgot Your Password?
+                                {{ __('user.forgot_password') }}
                             </a>
                         @endif
                     </div>

@@ -32,11 +32,9 @@ class ReviewController extends Controller
         ]);
 
         return redirect('/')
-            ->with('success', 'Review creada correctamente');
+            ->with('success', __('review.created_success'));
     }
 
-    // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
-    // tipo de retorno: View
     public function index(): View
     {
         $viewData = [];
@@ -59,10 +57,6 @@ class ReviewController extends Controller
         return view('reviews.index')->with('viewData', $viewData);
     }
 
-    // show() = shows us the information from a single review
-    // viewData = crea un arreglo en la que se va almacenar los datos para llevarlos a la vista
-    // tipo de retorno view
-    // tipo de dato que recibe el método: int
     public function show(int $id): View
     {
         $viewData = [];
@@ -71,9 +65,6 @@ class ReviewController extends Controller
         return view('reviews.show')->with('viewData', $viewData);
     }
 
-    // destroy() = destroys or deletes a review from the database
-    // tipo de retorno RedirectResponse
-    // tipo de dato que recibe el método: int
     public function destroy(int $id): RedirectResponse
     {
         $review = Review::findOrFail($id);
@@ -82,7 +73,7 @@ class ReviewController extends Controller
 
         if ($productId !== null) {
             return redirect()->route('product.review.index', $productId)
-                ->with('success', 'Review eliminada correctamente');
+                ->with('success', __('review.deleted_success'));
         }
 
         return redirect()->route('review.index')

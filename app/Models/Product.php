@@ -16,18 +16,18 @@ class Product extends Model
 {
     /**
      * PRODUCT ATTRIBUTES
-     * $this->attributes['id'] - int - contains the product primary key (id)
-     * $this->attributes['name'] - string - contains the product name
-     * $this->attributes['image'] - string - contains the product image path or filename
-     * $this->attributes['description'] - string - contains the product description
-     * $this->attributes['available'] - bool - indicates if the product is available
-     * $this->attributes['price'] - int - contains the product price
-     * $this->attributes['brand'] - string|null - contains the product brand name
-     * $this->attributes['keyword'] - array - contains the product keywords
-     * $this->attributes['type'] - string - contains the product type (article/service)
-     * $this->attributes['category_id'] - int|null - contains the category id
-     * $this->attributes['created_at'] - timestamp - contains the product creation date
-     * $this->attributes['updated_at'] - timestamp - contains the product update date
+     * $this->attributes['id'];- int - contains the product primary key (id)
+     * $this->attributes['name'];- string - contains the product name
+     * $this->attributes['image'];- string - contains the product image path or filename
+     * $this->attributes['description'];- string - contains the product description
+     * $this->attributes['available'];- bool - indicates if the product is available
+     * $this->attributes['price'];- int - contains the product price
+     * $this->attributes['brand'];- string|null - contains the product brand name
+     * $this->attributes['keyword'];- array - contains the product keywords
+     * $this->attributes['type'];- string - contains the product type (article/service)
+     * $this->attributes['category_id'];- int|null - contains the category id
+     * $this->attributes['created_at'];- timestamp - contains the product creation date
+     * $this->attributes['updated_at'];- timestamp - contains the product update date
      */
     protected $fillable = [
         'name',
@@ -52,9 +52,14 @@ class Product extends Model
         return $this->attributes['id'];
     }
 
-    public function setId(int $id): void
+    public function getComment(): string
     {
-        $this->attributes['id'] = $id;
+        return $this->attributes['comment'];
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->attributes['comment'] = $comment;
     }
 
     public function getName(): string
@@ -119,12 +124,12 @@ class Product extends Model
 
     public function getKeyword(): array
     {
-        return $this->attributes['keyword'] ?? [];
+        return $this->keyword ?? [];
     }
 
     public function setKeyword(array $keyword): void
     {
-        $this->attributes['keyword'] = $keyword;
+        $this->keyword = $keyword;
     }
 
     public function getType(): string
@@ -145,6 +150,48 @@ class Product extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    // / Method for calculating the average rating of product reviews
+    public function getAverageScore(): int
+    {
+        if ($this->reviews->count() == 0) {
+            return 0;
+        }
+
+        return (int) round($this->reviews->avg('score'));
+    }
+
+    // Method for retrieving the top-rated products based on average review scores
+    public static function getTopRatedProducts()
+    {
+        $products = self::with('reviews', 'category')
+            ->has('reviews') // only products with reviews
+            ->get();
+
+        // Calculate average
+        $products = $products->map(function ($product) {
+            $product->average_score = $product->getAverageScore();
+
+            return $product;
+        });
+
+        // Filter and sort
+        return $products->filter(fn ($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
+    }
+
+    // This function counts how many reviews a comment has
+    public function getRating(): string
+    {
+        $count = $this->reviews->count();
+
+        if ($count === 0) {
+            return __('product.rating_no');
+        }
+
+        $text = $count === 1 ? __('product.rating_comment_singular') : __('product.rating_comment_plural');
+
+        return $this->getAverageScore()." - ($count $text)";
     }
 
     public function getCategoryId(): ?int
@@ -181,25 +228,15 @@ class Product extends Model
     {
         return $this->items;
     }
-    /*
-    public function getCreatedAt(): string
+    
+    public function getCreatedAt()
     {
     return $this->attributes['created_at'];
     }
 
-    public function setCreatedAt(string $createdAt): void
-    {
-    $this->attributes['created_at'] = $createdAt;
-    }
-
-    public function getUpdatedAt(): string
+    public function getUpdatedAt()
     {
     return $this->attributes['updated_at'];
     }
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-    $this->attributes['updated_at'] = $updatedAt;
-    }
-    */
+    
 }
