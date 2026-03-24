@@ -47,69 +47,69 @@ class Product extends Model
         'category_id' => 'integer',
     ];
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->attributes['id'];
     }
 
-    public function getName(): ?string
+    public function getComment(): string
+    {
+        return $this->attributes['comment'];
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->attributes['comment'] = $comment;
+    }
+
+    public function getName(): string
     {
         return $this->attributes['name'];
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->attributes['name'] = $name;
-
-        return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage(): string
     {
         return $this->attributes['image'];
     }
 
-    public function setImage(string $image): self
+    public function setImage(string $image): void
     {
         $this->attributes['image'] = $image;
-
-        return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->attributes['description'];
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): void
     {
         $this->attributes['description'] = $description;
-
-        return $this;
     }
 
-    public function getAvailable(): ?bool
+    public function getAvailable(): bool
     {
         return $this->attributes['available'];
     }
 
-    public function setAvailable(bool $available): self
+    public function setAvailable(bool $available): void
     {
         $this->attributes['available'] = $available;
-
-        return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
         return $this->attributes['price'];
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(int $price): void
     {
         $this->attributes['price'] = $price;
-
-        return $this;
     }
 
     public function getBrand(): ?string
@@ -117,11 +117,9 @@ class Product extends Model
         return $this->attributes['brand'];
     }
 
-    public function setBrand(?string $brand): self
+    public function setBrand(?string $brand): void
     {
         $this->attributes['brand'] = $brand;
-
-        return $this;
     }
 
     public function getKeyword(): array
@@ -129,23 +127,19 @@ class Product extends Model
         return $this->keyword ?? [];
     }
 
-    public function setKeyword(array $keyword): self
+    public function setKeyword(array $keyword): void
     {
         $this->keyword = $keyword;
-
-        return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->attributes['type'];
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->attributes['type'] = $type;
-
-        return $this;
     }
 
     public function category(): BelongsTo
@@ -203,6 +197,11 @@ class Product extends Model
     public function getCategoryId(): ?int
     {
         return $this->attributes['category_id'];
+    }
+
+    public function setCategoryId(?int $categoryId): void
+    {
+        $this->attributes['category_id'] = $categoryId;
     }
 
     public function getCategory(): ?Category
