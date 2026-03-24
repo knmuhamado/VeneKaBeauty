@@ -7,16 +7,25 @@ Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index')
 
 // Review Routes
 Route::get('/reviews', 'App\Http\Controllers\ReviewController@index')->name('review.index');
+Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
+Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
+Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
 Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
 // Order Routes
-Route::get('/home', 'App\Http\Controllers\OrderController@home');
-Route::get('/orders', 'App\Http\Controllers\OrderController@home')->name('order.home');
 Route::get('/orders/list', 'App\Http\Controllers\OrderController@index')->name('order.list');
-Route::get('/orders/create', 'App\Http\Controllers\OrderController@create')->name('order.create');
-Route::post('/orders/save', 'App\Http\Controllers\OrderController@save')->name('order.save');
 Route::get('/orders/{id}', 'App\Http\Controllers\OrderController@show')->name('order.show');
 Route::get('/orders/delete/{id}', 'App\Http\Controllers\OrderController@delete')->name('order.delete');
+Route::get('/orders/{id}/pdf', 'App\Http\Controllers\OrderController@pdf')->name('order.pdf');
+
+// Cart Routes
+Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('cart.index');
+Route::get('/cart/add/{id}', 'App\Http\Controllers\CartController@add')->name('cart.add');
+Route::post('/cart/update/{id}', 'App\Http\Controllers\CartController@update')->name('cart.update');
+Route::get('/cart/remove/{id}', 'App\Http\Controllers\CartController@remove')->name('cart.remove');
+Route::get('/cart/decrease/{id}', 'App\Http\Controllers\CartController@decrease')->name('cart.decrease');
+Route::get('/cart/removeAll', 'App\Http\Controllers\CartController@removeAll')->name('cart.removeAll');
+Route::post('/cart/confirm', 'App\Http\Controllers\CartController@confirm')->name('cart.confirm')->middleware('auth');
 
 // User Product Routes
 Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('product.index');

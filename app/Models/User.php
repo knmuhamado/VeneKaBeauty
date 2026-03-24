@@ -4,7 +4,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,24 +13,21 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    // @use HasFactory<\Database\Factories\UserFactory>
     use HasFactory, Notifiable;
 
     /**
-     * User ATRIBUTTES
+     * User ATTRIBUTES
      * $this->attributes['id'] - int - contains the user primary key (id)
      * $this->attributes['name'] - string - contains the user name
      * $this->attributes['email'] - string - contains the user email
-     * * $this->attributes['password'] - string - contains the user password
+     * $this->attributes['password'] - string - contains the user password
      * $this->attributes['address'] - string - contains the user address
      * $this->attributes['phoneNumber'] - string - contains the user phone number
-     * * $this->attributes['role'] - string - contains the user role (client, admin)
+     * $this->attributes['role'] - string - contains the user role (client, admin)
      * $this->attributes['created_at'] - timestamp - contains the user creation date
      * $this->attributes['updated_at'] - timestamp - contains the user update date
+     * $this->orders - Collection - contains the user orders
      */
-
-    // The attributes that are mass assignable.
-    // @var list<string>
 
     protected $fillable = [
         'name',
@@ -38,32 +36,29 @@ class User extends Authenticatable
         'password',
         'phoneNumber',
         'role',
-
     ];
-
-    // The attributes that should be hidden for serialization.
-    // @var list<string>
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    // Get the attributes that should be cast.
-
-    // @return array<string, string>
-
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
     public function getId(): int
     {
         return $this->attributes['id'];
+    }
+
+    public function setId(int $id): void
+    {
+        $this->attributes['id'] = $id;
     }
 
     public function getName(): string
@@ -116,14 +111,14 @@ class User extends Authenticatable
         $this->attributes['role'] = $role;
     }
 
-    public function getCreatedAt(): string
+    public function orders(): HasMany
     {
-        return $this->attributes['created_at'];
+        return $this->hasMany(Order::class);
     }
 
-    public function getUpdatedAt(): string
+    public function getOrders(): Collection
     {
-        return $this->attributes['updated_at'];
+        return $this->orders;
     }
 
     public function isAdmin(): bool
@@ -134,10 +129,5 @@ class User extends Authenticatable
     public function isClient(): bool
     {
         return $this->attributes['role'] === 'client';
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
     }
 }

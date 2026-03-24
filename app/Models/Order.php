@@ -1,9 +1,16 @@
 <?php
 
+// Kadiha Muhamad
+
 namespace App\Models;
 
+use App\Models\Item;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -15,17 +22,25 @@ class Order extends Model
      * $this->attributes['total'] - int - contains the order total
      * $this->attributes['date'] - date - contains the order date
      * $this->attributes['paid'] - boolean - contains the order paid status
-     * $this->attributes['shipped'] - string - contains the order shipped status
-     * $this->attributes['method_of_payment'] - enum - contains the order method of payment (card, cash, bank)
+     * $this->attributes['shipped'] - boolean - contains the order shipped status
+     * $this->attributes['method_of_payment'] - string - contains the order method of payment (card, cash, bank)
+     * $this->attributes['user_id'] - int|null - contains the user id
      * $this->attributes['created_at'] - timestamp - contains the order creation date
      * $this->attributes['updated_at'] - timestamp - contains the order update date
      */
+
     protected $fillable = [
         'total',
         'date',
         'paid',
         'shipped',
         'method_of_payment',
+        'user_id',
+    ];
+
+    protected $casts = [
+        'paid'    => 'boolean',
+        'shipped' => 'boolean',
     ];
 
     public function getId(): int
@@ -63,12 +78,12 @@ class Order extends Model
         $this->attributes['paid'] = $paid;
     }
 
-    public function getShipped(): string
+    public function getShipped(): bool
     {
         return $this->attributes['shipped'];
     }
 
-    public function setShipped(string $shipped): void
+    public function setShipped(bool $shipped): void
     {
         $this->attributes['shipped'] = $shipped;
     }
@@ -83,13 +98,28 @@ class Order extends Model
         $this->attributes['method_of_payment'] = $methodOfPayment;
     }
 
-    public function getCreatedAt()
+    public function getUserId(): ?int
     {
-        return $this->attributes['created_at'];
+        return $this->attributes['user_id'] ?? null;
     }
 
-    public function getUpdatedAt()
+    public function items(): HasMany
     {
-        return $this->attributes['updated_at'];
+        return $this->hasMany(Item::class);
+    }
+
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 }
