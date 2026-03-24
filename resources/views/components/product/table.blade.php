@@ -17,6 +17,7 @@
             <th>{{ __('product.available') }}</th>
             <th>{{ __('product.category') }}</th>
             <th>{{ __('product.type') }}</th>
+            <th>{{ __('product.rating') }}</th>
             <th>{{ __('product.actions') }}</th>
         </tr>
     </thead>
@@ -42,6 +43,8 @@
                 <td>{{ $product->getCategory()?->getName() ?? __('product.not_available') }}</td>
 
                 <td>{{ ucfirst($product->getType()) }}</td>
+
+                <td>{{ $product->getRating() }}</td>
 
                 <td class="text-nowrap">
                     @if($showAdminActions)
@@ -89,7 +92,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center">
+                <td colspan="8" class="text-center">
                     {{ $emptyMessage }}
                 </td>
             </tr>

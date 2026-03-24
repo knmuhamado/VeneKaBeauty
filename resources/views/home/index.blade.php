@@ -12,7 +12,7 @@
 
 <section>
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h3 class="mb-0">Productos recientes</h3>
+        <h3 class="mb-0">Top 5 artículos mejor calificados</h3>
         <a href="{{ route('product.index') }}" class="btn btn-sm btn-outline-primary">Ver catálogo completo</a>
     </div>
 

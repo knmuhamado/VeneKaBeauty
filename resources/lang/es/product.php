@@ -22,6 +22,7 @@ return [
     'select_categories' => 'Seleccionar categorías',
     'categories' => 'Categorías',
     'clear' => 'Limpiar',
+    'rating' => 'Promedio de Calificaciones',
 
     'yes' => 'Sí',
     'no' => 'No',
