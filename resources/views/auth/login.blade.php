@@ -15,24 +15,8 @@
 
                    <x-auth.input label="{{ __('user.password') }}" name="password" type="password" />
 
-                    <div class="mb-3">
-                        <input 
-                            type="checkbox" 
-                            name="remember" 
-                            id="remember"
-                            {{ old('remember') ? 'checked' : '' }}
-                        >
-                        <label for="remember">{{ __('user.remember') }}</label>
-                    </div>
-
                     <div class="d-flex align-items-center gap-3">
                         <x-auth.button>{{ __('user.login_button') }}</x-auth.button>
-
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}">
-                                {{ __('user.forgot_password') }}
-                            </a>
-                        @endif
                     </div>
 
                 </form>

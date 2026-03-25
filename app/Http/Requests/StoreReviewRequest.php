@@ -1,12 +1,13 @@
 <?php
 
+// Mariamny Del Valle Ramírez Telles
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReviewRequest extends FormRequest
 {
-    // Determina si el usuario está autorizado para hacer el request
     public function authorize(): bool
     {
         return true;

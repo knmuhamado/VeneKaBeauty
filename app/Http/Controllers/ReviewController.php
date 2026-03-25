@@ -77,7 +77,6 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
 
-        // Verificar que el usuario autenticado es el propietario de la review
         if (auth()->id() !== $review->getUserId()) {
             abort(403, 'No tienes permiso para editar esta review');
         }
@@ -94,7 +93,6 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
 
-        // Verificar que el usuario autenticado es el propietario de la review
         if (auth()->id() !== $review->getUserId()) {
             abort(403, 'No tienes permiso para editar esta review');
         }
