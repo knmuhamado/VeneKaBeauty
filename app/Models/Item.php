@@ -37,11 +37,6 @@ class Item extends Model
         return $this->attributes['id'];
     }
 
-    public function setId(int $id): void
-    {
-        $this->attributes['id'] = $id;
-    }
-
     public function getQuantity(): int
     {
         return $this->attributes['quantity'];
@@ -101,4 +96,15 @@ class Item extends Model
     {
         return $this->product;
     }
+
+    public function getCreatedAt()
+    {
+    return $this->attributes['created_at'];
+    }
+
+    public function getUpdatedAt()
+    {
+    return $this->attributes['updated_at'];
+    }
+
 }

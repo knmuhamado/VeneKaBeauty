@@ -31,7 +31,7 @@ class ReviewController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('/')
+        return redirect()->route('product.index')
             ->with('success', __('review.created_success'));
     }
 

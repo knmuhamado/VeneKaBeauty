@@ -122,4 +122,15 @@ class Order extends Model
     {
         return $this->user;
     }
+
+        public function getCreatedAt()
+    {
+    return $this->attributes['created_at'];
+    }
+
+    public function getUpdatedAt()
+    {
+    return $this->attributes['updated_at'];
+    }
+    
 }

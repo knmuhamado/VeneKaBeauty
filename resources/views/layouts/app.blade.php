@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet" />
     <title>@yield('title', __('app.site_name'))</title>
 </head>
@@ -13,7 +14,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home.index') }}">{{ __('app.site_name') }}</a>
+            <a class="navbar-brand" href="{{ route('home.index') }}">
+                <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                {{ __('app.site_name') }}
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup"
@@ -78,7 +82,7 @@
             @endphp
             <a href="{{ route('cart.index') }}"
                class="cart-float {{ $cartCount > 0 ? 'cart-float--active' : '' }}">
-                <span class="cart-float__icon">🛒</span>
+                <span class="cart-float__icon"><i class="bi bi-cart-fill" aria-hidden="true"></i></span>
                 @if($cartCount > 0)
                     <span class="cart-float__badge">{{ $cartCount }}</span>
                 @endif
