@@ -60,9 +60,24 @@
 @endif
 
 @if(!empty($viewData['product']))
-    <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
-        {{ __('review.create') }}
-    </a>
+    @auth
+        @if(!empty($viewData['userReview']))
+            {{-- Usuario ya tiene una review, mostrar botón de editar --}}
+            <a href="{{ route('review.edit', $viewData['userReview']->getId()) }}" class="btn btn-warning mt-3">
+                {{ __('review.edit') }}
+            </a>
+        @else
+            {{-- Usuario no tiene review, mostrar botón de crear --}}
+            <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
+                {{ __('review.create') }}
+            </a>
+        @endif
+    @else
+        {{-- Usuario no autenticado --}}
+        <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
+            {{ __('review.create') }}
+        </a>
+    @endauth
 @endif
 
 <a href="{{ route('home.index') }}" class="btn btn-secondary mt-3">

@@ -6,6 +6,9 @@ return [
     'create' => 'Crear review',
     'create_title' => 'Crear Review',
     'create_submit' => 'Guardar',
+    'edit' => 'Editar review',
+    'edit_title' => 'Editar Review',
+    'update_submit' => 'Actualizar',
 
     'id' => 'ID',
     'user' => 'Usuario',
@@ -25,5 +28,6 @@ return [
     'detail_title' => 'Detalle de la Review',
 
     'created_success' => 'Review creada correctamente',
+    'updated_success' => 'Review actualizada correctamente',
     'deleted_success' => 'Review eliminada correctamente',
 ];

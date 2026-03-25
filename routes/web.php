@@ -59,10 +59,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reviews/create', 'App\Http\Controllers\ReviewController@create')->name('review.create');
     Route::post('/reviews/store', 'App\Http\Controllers\ReviewController@store')->name('review.store');
     Route::get('/reviews/{id}', 'App\Http\Controllers\ReviewController@show')->name('review.show');
+    Route::get('/reviews/{id}/edit', 'App\Http\Controllers\ReviewController@edit')->name('review.edit');
+    Route::put('/reviews/{id}', 'App\Http\Controllers\ReviewController@update')->name('review.update');
     // Route::delete('/reviews/destroy/{id}', 'App\Http\Controllers\ReviewController@destroy')->name('review.destroy');
 
 });
 
 Auth::routes();
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+//Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');

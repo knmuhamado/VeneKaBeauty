@@ -6,10 +6,12 @@
 
 <div class="mb-3">
     <label class="form-label">{{ __('review.comment') }}</label>
-    <textarea class="form-control" name="comment">{{ old('comment') }}</textarea>
+    <textarea class="form-control" name="comment">{{ old('comment', isset($viewData['review']) ? $viewData['review']->getComment() : '') }}</textarea>
 </div>
 
 <div class="mb-3">
     <label class="form-label">{{ __('review.score') }}</label>
-    <input type="number" name="score" min="0" max="5" class="form-control" value="{{ old('score') }}">
+    <input 
+        type="number" name="score" min="0" max="5" class="form-control" value="{{ old('score', isset($viewData['review']) ? $viewData['review']->getScore() : '') }}"
+    >
 </div>
