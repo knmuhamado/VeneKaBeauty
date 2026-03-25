@@ -4,27 +4,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartConfirmRequest;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\CartConfirmRequest;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CartController extends Controller
 {
     public function index(Request $request): View
     {
-        $cart     = $request->session()->get('cart', []);
+        $cart = $request->session()->get('cart', []);
         $products = empty($cart)
             ? collect()
             : Product::whereIn('id', array_keys($cart))->get();
 
         $viewData = [];
         $viewData['products'] = $products;
-        $viewData['cart']     = $cart;
-        $viewData['total']    = $this->calculateTotal($products, $cart);
+        $viewData['cart'] = $cart;
+        $viewData['total'] = $this->calculateTotal($products, $cart);
 
         return view('cart.index')->with('viewData', $viewData);
     }
@@ -32,14 +32,14 @@ class CartController extends Controller
     public function add(string $id, Request $request): RedirectResponse
     {
         $product = Product::findOrFail($id);
-        $cart    = $request->session()->get('cart', []);
+        $cart = $request->session()->get('cart', []);
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity']++;
         } else {
             $cart[$id] = [
                 'quantity' => 1,
-                'price'    => $product->getPrice(),
+                'price' => $product->getPrice(),
             ];
         }
 
@@ -50,7 +50,7 @@ class CartController extends Controller
 
     public function update(string $id, Request $request): RedirectResponse
     {
-        $cart     = $request->session()->get('cart', []);
+        $cart = $request->session()->get('cart', []);
         $quantity = (int) $request->input('quantity', 1);
 
         if (isset($cart[$id])) {
@@ -93,20 +93,20 @@ class CartController extends Controller
         }
 
         $order = Order::create([
-            'total'             => $this->calculateTotal(collect(), $cart),
-            'date'              => now()->toDateString(),
-            'paid'              => false,
-            'shipped'           => false,
+            'total' => $this->calculateTotal(collect(), $cart),
+            'date' => now()->toDateString(),
+            'paid' => false,
+            'shipped' => false,
             'method_of_payment' => $request->input('method_of_payment', 'cash'),
-            'user_id'           => auth()->id(),
+            'user_id' => auth()->id(),
         ]);
 
         foreach ($cart as $productId => $data) {
             Item::create([
-                'quantity'   => $data['quantity'],
-                'price'      => $data['price'],
+                'quantity' => $data['quantity'],
+                'price' => $data['price'],
                 'product_id' => $productId,
-                'order_id'   => $order->getId(),
+                'order_id' => $order->getId(),
             ]);
         }
 

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use App\Services\ProductService;
 
 class HomeController extends Controller
 {
@@ -23,11 +23,11 @@ class HomeController extends Controller
 
         $productQuery = Product::with('category');
 
-        if (!empty($query)) {
+        if (! empty($query)) {
             $productQuery->filterByName($query);
         }
 
-        if (!empty($categoryIds)) {
+        if (! empty($categoryIds)) {
             $productQuery->filterByCategories($categoryIds);
         }
 
@@ -42,7 +42,7 @@ class HomeController extends Controller
         $viewData['categories'] = $this->productService
             ->prepareCategoriesWithSelection($categoryIds);
         $viewData['selectedCategories'] = $categoryIds;
-        $viewData['hasFilters'] = !empty($query) || !empty($categoryIds);
+        $viewData['hasFilters'] = ! empty($query) || ! empty($categoryIds);
 
         return view('home.index', $viewData);
     }

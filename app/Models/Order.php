@@ -4,8 +4,6 @@
 
 namespace App\Models;
 
-use App\Models\Item;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +26,6 @@ class Order extends Model
      * $this->attributes['created_at'] - timestamp - contains the order creation date
      * $this->attributes['updated_at'] - timestamp - contains the order update date
      */
-
     protected $fillable = [
         'total',
         'date',
@@ -39,7 +36,7 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'paid'    => 'boolean',
+        'paid' => 'boolean',
         'shipped' => 'boolean',
     ];
 
@@ -123,14 +120,13 @@ class Order extends Model
         return $this->user;
     }
 
-        public function getCreatedAt()
+    public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
-    
 }

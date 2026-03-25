@@ -18,11 +18,7 @@ class ProductService
 
     public function prepareCategoriesWithSelection(array $selectedIds = []): Collection
     {
-        return Category::query()->orderBy('name')->get()->map(function ($category) use ($selectedIds) {
-            $category->isSelected = in_array($category->getId(), $selectedIds, true);
-
-            return $category;
-        });
+        return Category::getWithSelection($selectedIds);
     }
 
     public function storeProduct(array $validated, ?UploadedFile $image = null): Product
