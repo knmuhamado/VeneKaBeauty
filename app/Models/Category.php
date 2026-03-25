@@ -41,6 +41,15 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public static function getWithSelection(array $selectedIds = []): Collection
+    {
+        return self::query()->orderBy('name')->get()->map(function (Category $category) use ($selectedIds) {
+            $category->isSelected = in_array($category->getId(), $selectedIds, true);
+
+            return $category;
+        });
+    }
+
     public function getProducts(): Collection
     {
         return $this->products;
@@ -55,6 +64,4 @@ class Category extends Model
     {
         return $this->attributes['updated_at'];
     }
-
 }
-

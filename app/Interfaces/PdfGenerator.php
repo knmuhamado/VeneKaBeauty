@@ -1,6 +1,6 @@
 <?php
 
-// Kadiha Muhamad   
+// Kadiha Muhamad
 
 namespace App\Interfaces;
 

@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Item;
-
 
 class Product extends Model
 {
@@ -228,15 +226,14 @@ class Product extends Model
     {
         return $this->items;
     }
-    
+
     public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
-    
 }

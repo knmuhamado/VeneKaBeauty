@@ -19,7 +19,6 @@ class Item extends Model
      * $this->attributes['created_at'] - timestamp - contains the item creation date
      * $this->attributes['updated_at'] - timestamp - contains the item update date
      */
-
     protected $fillable = [
         'quantity',
         'price',
@@ -99,12 +98,11 @@ class Item extends Model
 
     public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
-
 }

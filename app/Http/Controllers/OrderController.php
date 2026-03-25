@@ -4,7 +4,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
 use App\Interfaces\PdfGenerator;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +15,6 @@ class OrderController extends Controller
     public function __construct(
         private PdfGenerator $pdfGenerator
     ) {}
-
 
     public function index(): View
     {
@@ -47,11 +45,11 @@ class OrderController extends Controller
 
     public function pdf(string $id): Response
     {
-        $order  = Order::findOrFail($id);
+        $order = Order::findOrFail($id);
         $output = $this->pdfGenerator->generateOrderPdf($order);
 
         return response($output, 200, [
-            'Content-Type'        => 'application/pdf',
+            'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="order-'.$order->getId().'.pdf"',
         ]);
     }

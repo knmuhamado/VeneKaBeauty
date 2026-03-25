@@ -4,7 +4,6 @@
 
 namespace App\Models;
 
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,7 +27,6 @@ class User extends Authenticatable
      * $this->attributes['updated_at'] - timestamp - contains the user update date
      * $this->orders - Collection - contains the user orders
      */
-
     protected $fillable = [
         'name',
         'email',
@@ -47,7 +45,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
+            'password' => 'hashed',
         ];
     }
 
@@ -128,11 +126,11 @@ class User extends Authenticatable
 
     public function getCreatedAt()
     {
-    return $this->attributes['created_at'];
+        return $this->attributes['created_at'];
     }
 
     public function getUpdatedAt()
     {
-    return $this->attributes['updated_at'];
+        return $this->attributes['updated_at'];
     }
 }
