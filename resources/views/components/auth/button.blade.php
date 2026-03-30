@@ -1,4 +1,4 @@
-{{-- Mariamny Del Valle Ramírez Telles --}}
+{{-- Auth Button Component --}}
 <button type="submit" class="btn btn-primary">
     {{ $slot }}
 </button>

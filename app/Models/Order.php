@@ -25,7 +25,11 @@ class Order extends Model
      * $this->attributes['user_id'] - int|null - contains the user id
      * $this->attributes['created_at'] - timestamp - contains the order creation date
      * $this->attributes['updated_at'] - timestamp - contains the order update date
+     * $this->items - Collection - contains the order items
+     * $this->user - User|null - contains the order owner user
      */
+
+    // Model properties
     protected $fillable = [
         'total',
         'date',
@@ -40,6 +44,18 @@ class Order extends Model
         'shipped' => 'boolean',
     ];
 
+    // Relationships
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Getters / Setters
     public function getId(): int
     {
         return $this->attributes['id'];
@@ -95,31 +111,6 @@ class Order extends Model
         $this->attributes['method_of_payment'] = $methodOfPayment;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->attributes['user_id'] ?? null;
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];
@@ -128,5 +119,21 @@ class Order extends Model
     public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
+    }
+
+    // Helper methods
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->attributes['user_id'] ?? null;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 }

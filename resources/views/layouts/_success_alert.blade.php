@@ -1,4 +1,4 @@
-{{-- David Alejandro Gutiérrez Leal --}}
+{{-- Success Alert Component --}}
 @if(session('success'))
     <div class="alert alert-success">
         {{ __(session('success')) }}

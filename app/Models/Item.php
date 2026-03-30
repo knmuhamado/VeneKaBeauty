@@ -18,7 +18,11 @@ class Item extends Model
      * $this->attributes['product_id'] - int|null - contains the product id
      * $this->attributes['created_at'] - timestamp - contains the item creation date
      * $this->attributes['updated_at'] - timestamp - contains the item update date
+     * $this->order - Order|null - contains the item order
+     * $this->product - Product|null - contains the item product
      */
+
+    // Model properties
     protected $fillable = [
         'quantity',
         'price',
@@ -31,6 +35,18 @@ class Item extends Model
         'product_id' => 'integer',
     ];
 
+    // Relationships
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    // Getters / Setters
     public function getId(): int
     {
         return $this->attributes['id'];
@@ -56,46 +72,6 @@ class Item extends Model
         $this->attributes['price'] = $price;
     }
 
-    public function getOrderId(): ?int
-    {
-        return $this->attributes['order_id'];
-    }
-
-    public function setOrderId(?int $orderId): void
-    {
-        $this->attributes['order_id'] = $orderId;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->attributes['product_id'];
-    }
-
-    public function setProductId(?int $productId): void
-    {
-        $this->attributes['product_id'] = $productId;
-    }
-
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function getOrder(): ?Order
-    {
-        return $this->order;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];
@@ -104,5 +80,26 @@ class Item extends Model
     public function getUpdatedAt()
     {
         return $this->attributes['updated_at'];
+    }
+
+    // Helper methods
+    public function getOrderId(): ?int
+    {
+        return $this->attributes['order_id'];
+    }
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function getProductId(): ?int
+    {
+        return $this->attributes['product_id'];
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
     }
 }

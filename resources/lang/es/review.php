@@ -9,6 +9,8 @@ return [
     'edit' => 'Editar review',
     'edit_title' => 'Editar Review',
     'update_submit' => 'Actualizar',
+    'delete' => 'Eliminar',
+    'unauthorized_edit' => 'You do not have permission to edit this review',
 
     'id' => 'ID',
     'user' => 'Usuario',

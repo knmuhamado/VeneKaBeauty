@@ -45,14 +45,14 @@
                         @else
                             <div class="bg-light d-flex align-items-center justify-content-center"
                                  style="height: 200px;">
-                                <span class="text-muted">Sin imagen</span>
+                                <span class="text-muted">{{ __('home.no_image') }}</span>
                             </div>
                         @endif
 
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ $product->getName() }}</h5>
                             <p class="text-muted small mb-1">
-                                {{ $product->getCategory()?->getName() ?? 'Sin categoría' }}
+                                {{ $product->getCategory()?->getName() ?? __('home.no_category') }}
                             </p>
                             <p class="fw-bold mb-3">
                                 $ {{ number_format($product->getPrice(), 0, ',', '.') }}

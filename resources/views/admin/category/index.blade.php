@@ -1,4 +1,4 @@
-{{-- David Alejandro Gutiérrez Leal --}}
+{{-- Category Management View --}}
 @extends('layouts.app')
 
 @section('content')

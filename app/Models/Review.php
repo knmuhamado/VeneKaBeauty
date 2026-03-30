@@ -11,12 +11,16 @@ class Review extends Model
 {
     /**
      * Review ATTRIBUTES
-     * $this->attributes['id'] - int – contains the review primary key (id)
-     * $this->attributes['score'] - int – contains the review score
-     * $this->attributes['comment'] - string – contains the review comment
+     * $this->attributes['id'] - int - contains the review primary key (id)
+     * $this->attributes['score'] - int - contains the review score
+     * $this->attributes['comment'] - string - contains the review comment
      * $this->attributes['created_at'] - timestamp - contains the review creation date
      * $this->attributes['updated_at'] - timestamp - contains the review update date
+     * $this->product - Product|null - contains the related product
+     * $this->user - User|null - contains the review author
      */
+
+    // Model properties
     protected $fillable = ['score', 'comment', 'product_id', 'user_id'];
 
     protected $casts = [
@@ -24,6 +28,18 @@ class Review extends Model
         'user_id' => 'integer',
     ];
 
+    // Relationships
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Getters / Setters
     public function getId(): ?int
     {
         return $this->attributes['id'];
@@ -49,11 +65,17 @@ class Review extends Model
         $this->attributes['comment'] = $comment;
     }
 
-    public function product(): BelongsTo
+    public function getCreatedAt()
     {
-        return $this->belongsTo(Product::class);
+        return $this->attributes['created_at'];
     }
 
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
+    }
+
+    // Helper methods
     public function getProductId(): ?int
     {
         return $this->attributes['product_id'] ?? null;
@@ -64,11 +86,6 @@ class Review extends Model
         return $this->product;
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function getUserId(): ?int
     {
         return $this->attributes['user_id'] ?? null;
@@ -77,15 +94,5 @@ class Review extends Model
     public function getUser(): ?User
     {
         return $this->user;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
     }
 }

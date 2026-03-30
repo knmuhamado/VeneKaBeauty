@@ -1,4 +1,4 @@
-{{-- Mariamny Del Valle Ramírez Telles --}}
+{{-- Login View --}}
 @extends('layouts.app')
 
 @section('content')

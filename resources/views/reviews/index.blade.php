@@ -5,7 +5,7 @@
 
 @section('content')
 
-<h2>
+<h2 class="mb-3">
     @if(!empty($viewData['product']))
         {{ __('review.title_product') }} {{ $viewData['product']->getName() }}
     @else
@@ -13,7 +13,6 @@
     @endif
 </h2>
 
-{{-- Mensajes de sesión --}}
 @include('layouts._success_alert')
 
 @if(session('error'))
@@ -22,33 +21,24 @@
     </div>
 @endif
 
-{{-- Verificar si existen reviews --}}
 @if(count($viewData['reviews']) > 0)
+<div class="row row-cols-1 row-cols-md-2 g-3">
+    @foreach($viewData['reviews'] as $review)
+        <div class="col">
+            <article class="card h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="mb-0">{{ $review->getUser()?->getName() ?? __('review.anonymous') }}</h6>
+                        <span class="badge bg-primary">{{ $review->getScore() }}/5</span>
+                    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>{{ __('review.id') }}</th>
-            <th>{{ __('review.user') }}</th>
-            <th>{{ __('review.comment') }}</th>
-            <th>{{ __('review.score') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($viewData['reviews'] as $review)
-        <tr>
-            <td>
-                <a href="{{ route('review.show', $review->getId()) }}">
-                    {{ $review->getId() }}
-                </a>
-            </td>
-            <td>{{ $review->user?->getName() ?? __('review.anonymous') }}</td>
-            <td>{{ $review->getComment() }}</td>
-            <td>{{ $review->getScore() }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                    <p class="mb-2">{{ $review->getComment() }}</p>
+                    <small class="text-muted mt-auto">#{{ $review->getId() }}</small>
+                </div>
+            </article>
+        </div>
+    @endforeach
+</div>
 @else
 <p>
     @if(!empty($viewData['product']))
@@ -62,18 +52,15 @@
 @if(!empty($viewData['product']))
     @auth
         @if(!empty($viewData['userReview']))
-            {{-- Usuario ya tiene una review, mostrar botón de editar --}}
             <a href="{{ route('review.edit', $viewData['userReview']->getId()) }}" class="btn btn-warning mt-3">
                 {{ __('review.edit') }}
             </a>
         @else
-            {{-- Usuario no tiene review, mostrar botón de crear --}}
             <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
                 {{ __('review.create') }}
             </a>
         @endif
     @else
-        {{-- Usuario no autenticado --}}
         <a href="{{ route('review.create', ['product_id' => $viewData['product']->getId()]) }}" class="btn btn-success mt-3">
             {{ __('review.create') }}
         </a>

@@ -27,6 +27,8 @@ class User extends Authenticatable
      * $this->attributes['updated_at'] - timestamp - contains the user update date
      * $this->orders - Collection - contains the user orders
      */
+
+    // Model properties
     protected $fillable = [
         'name',
         'email',
@@ -49,6 +51,13 @@ class User extends Authenticatable
         ];
     }
 
+    // Relationships
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // Getters / Setters
     public function getId(): int
     {
         return $this->attributes['id'];
@@ -104,16 +113,17 @@ class User extends Authenticatable
         $this->attributes['role'] = $role;
     }
 
-    public function orders(): HasMany
+    public function getCreatedAt()
     {
-        return $this->hasMany(Order::class);
+        return $this->attributes['created_at'];
     }
 
-    public function getOrders(): Collection
+    public function getUpdatedAt()
     {
-        return $this->orders;
+        return $this->attributes['updated_at'];
     }
 
+    // Business logic
     public function isAdmin(): bool
     {
         return $this->attributes['role'] === 'admin';
@@ -124,13 +134,9 @@ class User extends Authenticatable
         return $this->attributes['role'] === 'client';
     }
 
-    public function getCreatedAt()
+    // Helper methods
+    public function getOrders(): Collection
     {
-        return $this->attributes['created_at'];
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
+        return $this->orders;
     }
 }

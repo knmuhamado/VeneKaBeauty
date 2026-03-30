@@ -26,7 +26,12 @@ class Product extends Model
      * $this->attributes['category_id'];- int|null - contains the category id
      * $this->attributes['created_at'];- timestamp - contains the product creation date
      * $this->attributes['updated_at'];- timestamp - contains the product update date
+     * $this->category - Category|null - contains the product category
+     * $this->reviews - Collection - contains the product reviews
+     * $this->items - Collection - contains the product items
      */
+
+    // Model properties
     protected $fillable = [
         'name',
         'image',
@@ -45,6 +50,34 @@ class Product extends Model
         'category_id' => 'integer',
     ];
 
+    // Relationships
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    // Scopes
+    public function scopeFilterByName(Builder $query, string $nombre): Builder
+    {
+        return $query->where('name', 'like', '%'.$nombre.'%');
+    }
+
+    public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
+    {
+        return $query->whereIn('category_id', $categoryIds);
+    }
+
+    // Getters / Setters
     public function getId(): int
     {
         return $this->attributes['id'];
@@ -140,17 +173,17 @@ class Product extends Model
         $this->attributes['type'] = $type;
     }
 
-    public function category(): BelongsTo
+    public function getCreatedAt()
     {
-        return $this->belongsTo(Category::class);
+        return $this->attributes['created_at'];
     }
 
-    public function reviews(): HasMany
+    public function getUpdatedAt()
     {
-        return $this->hasMany(Review::class);
+        return $this->attributes['updated_at'];
     }
 
-    // / Method for calculating the average rating of product reviews
+    // Business logic
     public function getAverageScore(): int
     {
         if ($this->reviews->count() == 0) {
@@ -160,25 +193,6 @@ class Product extends Model
         return (int) round($this->reviews->avg('score'));
     }
 
-    // Method for retrieving the top-rated products based on average review scores
-    public static function getTopRatedProducts()
-    {
-        $products = self::with('reviews', 'category')
-            ->has('reviews') // only products with reviews
-            ->get();
-
-        // Calculate average
-        $products = $products->map(function ($product) {
-            $product->average_score = $product->getAverageScore();
-
-            return $product;
-        });
-
-        // Filter and sort
-        return $products->filter(fn ($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
-    }
-
-    // This function counts how many reviews a comment has
     public function getRating(): string
     {
         $count = $this->reviews->count();
@@ -192,14 +206,25 @@ class Product extends Model
         return $this->getAverageScore()." - ($count $text)";
     }
 
-    public function getCategoryId(): ?int
+    public static function getTopRatedProducts()
     {
-        return $this->attributes['category_id'];
+        $products = self::with('reviews', 'category')
+            ->has('reviews')
+            ->get();
+
+        $products = $products->map(function ($product) {
+            $product->average_score = $product->getAverageScore();
+
+            return $product;
+        });
+
+        return $products->filter(fn ($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
     }
 
-    public function setCategoryId(?int $categoryId): void
+    // Helper methods
+    public function getItems(): Collection
     {
-        $this->attributes['category_id'] = $categoryId;
+        return $this->items;
     }
 
     public function getCategory(): ?Category
@@ -207,33 +232,8 @@ class Product extends Model
         return $this->category;
     }
 
-    public function scopeFilterByName(Builder $query, string $nombre): Builder
+    public function getCategoryId(): ?int
     {
-        return $query->where('name', 'like', '%'.$nombre.'%');
-    }
-
-    public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
-    {
-        return $query->whereIn('category_id', $categoryIds);
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
+        return $this->attributes['category_id'];
     }
 }

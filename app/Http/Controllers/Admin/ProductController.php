@@ -7,16 +7,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchProductRequest;
 use App\Http\Requests\StoreProductRequest;
+use App\Interfaces\ImageStorage;
 use App\Models\Category;
 use App\Models\Product;
-use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
     public function __construct(
-        private ProductService $productService
+        private ImageStorage $imageStorage
     ) {}
 
     public function index(SearchProductRequest $request): View
@@ -39,7 +39,7 @@ class ProductController extends Controller
         $viewData['products'] = $productQuery->get();
         $viewData['query'] = $query;
         $viewData['selectedCategories'] = $categoryIds;
-        $viewData['categories'] = $this->productService->prepareCategoriesWithSelection($categoryIds);
+        $viewData['categories'] = Category::getWithSelection($categoryIds);
         $viewData['hasFilters'] = ! empty($query) || ! empty($categoryIds);
 
         return view('admin.product.index', $viewData);
@@ -59,7 +59,13 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $this->productService->storeProduct($validated, $request->file('image'));
+        $image = $request->file('image');
+
+        if ($image) {
+            $validated['image'] = $this->imageStorage->store($image);
+        }
+
+        Product::create($validated);
 
         return redirect()->route('admin.product.index')
             ->with('success', __('product.created_success'));
@@ -82,8 +88,14 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $validated = $request->validated();
+        $image = $request->file('image');
 
-        $this->productService->updateProduct($product, $validated, $request->file('image'));
+        if ($image) {
+            $this->imageStorage->delete($product->getImage());
+            $validated['image'] = $this->imageStorage->store($image);
+        }
+
+        $product->update($validated);
 
         return redirect()->route('admin.product.index')
             ->with('success', __('product.updated_success'));
@@ -92,7 +104,9 @@ class ProductController extends Controller
     public function destroy(int $id): RedirectResponse
     {
         $product = Product::findOrFail($id);
-        $this->productService->deleteProduct($product);
+
+        $this->imageStorage->delete($product->getImage());
+        $product->delete();
 
         return redirect()->route('admin.product.index')
             ->with('success', __('product.deleted_success'));

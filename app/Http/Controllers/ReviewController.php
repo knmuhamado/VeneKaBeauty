@@ -9,7 +9,6 @@ use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ReviewController extends Controller
@@ -24,12 +23,19 @@ class ReviewController extends Controller
 
     public function store(StoreReviewRequest $request): RedirectResponse
     {
+        $productId = $request->integer('product_id') ?: null;
+
         Review::create([
             'comment' => $request->comment,
             'score' => $request->score,
-            'product_id' => $request->product_id,
-            'user_id' => Auth::id(),
+            'product_id' => $productId,
+            'user_id' => auth()->id(),
         ]);
+
+        if ($productId !== null) {
+            return redirect()->route('product.show', $productId)
+                ->with('success', __('review.created_success'));
+        }
 
         return redirect()->route('product.index')
             ->with('success', __('review.created_success'));
@@ -65,20 +71,12 @@ class ReviewController extends Controller
         return view('reviews.index')->with('viewData', $viewData);
     }
 
-    public function show(int $id): View
-    {
-        $viewData = [];
-        $viewData['review'] = Review::findOrFail($id);
-
-        return view('reviews.show')->with('viewData', $viewData);
-    }
-
     public function edit(int $id): View
     {
         $review = Review::findOrFail($id);
 
         if (auth()->id() !== $review->getUserId()) {
-            abort(403, 'No tienes permiso para editar esta review');
+            abort(403, __('review.unauthorized_edit'));
         }
 
         $viewData = [];
@@ -94,7 +92,7 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
 
         if (auth()->id() !== $review->getUserId()) {
-            abort(403, 'No tienes permiso para editar esta review');
+            abort(403, __('review.unauthorized_edit'));
         }
 
         $review->update([
@@ -102,7 +100,7 @@ class ReviewController extends Controller
             'score' => $request->score,
         ]);
 
-        return redirect()->route('product.review.index', $review->getProductId())
+        return redirect()->route('product.show', $review->getProductId())
             ->with('success', __('review.updated_success'));
     }
 
@@ -113,11 +111,11 @@ class ReviewController extends Controller
         $review->delete();
 
         if ($productId !== null) {
-            return redirect()->route('product.review.index', $productId)
+            return redirect()->route('product.show', $productId)
                 ->with('success', __('review.deleted_success'));
         }
 
         return redirect()->route('review.index')
-            ->with('success', 'Review eliminada correctamente');
+            ->with('success', __('review.deleted_success'));
     }
 }

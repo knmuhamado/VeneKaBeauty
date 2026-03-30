@@ -2,7 +2,7 @@
 
 // Kadiha Muhamad
 
-namespace App\Services;
+namespace App\Utils;
 
 use App\Interfaces\PdfGenerator;
 use App\Models\Order;

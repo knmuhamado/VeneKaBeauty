@@ -1,4 +1,4 @@
-{{-- David Alejandro Gutiérrez Leal --}}
+{{-- Product Filter Component --}}
 @props([
     'actionRoute',
     'query' => '',

@@ -16,11 +16,21 @@ class Category extends Model
      * $this->attributes['name'] - string - contains the category name
      * $this->attributes['created_at'] - timestamp - contains the category creation date
      * $this->attributes['updated_at'] - timestamp - contains the category update date
+     * $this->products - Collection - contains the category products
      */
+
+    // Model properties
     protected $fillable = [
         'name',
     ];
 
+    // Relationships
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    // Getters / Setters
     public function getId(): ?int
     {
         return $this->attributes['id'];
@@ -36,11 +46,17 @@ class Category extends Model
         $this->attributes['name'] = $name;
     }
 
-    public function products(): HasMany
+    public function getCreatedAt()
     {
-        return $this->hasMany(Product::class);
+        return $this->attributes['created_at'];
     }
 
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
+    }
+
+    // Business logic
     public static function getWithSelection(array $selectedIds = []): Collection
     {
         return self::query()->orderBy('name')->get()->map(function (Category $category) use ($selectedIds) {
@@ -50,18 +66,9 @@ class Category extends Model
         });
     }
 
+    // Helper methods
     public function getProducts(): Collection
     {
         return $this->products;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->attributes['created_at'];
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->attributes['updated_at'];
     }
 }

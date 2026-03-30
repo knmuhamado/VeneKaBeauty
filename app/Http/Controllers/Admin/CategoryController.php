@@ -5,7 +5,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +28,7 @@ class CategoryController extends Controller
         return view('admin.category.create', $viewData);
     }
 
-    public function store(CategoryRequest $request): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
         Category::create($request->validated());
 
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         return view('admin.category.edit', $viewData);
     }
 
-    public function update(CategoryRequest $request, int $id): RedirectResponse
+    public function update(StoreCategoryRequest $request, int $id): RedirectResponse
     {
         $category = Category::findOrFail($id);
         $category->setName($request->validated()['name']);

@@ -14,16 +14,22 @@
     </div>
 @endif
 
-@include('layouts._crud_form_page', [
-    'title' => __('review.create_title'),
-    'action' => route('review.store'),
-    'method' => 'POST',
-    'formView' => 'reviews._form',
-    'submitText' => __('review.create_submit'),
-    'backRoute' => !empty($viewData['productId']) 
-        ? route('product.review.index', $viewData['productId']) 
-        : route('home.index'),
-    'backText' => __('review.back')
-])
+<h2>{{ __('review.create_title') }}</h2>
+
+<form method="POST" action="{{ route('review.store') }}">
+    @csrf
+
+    @include('reviews._form')
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+            {{ __('review.create_submit') }}
+        </button>
+
+        <a href="{{ !empty($viewData['productId']) ? route('product.show', $viewData['productId']) : route('home.index') }}" class="btn btn-secondary">
+            {{ __('review.back') }}
+        </a>
+    </div>
+</form>
 
 @endsection
