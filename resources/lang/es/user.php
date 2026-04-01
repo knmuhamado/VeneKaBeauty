@@ -3,6 +3,7 @@
 return [
     'login' => 'Iniciar sesión',
     'register' => 'Registrarse',
+    'logout' => 'Cerrar sesión',
 
     'name' => 'Nombre',
     'email' => 'Correo electrónico',
@@ -17,9 +18,6 @@ return [
     'login_button' => 'Ingresar',
     'register_button' => 'Registrarse',
 
-    'login' => 'Iniciar sesión',
-    'register' => 'Registrarse',
-    'logout' => 'Cerrar sesión',
 
     'welcome_user' => 'Bienvenido, :name',
     'welcome_guest' => 'Bienvenido a VeneKa Beauty',

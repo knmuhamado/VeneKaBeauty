@@ -10,7 +10,7 @@ return [
 
     'id' => 'ID',
     'total' => 'Total',
-    'date' => 'Fecha',
+    'created_at' => 'Fecha de creación',
     'paid' => 'Pagado',
     'shipped' => 'Enviado',
     'method_of_payment' => 'Método de pago',

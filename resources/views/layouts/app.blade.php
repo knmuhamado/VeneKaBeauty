@@ -14,8 +14,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home.index') }}">
-                <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home.index') }}">
+                <img src="{{ asset('images/logo.png') }}"
+                    alt="{{ __('app.site_name') }}"
+                    style="height: 40px; width: auto; object-fit: contain;">
                 {{ __('app.site_name') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"

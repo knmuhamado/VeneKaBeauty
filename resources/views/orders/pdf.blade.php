@@ -1,6 +1,6 @@
 {{-- Kadiha Muhamad --}}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <style>
@@ -26,7 +26,7 @@
 <body>
 
     <h1>{{ __('order.order_number') }}{{ $order->getId() }}</h1>
-    <p><strong>{{ __('order.date') }}:</strong> {{ $order->getDate() }}</p>
+    <p><strong>{{ __('order.created_at') }}:</strong> {{ $order->getCreatedAt() }}</p>
     <p><strong>{{ __('order.method_of_payment') }}:</strong> {{ __('order.payment_' . $order->getMethodOfPayment()) }}</p>
     <p><strong>{{ __('order.paid') }}:</strong> {{ $order->getPaid() ? __('order.paid_yes') : __('order.paid_no') }}</p>
     <p><strong>{{ __('order.shipped') }}:</strong> {{ $order->getShipped() ? __('order.shipped_yes') : __('order.shipped_no') }}</p>
@@ -59,7 +59,7 @@
     </table>
 
     <div class="footer">
-        VeneKa Beauty — {{ date('Y') }}
+        {{ __('app.site_name') }} — {{ date('Y') }}
     </div>
 
 </body>

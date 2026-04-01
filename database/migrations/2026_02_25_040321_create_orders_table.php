@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->decimal('total', 10, 2);
-            $table->date('date');
             $table->boolean('paid')->default(false);
             $table->boolean('shipped')->default(false);
             $table->enum('method_of_payment', ['card', 'cash', 'bank'])->default('cash');

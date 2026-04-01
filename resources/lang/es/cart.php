@@ -26,5 +26,4 @@ return [
     'view_cart' => 'Ver carrito',
     'empty_cart_short' => 'Carrito vacío',
     'decrease' => '−',
-    'remove' => 'Eliminar',
 ];

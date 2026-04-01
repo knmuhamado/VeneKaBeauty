@@ -19,12 +19,12 @@
                         <div class="card-body text-center d-flex flex-column justify-content-center">
                             <h5 class="card-title">{{ __('order.order_number') }}{{ $order->getId() }}</h5>
                             <p class="card-text">
-                                <small>{{ $order->getDate() }}</small><br>
+                                <small>{{ $order->getCreatedAt() }}</small><br>
                                 <small>$ {{ number_format($order->getTotal(), 0, ',', '.') }}</small>
                             </p>
                             <a href="{{ route('order.show', ['id' => $order->getId()]) }}"
                                class="btn btn-lila text-white mt-auto">
-                                Ver detalle
+                                {{ __('order.show_title') }}
                             </a>
                         </div>
                     </div>

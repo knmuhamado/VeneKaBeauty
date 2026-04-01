@@ -18,13 +18,12 @@ class Order extends Model
      * ORDER ATTRIBUTES
      * $this->attributes['id'] - int - contains the order primary key (id)
      * $this->attributes['total'] - int - contains the order total
-     * $this->attributes['date'] - date - contains the order date
      * $this->attributes['paid'] - boolean - contains the order paid status
      * $this->attributes['shipped'] - boolean - contains the order shipped status
      * $this->attributes['method_of_payment'] - string - contains the order method of payment (card, cash, bank)
-     * $this->attributes['user_id'] - int|null - contains the user id
      * $this->attributes['created_at'] - timestamp - contains the order creation date
      * $this->attributes['updated_at'] - timestamp - contains the order update date
+     * $this->attributes['user_id'] - int|null - contains the user id
      * $this->items - Collection - contains the order items
      * $this->user - User|null - contains the order owner user
      */
@@ -32,7 +31,6 @@ class Order extends Model
     // Model properties
     protected $fillable = [
         'total',
-        'date',
         'paid',
         'shipped',
         'method_of_payment',
@@ -69,16 +67,6 @@ class Order extends Model
     public function setTotal(int $total): void
     {
         $this->attributes['total'] = $total;
-    }
-
-    public function getDate(): string
-    {
-        return $this->attributes['date'];
-    }
-
-    public function setDate(string $date): void
-    {
-        $this->attributes['date'] = $date;
     }
 
     public function getPaid(): bool

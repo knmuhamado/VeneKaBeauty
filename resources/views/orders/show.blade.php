@@ -18,8 +18,8 @@
                 $ {{ number_format($viewData['order']->getTotal(), 0, ',', '.') }}
             </p>
             <p>
-                <strong>{{ __('order.date') }}:</strong>
-                {{ $viewData['order']->getDate() }}
+                <strong>{{ __('order.created_at') }}:</strong>
+                {{ $viewData['order']->getCreatedAt() }}
             </p>
             <p>
                 <strong>{{ __('order.paid') }}:</strong>

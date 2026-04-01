@@ -1,6 +1,6 @@
 <?php
 
-// Kadiha Muhamad
+// Kadiha Muhamado
 
 namespace App\Http\Controllers;
 
@@ -39,7 +39,6 @@ class CartController extends Controller
         } else {
             $cart[$id] = [
                 'quantity' => 1,
-                'price' => $product->getPrice(),
             ];
         }
 
@@ -92,9 +91,18 @@ class CartController extends Controller
             return back()->with('error', 'cart.empty_cart');
         }
 
+        $products = Product::whereIn('id', array_keys($cart))->get()->keyBy('id');
+
+        $total = 0;
+        foreach ($products as $product) {
+            $id = (string) $product->getId();
+            if (isset($cart[$id])) {
+                $total += $product->getPrice() * $cart[$id]['quantity'];
+            }
+        }
+
         $order = Order::create([
-            'total' => $this->calculateTotal(collect(), $cart),
-            'date' => now()->toDateString(),
+            'total' => $total,
             'paid' => false,
             'shipped' => false,
             'method_of_payment' => $request->input('method_of_payment', 'cash'),
@@ -102,9 +110,13 @@ class CartController extends Controller
         ]);
 
         foreach ($cart as $productId => $data) {
+            $price = isset($products[$productId])
+                ? $products[$productId]->getPrice()
+                : 0;
+
             Item::create([
                 'quantity' => $data['quantity'],
-                'price' => $data['price'],
+                'price' => $price,
                 'product_id' => $productId,
                 'order_id' => $order->getId(),
             ]);
@@ -114,26 +126,6 @@ class CartController extends Controller
 
         return redirect()->route('order.show', $order->getId())
             ->with('success', 'cart.confirmed_success');
-    }
-
-    private function calculateTotal($products, array $cart): int
-    {
-        if ($products->isEmpty()) {
-            return array_sum(
-                array_map(fn ($item) => $item['price'] * $item['quantity'], $cart)
-            );
-        }
-
-        $total = 0;
-
-        foreach ($products as $product) {
-            $id = (string) $product->getId();
-            if (isset($cart[$id])) {
-                $total += $product->getPrice() * $cart[$id]['quantity'];
-            }
-        }
-
-        return $total;
     }
 
     public function decrease(string $id, Request $request): RedirectResponse
@@ -151,5 +143,19 @@ class CartController extends Controller
         }
 
         return back()->with('success', 'cart.updated_success');
+    }
+
+    private function calculateTotal($products, array $cart): int
+    {
+        $total = 0;
+
+        foreach ($products as $product) {
+            $id = (string) $product->getId();
+            if (isset($cart[$id])) {
+                $total += $product->getPrice() * $cart[$id]['quantity'];
+            }
+        }
+
+        return $total;
     }
 }
