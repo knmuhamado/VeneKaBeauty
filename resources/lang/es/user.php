@@ -18,7 +18,6 @@ return [
     'login_button' => 'Ingresar',
     'register_button' => 'Registrarse',
 
-
     'welcome_user' => 'Bienvenido, :name',
     'welcome_guest' => 'Bienvenido a VeneKa Beauty',
 ];
