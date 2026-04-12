@@ -7,12 +7,12 @@
     <p class="text-muted mb-3 fs-5">{{ __('home.welcome_subtitle') }}</p>
 </section>
 
-<x-product.filter
-    action-route="product.index"
-    :query="$query"
-    :categories="$categories"
-    :has-filters="$hasFilters"
-/>
+@include('components.product.filter', [
+    'actionRoute' => 'product.index',
+    'query' => $query,
+    'categories' => $categories,
+    'hasFilters' => $hasFilters,
+])
 
 @if($products->isEmpty())
     <div class="text-center text-muted py-5 border rounded-3">

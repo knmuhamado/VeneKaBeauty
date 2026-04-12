@@ -47,7 +47,7 @@
 
         <a href="{{ route('order.delete', ['id' => $viewData['order']->getId()]) }}"
            class="btn btn-danger"
-           onclick="return confirm('{{ __('order.delete_confirm') }}')">
+           onclick="return confirm(`{{ __('order.delete_confirm') }}`)"
             {{ __('order.delete') }}
         </a>
 
