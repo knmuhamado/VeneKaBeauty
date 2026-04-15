@@ -20,4 +20,5 @@ return [
 
     'welcome_user' => 'Bienvenido, :name',
     'welcome_guest' => 'Bienvenido a VeneKa Beauty',
+
 ];
