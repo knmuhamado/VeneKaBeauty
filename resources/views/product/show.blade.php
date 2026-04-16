@@ -21,7 +21,7 @@
         <p><strong>{{ __('product.price') }}:</strong> ${{ $product->getPrice() }}</p>
         <p><strong>{{ __('product.available') }}:</strong> {{ $product->getAvailable() ? __('product.yes') : __('product.no') }}</p>
         <p><strong>{{ __('product.brand') }}:</strong> {{ $product->getBrand() ?? __('product.not_available') }}</p>
-        <p><strong>{{ __('product.category') }}:</strong> {{ $product->getCategory()?->getName() ?? __('product.not_available') }}</p>
+        <p><strong>{{ __('product.category') }}:</strong> {{ $product->getCategory()->getName() }}</p>
         <p><strong>{{ __('product.type') }}:</strong> {{ $product->getType() }}</p>
 
         <p><strong>{{ __('product.keywords') }}:</strong>

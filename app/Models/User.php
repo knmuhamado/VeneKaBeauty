@@ -51,12 +51,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Relationships
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
     // Getters / Setters
     public function getId(): int
     {
@@ -123,6 +117,18 @@ class User extends Authenticatable
         return $this->attributes['updated_at'];
     }
 
+    // Relationships
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // relationship getters
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
     // Business logic
     public function isAdmin(): bool
     {
@@ -132,11 +138,5 @@ class User extends Authenticatable
     public function isClient(): bool
     {
         return $this->attributes['role'] === 'client';
-    }
-
-    // Helper methods
-    public function getOrders(): Collection
-    {
-        return $this->orders;
     }
 }

@@ -45,7 +45,7 @@
                         </h5>
 
                         <p class="text-muted small mb-1">
-                            {{ $product->getCategory()?->getName() ?? __('product.not_available') }}
+                            {{ $product->getCategory()->getName() }}
                         </p>
 
                         <p class="mb-1">

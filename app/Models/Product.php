@@ -50,33 +50,6 @@ class Product extends Model
         'category_id' => 'integer',
     ];
 
-    // Relationships
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
-    // Scopes
-    public function scopeFilterByName(Builder $query, string $nombre): Builder
-    {
-        return $query->where('name', 'like', '%'.$nombre.'%');
-    }
-
-    public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
-    {
-        return $query->whereIn('category_id', $categoryIds);
-    }
-
     // Getters / Setters
     public function getId(): int
     {
@@ -183,6 +156,49 @@ class Product extends Model
         return $this->attributes['updated_at'];
     }
 
+    // Relationships
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    // relationship getters
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function getCategoryId(): ?int
+    {
+        return $this->attributes['category_id'];
+    }
+
+    // Scopes
+    public function scopeFilterByName(Builder $query, string $nombre): Builder
+    {
+        return $query->where('name', 'like', '%'.$nombre.'%');
+    }
+
+    public function scopeFilterByCategories(Builder $query, array $categoryIds): Builder
+    {
+        return $query->whereIn('category_id', $categoryIds);
+    }
+
     // Business logic
     public function getAverageScore(): int
     {
@@ -219,21 +235,5 @@ class Product extends Model
         });
 
         return $products->filter(fn ($p) => $p->average_score >= 4)->sortByDesc('average_score')->take(5);
-    }
-
-    // Helper methods
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function getCategoryId(): ?int
-    {
-        return $this->attributes['category_id'];
     }
 }

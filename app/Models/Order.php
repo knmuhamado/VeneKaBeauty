@@ -42,17 +42,6 @@ class Order extends Model
         'shipped' => 'boolean',
     ];
 
-    // Relationships
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     // Getters / Setters
     public function getId(): int
     {
@@ -109,7 +98,18 @@ class Order extends Model
         return $this->attributes['updated_at'];
     }
 
-    // Helper methods
+    // Relationships
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // relationship getters
     public function getItems(): Collection
     {
         return $this->items;

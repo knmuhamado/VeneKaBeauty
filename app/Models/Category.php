@@ -24,12 +24,6 @@ class Category extends Model
         'name',
     ];
 
-    // Relationships
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
-
     // Getters / Setters
     public function getId(): ?int
     {
@@ -56,6 +50,18 @@ class Category extends Model
         return $this->attributes['updated_at'];
     }
 
+    // Relationships
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    // relationship getters
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
     // Business logic
     public static function getWithSelection(array $selectedIds = []): Collection
     {
@@ -64,11 +70,5 @@ class Category extends Model
 
             return $category;
         });
-    }
-
-    // Helper methods
-    public function getProducts(): Collection
-    {
-        return $this->products;
     }
 }

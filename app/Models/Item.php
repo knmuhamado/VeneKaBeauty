@@ -35,17 +35,6 @@ class Item extends Model
         'product_id' => 'integer',
     ];
 
-    // Relationships
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
     // Getters / Setters
     public function getId(): int
     {
@@ -82,7 +71,18 @@ class Item extends Model
         return $this->attributes['updated_at'];
     }
 
-    // Helper methods
+    // Relationships
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    // relationship getters
     public function getOrderId(): ?int
     {
         return $this->attributes['order_id'];

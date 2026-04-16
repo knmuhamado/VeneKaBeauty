@@ -28,17 +28,6 @@ class Review extends Model
         'user_id' => 'integer',
     ];
 
-    // Relationships
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     // Getters / Setters
     public function getId(): ?int
     {
@@ -75,7 +64,18 @@ class Review extends Model
         return $this->attributes['updated_at'];
     }
 
-    // Helper methods
+    // Relationships
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // relationship getters
     public function getProductId(): ?int
     {
         return $this->attributes['product_id'] ?? null;

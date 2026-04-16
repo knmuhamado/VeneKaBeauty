@@ -58,7 +58,7 @@
 
                 <td>{{ $product->getAvailable() ? __('product.yes') : __('product.no') }}</td>
 
-                <td>{{ $product->getCategory()?->getName() ?? __('product.not_available') }}</td>
+                <td>{{ $product->getCategory()->getName() }}</td>
 
                 <td>{{ ucfirst($product->getType()) }}</td>
 
