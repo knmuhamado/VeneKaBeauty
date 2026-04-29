@@ -59,7 +59,7 @@ class ProductController extends Controller
         $authUser = Auth::user();
 
         $product = Product::with(['category', 'reviews.user'])->findOrFail($id);
-        $reviews = $product->reviews;
+        $reviews = $product->getReviews();
         $userReview = null;
 
         if ($authUser !== null) {

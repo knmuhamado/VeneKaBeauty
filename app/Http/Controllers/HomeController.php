@@ -15,7 +15,7 @@ class HomeController extends Controller
         try {
             $viewData['featuredProducts'] = Product::getTopRatedProducts();
         } catch (QueryException $e) {
-            $viewData['featuredProducts'] = collect();
+            $viewData['featuredProducts'] = Product::all();
         }
 
         return view('home.index', $viewData);

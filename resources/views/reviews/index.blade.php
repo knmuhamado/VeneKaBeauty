@@ -6,11 +6,7 @@
 @section('content')
 
 <h2 class="mb-3">
-    @if(!empty($viewData['product']))
-        {{ __('review.title_product') }} {{ $viewData['product']->getName() }}
-    @else
-        {{ __('review.title_list') }}
-    @endif
+    {{ __('review.title_product') }} {{ $viewData['product']->getName() }}
 </h2>
 
 @include('layouts._success_alert')
@@ -28,7 +24,7 @@
             <article class="card h-100 shadow-sm border-0">
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h6 class="mb-0">{{ $review->getUser()?->getName() ?? __('review.anonymous') }}</h6>
+                        <h6 class="mb-0">{{ $review->getUser()->getName() }}</h6>
                         <span class="badge bg-primary">{{ $review->getScore() }}/5</span>
                     </div>
 

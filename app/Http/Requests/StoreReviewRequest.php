@@ -18,15 +18,8 @@ class StoreReviewRequest extends FormRequest
         return [
             'comment' => 'required|string',
             'score' => 'required|integer|between:0,5',
-            'product_id' => 'nullable|integer|exists:products,id',
+            'product_id' => 'required|integer|exists:products,id',
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'product_id' => $this->filled('product_id') ? (int) $this->input('product_id') : null,
-        ]);
     }
 
     public function reviewData(): array

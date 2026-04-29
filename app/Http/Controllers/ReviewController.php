@@ -23,7 +23,7 @@ class ReviewController extends Controller
 
     public function store(StoreReviewRequest $request): RedirectResponse
     {
-        $productId = $request->integer('product_id') ?: null;
+        $productId = $request->integer('product_id');
 
         Review::create([
             'comment' => $request->comment,
@@ -32,12 +32,7 @@ class ReviewController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        if ($productId !== null) {
-            return redirect()->route('product.show', $productId)
-                ->with('success', __('review.created_success'));
-        }
-
-        return redirect()->route('product.index')
+        return redirect()->route('product.show', $productId)
             ->with('success', __('review.created_success'));
     }
 
@@ -53,13 +48,11 @@ class ReviewController extends Controller
     public function productReviews(int $productId): View
     {
         $product = Product::findOrFail($productId);
-        $userReview = null;
-
-        if (auth()->check()) {
-            $userReview = Review::where('product_id', $productId)
+        $userReview = auth()->check()
+            ? Review::where('product_id', $productId)
                 ->where('user_id', auth()->id())
-                ->first();
-        }
+                ->first()
+            : null;
 
         $viewData = [];
         $viewData['product'] = $product;
@@ -110,12 +103,7 @@ class ReviewController extends Controller
         $productId = $review->getProductId();
         $review->delete();
 
-        if ($productId !== null) {
-            return redirect()->route('product.show', $productId)
-                ->with('success', __('review.deleted_success'));
-        }
-
-        return redirect()->route('review.index')
+        return redirect()->route('product.show', $productId)
             ->with('success', __('review.deleted_success'));
     }
 }

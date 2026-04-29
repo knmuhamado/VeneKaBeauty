@@ -178,6 +178,11 @@ class Product extends Model
         return $this->items;
     }
 
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -202,16 +207,16 @@ class Product extends Model
     // Business logic
     public function getAverageScore(): int
     {
-        if ($this->reviews->count() == 0) {
+        if ($this->getReviews()->count() == 0) {
             return 0;
         }
 
-        return (int) round($this->reviews->avg('score'));
+        return (int) round($this->getReviews()->avg('score'));
     }
 
     public function getRating(): string
     {
-        $count = $this->reviews->count();
+        $count = $this->getReviews()->count();
 
         if ($count === 0) {
             return __('product.rating_no');
