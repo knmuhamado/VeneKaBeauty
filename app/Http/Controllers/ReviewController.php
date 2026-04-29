@@ -48,11 +48,13 @@ class ReviewController extends Controller
     public function productReviews(int $productId): View
     {
         $product = Product::findOrFail($productId);
-        $userReview = auth()->check()
-            ? Review::where('product_id', $productId)
+        $userReview = null;
+
+        if (auth()->check()) {
+            $userReview = Review::where('product_id', $productId)
                 ->where('user_id', auth()->id())
-                ->first()
-            : null;
+                ->first();
+        }
 
         $viewData = [];
         $viewData['product'] = $product;
