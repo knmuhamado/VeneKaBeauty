@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index');
 
-Route::get('/reviews', 'App\Http\Controllers\ReviewController@index')->name('review.index');
-
 Route::get('/orders/list', 'App\Http\Controllers\OrderController@index')->name('order.list');
 Route::get('/orders/{id}', 'App\Http\Controllers\OrderController@show')->name('order.show');
 Route::get('/orders/delete/{id}', 'App\Http\Controllers\OrderController@delete')->name('order.delete');

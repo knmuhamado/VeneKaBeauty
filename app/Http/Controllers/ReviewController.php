@@ -16,7 +16,7 @@ class ReviewController extends Controller
     public function create(Request $request): View
     {
         $viewData = [];
-        $viewData['productId'] = $request->integer('product_id') ?: null;
+        $viewData['productId'] = $request->integer('product_id');
 
         return view('reviews.create')->with('viewData', $viewData);
     }
@@ -26,23 +26,14 @@ class ReviewController extends Controller
         $productId = $request->integer('product_id');
 
         Review::create([
-            'comment' => $request->comment,
-            'score' => $request->score,
-            'product_id' => $productId,
-            'user_id' => auth()->id(),
+            'comment'     => $request->comment,
+            'score'       => $request->score,
+            'product_id'  => $productId,
+            'user_id'     => auth()->id(),
         ]);
 
         return redirect()->route('product.show', $productId)
             ->with('success', __('review.created_success'));
-    }
-
-    public function index(): View
-    {
-        $viewData = [];
-        $viewData['reviews'] = Review::with(['product', 'user'])->get();
-        $viewData['product'] = null;
-
-        return view('reviews.index')->with('viewData', $viewData);
     }
 
     public function productReviews(int $productId): View
@@ -90,10 +81,9 @@ class ReviewController extends Controller
             abort(403, __('review.unauthorized_edit'));
         }
 
-        $review->update([
-            'comment' => $request->comment,
-            'score' => $request->score,
-        ]);
+        $review->setComment($request->comment);
+        $review->setScore($request->score);
+        $review->save();
 
         return redirect()->route('product.show', $review->getProductId())
             ->with('success', __('review.updated_success'));

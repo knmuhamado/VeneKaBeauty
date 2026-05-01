@@ -36,12 +36,12 @@ class StoreReviewRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'score.required' => 'Debe ingresar un puntaje.',
-            'score.integer' => 'El puntaje debe ser un número entero.',
-            'score.between' => 'El puntaje debe estar entre 0 y 5.',
-            'comment.required' => 'Debe ingresar un comentario.',
-            'product_id.integer' => 'El producto seleccionado no es válido.',
-            'product_id.exists' => 'El producto seleccionado no existe.',
+            'score.required'   => __('review.score.required'),
+            'score.integer'    => __('review.score.integer'),
+            'score.between'    => __('review.score.between'),
+            'comment.required' => __('review.comment.required'),
+            'product_id.integer' => __('review.product_id.integer'),
+            'product_id.exists'  => __('review.product_id.exists'),
         ];
     }
 }

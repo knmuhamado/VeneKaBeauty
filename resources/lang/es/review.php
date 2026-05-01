@@ -22,8 +22,6 @@ return [
     'empty_product' => 'No hay reviews para este producto.',
     'empty_all' => 'No hay reviews registradas.',
 
-    'anonymous' => 'Anónimo',
-
     'back_home' => 'Volver al inicio',
     'back' => 'Volver',
 
@@ -32,4 +30,11 @@ return [
     'created_success' => 'Review creada correctamente',
     'updated_success' => 'Review actualizada correctamente',
     'deleted_success' => 'Review eliminada correctamente',
+
+    'score.required'   => 'Debe ingresar un puntaje.',
+    'score.integer'    => 'El puntaje debe ser un número entero.',
+    'score.between'    => 'El puntaje debe estar entre 0 y 5.',
+    'comment.required' => 'Debe ingresar un comentario.',
+    'product_id.integer' => 'El producto seleccionado no es válido.',
+    'product_id.exists'  => 'El producto seleccionado no existe.',
 ];

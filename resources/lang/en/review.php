@@ -22,7 +22,6 @@ return [
     'empty_product' => 'No reviews for this product.',
     'empty_all' => 'No reviews registered.',
 
-    'anonymous' => 'Anonymous',
 
     'back_home' => 'Back to Home',
     'back' => 'Back',
@@ -32,4 +31,11 @@ return [
     'created_success' => 'Review created successfully',
     'updated_success' => 'Review updated successfully',
     'deleted_success' => 'Review deleted successfully',
+
+    'score.required'   => 'You must enter a score.',
+    'score.integer'    => 'The score must be an integer.',
+    'score.between'    => 'The score must be between 0 and 5.',
+    'comment.required' => 'You must enter a comment.',
+    'product_id.integer' => 'The selected product is not valid.',
+    'product_id.exists'  => 'The selected product does not exist.',
 ];
