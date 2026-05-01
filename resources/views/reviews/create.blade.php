@@ -26,7 +26,8 @@
             {{ __('review.create_submit') }}
         </button>
 
-        <a href="{{ !empty($viewData['productId']) ? route('product.show', $viewData['productId']) : route('home.index') }}" class="btn btn-secondary">
+        <a href="{{ route('product.show', $viewData['productId']) }}" 
+        class="btn btn-secondary">
             {{ __('review.back') }}
         </a>
     </div>

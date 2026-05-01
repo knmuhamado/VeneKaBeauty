@@ -36,13 +36,7 @@
     @endforeach
 </div>
 @else
-<p>
-    @if(!empty($viewData['product']))
-        {{ __('review.empty_product') }}
-    @else
-        {{ __('review.empty_all') }}
-    @endif
-</p>
+    <p>{{ __('review.empty_product') }}</p>
 @endif
 
 @if(!empty($viewData['product']))

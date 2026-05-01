@@ -20,7 +20,6 @@ return [
     'updated_at' => 'Actualizado',
 
     'empty_product' => 'No hay reviews para este producto.',
-    'empty_all' => 'No hay reviews registradas.',
 
     'back_home' => 'Volver al inicio',
     'back' => 'Volver',

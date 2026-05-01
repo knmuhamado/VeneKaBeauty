@@ -20,7 +20,6 @@ return [
     'updated_at' => 'Updated',
 
     'empty_product' => 'No reviews for this product.',
-    'empty_all' => 'No reviews registered.',
 
 
     'back_home' => 'Back to Home',
