@@ -2,6 +2,13 @@
 @extends('layouts.app')
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('app.nav_admin'), 'url' => '#'],
+    ['label' => __('category.title'), 'url' => route('admin.category.index')],
+    ['label' => __('category.edit_title'), 'url' => '#'],
+]])
+
     <h2>{{ __('category.edit_title') }}</h2>
 
     <form method="POST" action="{{ route('admin.category.update', $category->getId()) }}">
@@ -9,7 +16,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label>{{ __('category.name') }}</label>
+            <label class="form-label">{{ __('category.name') }}</label>
             <input type="text"
                    name="name"
                    class="form-control @error('name') is-invalid @enderror"

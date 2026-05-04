@@ -61,7 +61,7 @@
                         {{-- Logout --}}
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="nav-link btn btn-link" style="border:none;">
+                            <button type="submit" class="nav-link btn btn-link">
                                 {{ __('user.logout') }}
                             </button>
                         </form>

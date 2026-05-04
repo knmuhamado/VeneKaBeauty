@@ -36,12 +36,12 @@ class StoreReviewRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'score.required'   => __('review.score.required'),
-            'score.integer'    => __('review.score.integer'),
-            'score.between'    => __('review.score.between'),
+            'score.required' => __('review.score.required'),
+            'score.integer' => __('review.score.integer'),
+            'score.between' => __('review.score.between'),
             'comment.required' => __('review.comment.required'),
             'product_id.integer' => __('review.product_id.integer'),
-            'product_id.exists'  => __('review.product_id.exists'),
+            'product_id.exists' => __('review.product_id.exists'),
         ];
     }
 }

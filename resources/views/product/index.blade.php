@@ -2,6 +2,11 @@
 @extends('layouts.app')
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('product.title'), 'url' => '#'],
+]])
+
 <section class="mb-4">
     <h2 class="mb-2">{{ __('product.title') }}</h2>
     <p class="text-muted mb-3 fs-5">{{ __('home.welcome_subtitle') }}</p>

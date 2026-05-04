@@ -2,6 +2,12 @@
 @extends('layouts.app')
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('product.title'), 'url' => route('product.index')],
+    ['label' => $product->getName(), 'url' => '#'],
+]])
+
 <h2 class="mb-3">{{ __('product.detail') }}</h2>
 
 @include('layouts._success_alert')

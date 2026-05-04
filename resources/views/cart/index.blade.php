@@ -4,6 +4,11 @@
 @section('title', __('cart.title'))
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('cart.title'), 'url' => '#'],
+]])
+
 <div class="container mt-4">
     <h2 class="mb-3">{{ __('cart.title') }}</h2>
 

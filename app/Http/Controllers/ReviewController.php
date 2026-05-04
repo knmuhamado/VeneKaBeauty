@@ -26,10 +26,10 @@ class ReviewController extends Controller
         $productId = $request->integer('product_id');
 
         Review::create([
-            'comment'     => $request->comment,
-            'score'       => $request->score,
-            'product_id'  => $productId,
-            'user_id'     => auth()->id(),
+            'comment' => $request->comment,
+            'score' => $request->score,
+            'product_id' => $productId,
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('product.show', $productId)

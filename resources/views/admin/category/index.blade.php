@@ -2,6 +2,12 @@
 @extends('layouts.app')
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('app.nav_admin'), 'url' => '#'],
+    ['label' => __('category.title'), 'url' => '#'],
+]])
+
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <h2 class="mb-0">{{ __('category.admin_manage') }}</h2>
 

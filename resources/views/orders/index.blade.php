@@ -4,6 +4,11 @@
 @section('title', __('order.title'))
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('order.my_orders'), 'url' => '#'],
+]])
+
 <div class="container mt-4">
     <h2 class="mb-3">{{ __('order.my_orders') }}</h2>
 

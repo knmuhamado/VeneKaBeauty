@@ -4,6 +4,12 @@
 @section('title', __('order.show_title'))
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('order.my_orders'), 'url' => route('order.list')],
+    ['label' => __('order.show_title'), 'url' => '#'],
+]])
+
 <div class="container mt-4">
 
     @include('layouts._success_alert')

@@ -3,6 +3,11 @@
 @section('title', __('review.create_title'))
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('product.title'), 'url' => route('product.index')],
+    ['label' => __('review.create_title'), 'url' => '#'],
+]])
 
 @if ($errors->any())
     <div class="alert alert-danger">

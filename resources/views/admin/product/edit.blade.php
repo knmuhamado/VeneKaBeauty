@@ -2,6 +2,13 @@
 @extends('layouts.app')
 
 @section('content')
+@include('components.breadcrumbs', ['breadcrumbs' => [
+    ['label' => __('app.home'), 'url' => route('home.index')],
+    ['label' => __('app.nav_admin'), 'url' => '#'],
+    ['label' => __('product.title'), 'url' => route('admin.product.index')],
+    ['label' => __('product.edit_title'), 'url' => '#'],
+]])
+
     <h2>{{ __('product.edit_title') }}</h2>
 
     <form method="POST" action="{{ route('admin.product.update', $product->getId()) }}" enctype="multipart/form-data">
@@ -9,7 +16,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label>{{ __('product.name') }}</label>
+            <label class="form-label">{{ __('product.name') }}</label>
             <input type="text"
                    name="name"
                    class="form-control @error('name') is-invalid @enderror"
@@ -22,7 +29,7 @@
 
         <div class="mb-3">
             @if($isEdit)
-                <label>{{ __('product.current_image') }}</label>
+                <label class="form-label">{{ __('product.current_image') }}</label>
                 @if($product->getImage())
                     <div class="mb-2">
                         <img src="{{ asset('storage/' . $product->getImage()) }}" width="120" class="img-thumbnail">
@@ -31,10 +38,10 @@
                     <p class="mb-2">{{ __('product.not_available') }}</p>
                 @endif
 
-                <label>{{ __('product.new_image_optional') }}</label>
+                <label class="form-label">{{ __('product.new_image_optional') }}</label>
                 <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
             @else
-                <label>{{ __('product.image') }}</label>
+                <label class="form-label">{{ __('product.image') }}</label>
                 <input type="file"
                        name="image"
                        class="form-control @error('image') is-invalid @enderror"
@@ -47,7 +54,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.description') }}</label>
+            <label class="form-label">{{ __('product.description') }}</label>
             <textarea name="description"
                       class="form-control @error('description') is-invalid @enderror"
                       required>{{ old('description', $isEdit ? $product->getDescription() : '') }}</textarea>
@@ -57,7 +64,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.available') }}</label>
+            <label class="form-label">{{ __('product.available') }}</label>
             <select name="available" class="form-control @error('available') is-invalid @enderror">
                 <option value="1" {{ old('available', $availableDefault) == '1' ? 'selected' : '' }}>{{ __('product.yes') }}</option>
                 <option value="0" {{ old('available', $availableDefault) == '0' ? 'selected' : '' }}>{{ __('product.no') }}</option>
@@ -68,7 +75,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.price') }}</label>
+            <label class="form-label">{{ __('product.price') }}</label>
             <input type="number"
                    name="price"
                    class="form-control @error('price') is-invalid @enderror"
@@ -80,7 +87,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.brand_optional') }}</label>
+            <label class="form-label">{{ __('product.brand_optional') }}</label>
             <input type="text"
                    name="brand"
                    class="form-control @error('brand') is-invalid @enderror"
@@ -91,7 +98,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.keywords_hint') }}</label>
+            <label class="form-label">{{ __('product.keywords_hint') }}</label>
             <input type="text"
                    name="keyword"
                    class="form-control @error('keyword') is-invalid @enderror"
@@ -102,7 +109,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.category') }}</label>
+            <label class="form-label">{{ __('product.category') }}</label>
             <select name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
                 <option value="">{{ __('product.select_category') }}</option>
                 @foreach($categories as $category)
@@ -117,7 +124,7 @@
         </div>
 
         <div class="mb-3">
-            <label>{{ __('product.type') }}</label>
+            <label class="form-label">{{ __('product.type') }}</label>
             <select name="type" class="form-control @error('type') is-invalid @enderror">
                 <option value="article" {{ old('type', $isEdit ? $product->getType() : 'article') === 'article' ? 'selected' : '' }}>{{ __('product.article') }}</option>
                 <option value="service" {{ old('type', $isEdit ? $product->getType() : 'article') === 'service' ? 'selected' : '' }}>{{ __('product.service') }}</option>
