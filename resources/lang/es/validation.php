@@ -10,7 +10,6 @@ return [
         'phoneNumber' => 'teléfono',
     ],
 
-    // Mensajes de validación (los que ya tenías en user.php)
     'required' => 'El campo :attribute es obligatorio.',
     'email' => 'El campo :attribute debe ser un correo válido.',
     'min' => 'El campo :attribute debe tener al menos :min caracteres.',
