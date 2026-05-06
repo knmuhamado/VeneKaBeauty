@@ -23,7 +23,7 @@ class ProductApiController extends Controller
                     'type'        => $product->getType(),
                     'keywords'    => $product->getKeyword(),
                     'image'       => asset('storage/' . $product->getImage()),
-                    'category'    => $product->getCategory()?->getName() ?? null,
+                    'category'    => $product->getCategory()->getName(),
                     'rating'      => $product->getRating(),
                     'url'         => url('/products/' . $product->getId()),
                 ];
