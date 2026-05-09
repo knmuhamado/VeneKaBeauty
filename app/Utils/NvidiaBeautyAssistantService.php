@@ -25,7 +25,7 @@ class NvidiaBeautyAssistantService
 
         try {
             $response = Http::withToken($apiKey)
-                ->timeout(20)
+                ->timeout(60)
                 ->post((string) config('services.nvidia.chat_url'), [
                     'model' => (string) config('services.nvidia.model'),
                     'messages' => [
