@@ -155,8 +155,6 @@ class NvidiaBeautyAssistantService
         return __('assistant.backend.fallback.without_products');
     }
 
-    
-
     private function extractAssistantTerms(string $message): array
     {
         $normalized = mb_strtolower($message);
