@@ -205,6 +205,74 @@ class Product extends Model
     }
 
     // Business logic
+    public static function getAssistantRelevantProducts(array $terms, int $limit = 5): Collection
+    {
+        $products = self::query()
+            ->with('category')
+            ->where('available', true)
+            ->latest('id')
+            ->limit(50)
+            ->get();
+
+        if (empty($terms)) {
+            return $products->take($limit)->values();
+        }
+
+        $rankedProducts = $products->map(fn (Product $product) => [
+            'product' => $product,
+            'score' => $product->getAssistantScore($terms),
+        ]);
+
+        $matchedProducts = $rankedProducts
+            ->where('score', '>', 0)
+            ->sortByDesc('score')
+            ->take($limit)
+            ->pluck('product')
+            ->values();
+
+        if ($matchedProducts->isNotEmpty()) {
+            return $matchedProducts;
+        }
+
+        return $products->take($limit)->values();
+    }
+
+    public function toAssistantPayload(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'price' => $this->getPrice(),
+            'type' => $this->getType(),
+            'brand' => $this->getBrand(),
+            'category' => $this->getCategory()?->getName(),
+            'keywords' => $this->getKeyword(),
+        ];
+    }
+
+    private function getAssistantScore(array $terms): int
+    {
+        $haystack = mb_strtolower(implode(' ', [
+            $this->getName(),
+            $this->getDescription(),
+            $this->getBrand() ?? '',
+            implode(' ', $this->getKeyword()),
+            $this->getType(),
+            $this->getCategory()?->getName() ?? '',
+        ]));
+
+        $score = 0;
+
+        foreach ($terms as $term) {
+            if ($term !== '' && str_contains($haystack, $term)) {
+                $score++;
+            }
+        }
+
+        return $score;
+    }
+
     public function getAverageScore(): int
     {
         if ($this->getReviews()->count() == 0) {

@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'nvidia' => [
+        'api_key' => env('NVIDIA_API_KEY', ''),
+        'chat_url' => env('NVIDIA_CHAT_URL', 'https://integrate.api.nvidia.com/v1/chat/completions'),
+        'model' => env('NVIDIA_CHAT_MODEL', 'meta/llama-3.1-70b-instruct'),
+    ],
+
 ];

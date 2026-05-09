@@ -15,6 +15,8 @@
     </p>
 </section>
 
+@include('assistant.chat')
+
 <section class="mb-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0">{{ __('home.featured_products') }}</h3>
