@@ -90,10 +90,18 @@ widgets.forEach((widget) => {
 
                 return `
                     <a class="beauty-assistant-widget__product-card" href="${escapeHtml(url)}">
-                        <span class="beauty-assistant-widget__product-card-label">${labels.product}</span>
-                        <span class="beauty-assistant-widget__product-card-name">${name}</span>
-                        ${category !== '' ? `<span class="beauty-assistant-widget__product-card-meta">${category}</span>` : ''}
-                        <span class="beauty-assistant-widget__product-card-price">${escapeHtml(price)}</span>
+                        <div class="beauty-assistant-widget__product-card-body">
+                            <span class="beauty-assistant-widget__product-card-label">${labels.product}</span>
+                            <span class="beauty-assistant-widget__product-card-name">${name}</span>
+                            ${category !== '' ? `<span class="beauty-assistant-widget__product-card-meta">${category}</span>` : ''}
+                        </div>
+                        <div class="beauty-assistant-widget__product-card-footer">
+                            <span class="beauty-assistant-widget__product-card-price">${escapeHtml(price)}</span>
+                            <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
+                                Ver producto
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </span>
+                        </div>
                     </a>
                 `;
             })

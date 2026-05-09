@@ -216,6 +216,7 @@ class Product extends Model
             ->limit(50)
             ->get();
 
+        // No terms → return latest products as generic fallback
         if (empty($terms)) {
             return $products->take($limit)->values();
         }
@@ -225,18 +226,24 @@ class Product extends Model
             'score' => $product->getAssistantScore($terms),
         ]);
 
-        $matchedProducts = $rankedProducts
-            ->sortByDesc('score')
-            ->sortByDesc(fn (array $row) => $row['product']->getId())
+        $hasMatches = $rankedProducts->contains(fn (array $row) => $row['score'] > 0);
+
+        // No matches at all → return latest products instead of empty collection
+        if (! $hasMatches) {
+            return $products->take($limit)->values();
+        }
+
+        return $rankedProducts
+            ->sort(function (array $a, array $b) {
+                if ($a['score'] === $b['score']) {
+                    return $b['product']->getId() <=> $a['product']->getId();
+                }
+
+                return $b['score'] <=> $a['score'];
+            })
             ->take($limit)
             ->pluck('product')
             ->values();
-
-        if ($rankedProducts->contains(fn (array $row) => $row['score'] > 0)) {
-            return $matchedProducts;
-        }
-
-        return $products->take($limit)->values();
     }
 
     public function toAssistantPayload(): array

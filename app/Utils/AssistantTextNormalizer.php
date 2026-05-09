@@ -12,7 +12,7 @@ class AssistantTextNormalizer
         $parts = preg_split('/[^\p{L}\p{N}]+/u', $normalized) ?: [];
 
         $stopwords = [
-            'de', 'la', 'el', 'los', 'las', 'para', 'con', 'sin', 'una', 'uno', 'unos', 'unas',
+            'de', 'la', 'el', 'los', 'las', 'para', 'con', 'sin', 'una', 'uno', 'unos',
             'que', 'quiero', 'necesito', 'recomiendas', 'recomendacion', 'recomendaciones', 'me',
             'mi', 'mis', 'por', 'favor', 'y', 'o', 'en', 'del', 'al', 'un', 'mucho', 'muy',
             'tengo', 'tiene', 'tener', 'estoy', 'esta', 'hay', 'algo', 'mas',
@@ -32,7 +32,9 @@ class AssistantTextNormalizer
 
     public static function normalize(string $text): string
     {
-        return strtr(Str::ascii(mb_strtolower($text)), self::normalizationMap());
+        // Only transliterate special characters (accents, ñ, etc.) to ASCII.
+        // Word-level canonicalization is handled separately in canonicalizeTerm.
+        return Str::ascii(mb_strtolower($text));
     }
 
     public static function detectTheme(string $message): string
@@ -64,37 +66,48 @@ class AssistantTextNormalizer
 
     private static function canonicalizeTerm(string $term): string
     {
-        return self::normalizationMap()[$term] ?? $term;
+        return self::canonicalizationMap()[$term] ?? $term;
     }
 
-    private static function normalizationMap(): array
+    /**
+     * Maps synonym/variant words to their canonical form.
+     * Used after ASCII normalization to unify terms before scoring.
+     */
+    private static function canonicalizationMap(): array
     {
         return [
+            // Hair
             'pelo' => 'cabello',
             'champu' => 'cabello',
+            'shampoo' => 'cabello',
             'acondicionador' => 'cabello',
-            'serum' => 'serum',
+            'hair' => 'cabello',
+            'melena' => 'cabello',
+            // Serum
             'suero' => 'serum',
+            // Face
             'rostro' => 'face',
             'cara' => 'face',
             'facial' => 'face',
+            'acne' => 'face',
+            // Skin
             'skin' => 'piel',
-            'cabello' => 'cabello',
-            'hair' => 'cabello',
-            'melena' => 'cabello',
+            // Nails
             'unas' => 'unas',
             'unias' => 'unas',
-            'cuticula' => 'cuticula',
+            'mano' => 'unas',
+            'manos' => 'unas',
+            // Cuticles
             'cuticulas' => 'cuticula',
             'cuticles' => 'cuticula',
             'cuticle' => 'cuticula',
+            // Fragrance
             'fragancias' => 'fragancia',
-            'fragancia' => 'fragancia',
             'perfume' => 'fragancia',
             'perfumes' => 'fragancia',
-            'massage' => 'masaje',
+            // Body
             'body' => 'cuerpo',
-            'acne' => 'face',
+            'massage' => 'masaje',
         ];
     }
 }
