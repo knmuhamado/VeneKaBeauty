@@ -60,7 +60,7 @@ class NvidiaBeautyAssistantService
         return [
             'user_message' => $message,
             'assistant_message' => $assistantText,
-            'recommended_products' => $products->map(fn (Product $product) => $product->toAssistantPayload())->all(),
+            'recommended_products' => $this->buildProductPayload($products),
             'meta' => [
                 'source' => 'nvidia',
                 'model' => (string) config('services.nvidia.model'),
@@ -130,13 +130,12 @@ class NvidiaBeautyAssistantService
 
     private function fallbackResponse(string $message, Collection $products, string $reason): array
     {
-        $assistantMessage = $this->buildFallbackMessage($products);
-        $productPayload = $products->map(fn (Product $product) => $product->toAssistantPayload())->all();
+        $assistantMessage = $this->buildFallbackMessage($message, $products);
 
         return [
             'user_message' => $message,
             'assistant_message' => $assistantMessage,
-            'recommended_products' => $productPayload,
+            'recommended_products' => $this->buildProductPayload($products),
             'meta' => [
                 'source' => 'fallback',
                 'reason' => $reason,
@@ -144,37 +143,39 @@ class NvidiaBeautyAssistantService
         ];
     }
 
-    private function buildFallbackMessage(Collection $products): string
+    private function buildFallbackMessage(string $message, Collection $products): string
     {
-        $names = $products->map(fn (Product $p) => $p->toAssistantPayload())->pluck('name')->take(2)->implode(' y ');
+        $theme = $this->detectAssistantTheme($message);
+        $names = $products->pluck('name')->take(2)->implode(' y ');
+
+        $intro = match ($theme) {
+            'face' => __('assistant.backend.fallback.context.face'),
+            'hair' => __('assistant.backend.fallback.context.hair'),
+            'nails' => __('assistant.backend.fallback.context.nails'),
+            'fragrance' => __('assistant.backend.fallback.context.fragrance'),
+            'body' => __('assistant.backend.fallback.context.body'),
+            default => __('assistant.backend.fallback.context.general'),
+        };
 
         if ($names !== '') {
-            return __('assistant.backend.fallback.with_products', ['names' => $names]);
+            return trim($intro.' '.__('assistant.backend.fallback.with_products', ['names' => $names]));
         }
 
-        return __('assistant.backend.fallback.without_products');
+        return trim($intro.' '.__('assistant.backend.fallback.without_products'));
+    }
+
+    private function buildProductPayload(Collection $products): array
+    {
+        return $products->map(fn (Product $product) => $product->toAssistantPayload())->all();
     }
 
     private function extractAssistantTerms(string $message): array
     {
-        $normalized = mb_strtolower($message);
-        $parts = preg_split('/[^\p{L}\p{N}]+/u', $normalized) ?: [];
+        return AssistantTextNormalizer::extractTerms($message);
+    }
 
-        $stopwords = [
-            'de', 'la', 'el', 'los', 'las', 'para', 'con', 'sin', 'una', 'uno', 'unos', 'unas',
-            'que', 'quiero', 'necesito', 'recomiendas', 'recomendacion', 'recomendaciones', 'me',
-            'mi', 'mis', 'por', 'favor', 'y', 'o', 'en', 'del', 'al', 'un',
-        ];
-
-        $terms = [];
-        foreach ($parts as $part) {
-            if ($part === '' || mb_strlen($part) < 3 || in_array($part, $stopwords, true)) {
-                continue;
-            }
-
-            $terms[] = $part;
-        }
-
-        return array_values(array_unique($terms));
+    private function detectAssistantTheme(string $message): string
+    {
+        return AssistantTextNormalizer::detectTheme($message);
     }
 }

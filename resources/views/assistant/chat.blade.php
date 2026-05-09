@@ -10,11 +10,11 @@
             </div>
             <div class="beauty-assistant-widget__badge">{{ __('assistant.widget.badge') }}</div>
         </div>
-
         @auth
             <div
                 class="beauty-assistant-widget__panel"
                 data-beauty-assistant-product-label="{{ __('assistant.js.product_label') }}"
+                data-beauty-assistant-product-url-template="{{ route('product.show', ['id' => '__PRODUCT_ID__']) }}"
                 data-beauty-assistant-you-label="{{ __('assistant.js.you') }}"
                 data-beauty-assistant-assistant-label="{{ __('assistant.js.assistant') }}"
                 data-beauty-assistant-sending-label="{{ __('assistant.js.sending') }}"
@@ -63,11 +63,3 @@
         @endauth
     </div>
 </section>
-
-@auth
-    @push('scripts')
-        @if(file_exists(public_path('build/manifest.json')))
-            @vite(['resources/js/beauty-assistant.js'])
-        @endif
-    @endpush
-@endauth

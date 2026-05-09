@@ -34,6 +34,14 @@ return [
             'instructions' => 'Instructions: recommend at most 2 options from the list with a short explanation and end with a follow-up question.',
         ],
         'fallback' => [
+            'context' => [
+                'face' => 'If your question is about your face or skin, I can guide you with a more precise recommendation.',
+                'hair' => 'If your question is about hair, I can help you choose more suitable care.',
+                'nails' => 'If your question is about nails or cuticles, I can guide you with more specific options.',
+                'fragrance' => 'If your question is about fragrances, I can help you choose a better option.',
+                'body' => 'If your question is about body care or massage, I can help you choose a suitable alternative.',
+                'general' => 'I can help you with a more precise recommendation.',
+            ],
             'with_products' => 'I suggest reviewing :names based on what you told me. If you want, I can help you choose a daily and nightly routine.',
             'without_products' => 'I could not find relevant products right now. If you want, tell me your skin type and goal so I can recommend better options.',
         ],

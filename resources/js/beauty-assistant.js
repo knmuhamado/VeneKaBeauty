@@ -8,6 +8,7 @@ widgets.forEach((widget) => {
     const submitButton = widget.querySelector('[data-beauty-assistant-submit]');
     const chatUrl = widget.querySelector('[data-beauty-assistant-chat-url]')?.value;
     const historyUrl = widget.querySelector('[data-beauty-assistant-history-url]')?.value;
+    const productUrlTemplate = widget.querySelector('[data-beauty-assistant-product-url-template]')?.dataset.beautyAssistantProductUrlTemplate ?? '';
     const productLabel = widget.querySelector('[data-beauty-assistant-product-label]')?.dataset.beautyAssistantProductLabel ?? 'Producto';
     const youLabel = widget.querySelector('[data-beauty-assistant-you-label]')?.dataset.beautyAssistantYouLabel ?? 'Tú';
     const assistantLabel = widget.querySelector('[data-beauty-assistant-assistant-label]')?.dataset.beautyAssistantAssistantLabel ?? 'Asistente';
@@ -81,10 +82,50 @@ widgets.forEach((widget) => {
 
         const itemsHtml = products
             .slice(0, 2)
-            .map((product) => `<span class="beauty-assistant-widget__product">${escapeHtml(product.name ?? labels.product)}</span>`)
+            .map((product) => {
+                const url = getProductUrl(product);
+                const name = escapeHtml(product.name ?? labels.product);
+                const category = escapeHtml(product.category ?? '');
+                const price = formatPrice(product.price);
+
+                return `
+                    <a class="beauty-assistant-widget__product-card" href="${escapeHtml(url)}">
+                        <span class="beauty-assistant-widget__product-card-label">${labels.product}</span>
+                        <span class="beauty-assistant-widget__product-card-name">${name}</span>
+                        ${category !== '' ? `<span class="beauty-assistant-widget__product-card-meta">${category}</span>` : ''}
+                        <span class="beauty-assistant-widget__product-card-price">${escapeHtml(price)}</span>
+                    </a>
+                `;
+            })
             .join('');
 
         return `<div class="beauty-assistant-widget__products">${itemsHtml}</div>`;
+    }
+
+    function getProductUrl(product) {
+        if (typeof product?.url === 'string' && product.url.trim() !== '') {
+            return product.url;
+        }
+
+        if (product?.id && productUrlTemplate !== '') {
+            return productUrlTemplate.replace('__PRODUCT_ID__', String(product.id));
+        }
+
+        return '#';
+    }
+
+    function formatPrice(value) {
+        const number = Number(value);
+
+        if (Number.isNaN(number)) {
+            return '';
+        }
+
+        return new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            maximumFractionDigits: 0,
+        }).format(number);
     }
 
     const scrollToBottom = () => {

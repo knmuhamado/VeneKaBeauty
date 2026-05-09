@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index');
@@ -17,8 +18,9 @@ Route::get('/cart/decrease/{id}', 'App\Http\Controllers\CartController@decrease'
 Route::get('/cart/removeAll', 'App\Http\Controllers\CartController@removeAll')->name('cart.removeAll');
 Route::post('/cart/confirm', 'App\Http\Controllers\CartController@confirm')->name('cart.confirm')->middleware('auth');
 
-Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('product.index');
-Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
+Route::get('/products', 'App\Http\Controllers\ProductController@index')->middleware('auth')->name('product.index');
+Route::get('/assistant', 'App\Http\Controllers\AssistantController@index')->middleware('auth')->name('assistant.index');
+Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->middleware('auth')->name('product.show');
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 
 // Protected Admin Routes

@@ -75,22 +75,38 @@ class BeautyMessage extends Model
 
     public function getProducts(): array
     {
-        return $this->attributes['products'] ?? [];
+        $products = $this->attributes['products'] ?? $this->products ?? [];
+
+        if (is_string($products)) {
+            $decoded = json_decode($products, true);
+
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return is_array($products) ? $products : [];
     }
 
     public function setProducts(array $products): void
     {
-        $this->attributes['products'] = $products;
+        $this->attributes['products'] = json_encode($products, JSON_UNESCAPED_UNICODE);
     }
 
     public function getMeta(): array
     {
-        return $this->attributes['meta'] ?? [];
+        $meta = $this->attributes['meta'] ?? $this->meta ?? [];
+
+        if (is_string($meta)) {
+            $decoded = json_decode($meta, true);
+
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return is_array($meta) ? $meta : [];
     }
 
     public function setMeta(array $meta): void
     {
-        $this->attributes['meta'] = $meta;
+        $this->attributes['meta'] = json_encode($meta, JSON_UNESCAPED_UNICODE);
     }
 
     public function getCreatedAt()

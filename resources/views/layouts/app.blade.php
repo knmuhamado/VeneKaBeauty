@@ -34,6 +34,9 @@
                     <a class="nav-link" href="{{ route('product.index') }}">
                         {{ __('app.nav_products') }}
                     </a>
+                    <a class="nav-link" href="{{ route('assistant.index') }}">
+                        {{ __('assistant.widget.eyebrow') }}
+                    </a>
 
                     @guest
                         <a class="nav-link" href="{{ route('login') }}">
@@ -105,6 +108,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
+
+    @vite(['resources/js/app.js'])
 
     @stack('scripts')
 </body>

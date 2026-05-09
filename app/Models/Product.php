@@ -4,11 +4,13 @@
 
 namespace App\Models;
 
+use App\Utils\AssistantTextNormalizer;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection as SupportCollection;
 
 class Product extends Model
 {
@@ -173,12 +175,12 @@ class Product extends Model
     }
 
     // relationship getters
-    public function getItems(): Collection
+    public function getItems(): EloquentCollection
     {
         return $this->items;
     }
 
-    public function getReviews(): Collection
+    public function getReviews(): EloquentCollection
     {
         return $this->reviews;
     }
@@ -205,7 +207,7 @@ class Product extends Model
     }
 
     // Business logic
-    public static function getAssistantRelevantProducts(array $terms, int $limit = 5): Collection
+    public static function getAssistantRelevantProducts(array $terms, int $limit = 5): SupportCollection
     {
         $products = self::query()
             ->with('category')
@@ -224,13 +226,13 @@ class Product extends Model
         ]);
 
         $matchedProducts = $rankedProducts
-            ->where('score', '>', 0)
             ->sortByDesc('score')
+            ->sortByDesc(fn (array $row) => $row['product']->getId())
             ->take($limit)
             ->pluck('product')
             ->values();
 
-        if ($matchedProducts->isNotEmpty()) {
+        if ($rankedProducts->contains(fn (array $row) => $row['score'] > 0)) {
             return $matchedProducts;
         }
 
@@ -253,7 +255,7 @@ class Product extends Model
 
     private function getAssistantScore(array $terms): int
     {
-        $haystack = mb_strtolower(implode(' ', [
+        $haystack = AssistantTextNormalizer::normalize(implode(' ', [
             $this->getName(),
             $this->getDescription(),
             $this->getBrand() ?? '',
@@ -262,9 +264,11 @@ class Product extends Model
             $this->getCategory()?->getName() ?? '',
         ]));
 
+        $normalizedTerms = array_map(fn (string $term) => AssistantTextNormalizer::normalize($term), $terms);
+
         $score = 0;
 
-        foreach ($terms as $term) {
+        foreach ($normalizedTerms as $term) {
             if ($term !== '' && str_contains($haystack, $term)) {
                 $score++;
             }
@@ -295,7 +299,7 @@ class Product extends Model
         return $this->getAverageScore()." - ($count $text)";
     }
 
-    public static function getTopRatedProducts()
+    public static function getTopRatedProducts(): SupportCollection
     {
         $products = self::with('reviews', 'category')
             ->has('reviews')
