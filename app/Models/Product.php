@@ -5,6 +5,7 @@
 namespace App\Models;
 
 use App\Utils\AssistantTextNormalizer;
+use App\Utils\ImageStorageService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -81,6 +82,20 @@ class Product extends Model
     public function getImage(): string
     {
         return $this->attributes['image'];
+    }
+
+    public function getImageUrl(): string
+    {
+        $imagePath = $this->getImage();
+
+        if (empty($imagePath)) {
+            return asset('images/default-product.png');
+        }
+
+        /** @var ImageStorageService $imageStorage */
+        $imageStorage = app(ImageStorageService::class);
+
+        return $imageStorage->getUrl($imagePath);
     }
 
     public function setImage(string $image): void

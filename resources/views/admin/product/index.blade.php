@@ -52,7 +52,7 @@
 
                 <td>
                     @if($product->getImage())
-                        <img src="{{ asset('storage/' . $product->getImage()) }}"
+                        <img src="{{ $product->getImageUrl() }}"
                              width="80"
                              class="img-thumbnail">
                     @else

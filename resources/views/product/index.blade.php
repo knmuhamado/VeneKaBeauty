@@ -30,7 +30,7 @@
                 <div class="card h-100 shadow-sm">
                     <a href="{{ route('product.show', $product->getId()) }}" class="text-decoration-none">
                         @if($product->getImage())
-                            <img src="{{ asset('storage/' . $product->getImage()) }}"
+                            <img src="{{ $product->getImageUrl() }}"
                                  class="card-img-top"
                                  style="height: 220px; object-fit: cover;"
                                  alt="{{ $product->getName() }}">

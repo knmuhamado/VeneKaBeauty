@@ -14,7 +14,7 @@
 
 <div class="card shadow-sm mb-4">
     @if($product->getImage())
-        <img src="{{ asset('storage/' . $product->getImage()) }}"
+        <img src="{{ $product->getImageUrl() }}"
              class="card-img-top"
              style="max-height: 360px; object-fit: cover;"
              alt="{{ $product->getName() }}">

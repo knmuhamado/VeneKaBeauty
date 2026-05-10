@@ -38,7 +38,7 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         @if($product->getImage())
-                            <img src="{{ asset('storage/' . $product->getImage()) }}"
+                            <img src="{{ $product->getImageUrl() }}"
                                  class="card-img-top"
                                  style="height: 200px; object-fit: cover;"
                                  alt="{{ $product->getName() }}">

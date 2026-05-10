@@ -41,4 +41,10 @@ return [
         'model' => env('NVIDIA_CHAT_MODEL', 'meta/llama-3.1-70b-instruct'),
     ],
 
+    'gcs' => [
+        'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+        'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+        'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS'),
+    ],
+
 ];

@@ -23,4 +23,9 @@ class ImageLocalStorage implements ImageStorage
 
         return Storage::disk('public')->delete($imagePath);
     }
+
+    public function getUrl(string $imagePath): string
+    {
+        return asset('storage/'.$imagePath);
+    }
 }

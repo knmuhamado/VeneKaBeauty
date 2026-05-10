@@ -31,7 +31,7 @@
                 <label class="form-label">{{ __('product.current_image') }}</label>
                 @if($product->getImage())
                     <div class="mb-2">
-                        <img src="{{ asset('storage/' . $product->getImage()) }}" width="120" class="img-thumbnail">
+                        <img src="{{ $product->getImageUrl() }}" width="120" class="img-thumbnail">
                     </div>
                 @else
                     <p class="mb-2">{{ __('product.not_available') }}</p>
