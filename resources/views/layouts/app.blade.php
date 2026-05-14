@@ -14,6 +14,12 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
         <div class="container">
+            @auth
+            <button id="sidebar-toggle" class="btn btn-link text-white sidebar-toggle-btn p-0 me-3"
+                    aria-label="{{ __('app.open_menu') }}">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            @endauth
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home.index') }}">
                 <img src="{{ asset('images/logo.png') }}"
                     alt="{{ __('app.site_name') }}"
@@ -106,7 +112,12 @@
         </div>
     </footer>
 
+    @auth
+        @include('components.sidebar')
+    @endauth
+
     @vite(['resources/js/app.js'])
+
 
     @stack('scripts')
 </body>
