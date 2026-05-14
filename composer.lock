@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7bd25950009f841d297ef20c2844b40",
+    "content-hash": "6f5901c7c2961e415ccb5ad05888a517",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1006,16 +1006,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "e5d12d54319b6f6325d593c5e057c3bb577f4035"
+                "reference": "bb3c3100970c541daf12d6679e7fc5a8528dcc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/e5d12d54319b6f6325d593c5e057c3bb577f4035",
-                "reference": "e5d12d54319b6f6325d593c5e057c3bb577f4035",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/bb3c3100970c541daf12d6679e7fc5a8528dcc45",
+                "reference": "bb3c3100970c541daf12d6679e7fc5a8528dcc45",
                 "shasum": ""
             },
             "require": {
@@ -1058,9 +1058,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v2.0.0"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v2.1.0"
             },
-            "time": "2026-05-04T19:26:03+00:00"
+            "time": "2026-05-12T19:06:48+00:00"
         },
         {
             "name": "google/common-protos",
