@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    @vite(['resources/sass/app.scss'])
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet" />
     <title>@yield('title', __('app.site_name'))</title>
 </head>
@@ -14,6 +14,12 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary py-4">
         <div class="container">
+            @auth
+            <button id="sidebar-toggle" class="btn btn-link text-white sidebar-toggle-btn p-0 me-3"
+                    aria-label="{{ __('app.open_menu') }}">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            @endauth
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home.index') }}">
                 <img src="{{ asset('images/logo.png') }}"
                     alt="{{ __('app.site_name') }}"
@@ -106,10 +112,16 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+    @auth
+        @include('components.sidebar')
+    @endauth
 
     @vite(['resources/js/app.js'])
+
+    @auth
+    <script src="{{ asset('js/sidebar.js') }}"></script>
+    @endauth
+
 
     @stack('scripts')
 </body>

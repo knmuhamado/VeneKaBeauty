@@ -3,13 +3,13 @@
 
 @section('content')
 <section class="mb-4">
-    <h2 class="mb-2">
+    <h1 class="mb-2">
         @auth
             {{ __('home.welcome_title') }}, {{ auth()->user()->getName() }}
         @else
             {{ __('home.welcome_title') }}
         @endauth
-    </h2>
+    </h1>
     <p class="text-muted mb-3 fs-4">
         {{ __('home.welcome_subtitle') }}
     </p>
