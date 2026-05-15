@@ -14,7 +14,6 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN mkdir -p storage/app/google
-COPY storage/app/google/gcs-service-account.json storage/app/google/
 
 RUN composer install --no-dev --optimize-autoloader
 
