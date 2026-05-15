@@ -52,6 +52,30 @@
                         <a class="nav-link" href="{{ route('register') }}">
                             {{ __('user.register') }}
                         </a>
+
+                        {{-- Language dropdown --}}
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-globe2 me-1"></i>
+                                {{ app()->getLocale() === 'es' ? 'Español' : 'English' }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                                       href="{{ route('lang.switch', 'en') }}">
+                                        🇺🇸 English
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ app()->getLocale() === 'es' ? 'active' : '' }}"
+                                       href="{{ route('lang.switch', 'es') }}">
+                                        🇨🇴 Español
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     @else
                         {{-- Admin --}}
                         @if(auth()->user()->isAdmin())
@@ -60,7 +84,7 @@
                             </a>
                         @endif
 
-                        {{-- Cliente --}}
+                        {{-- Client --}}
                         @if(auth()->user()->isClient())
                             <a class="nav-link" href="{{ route('order.list') }}">
                                 {{ __('app.nav_my_orders') }}
@@ -74,6 +98,30 @@
                                 {{ __('user.logout') }}
                             </button>
                         </form>
+
+                        {{-- Language dropdown --}}
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-globe2 me-1"></i>
+                                {{ app()->getLocale() === 'es' ? 'Español' : 'English' }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                                       href="{{ route('lang.switch', 'en') }}">
+                                        🇺🇸 English
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ app()->getLocale() === 'es' ? 'active' : '' }}"
+                                       href="{{ route('lang.switch', 'es') }}">
+                                        🇨🇴 Español
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     @endguest
 
                 </div>
@@ -85,7 +133,7 @@
         @yield('content')
     </main>
 
-    {{-- Carrito flotante solo para clientes autenticados --}}
+    {{-- Car to buy --}}
     @auth
         @if(auth()->user()->isClient())
             @php
@@ -121,7 +169,6 @@
     @auth
     <script src="{{ asset('js/sidebar.js') }}"></script>
     @endauth
-
 
     @stack('scripts')
 </body>

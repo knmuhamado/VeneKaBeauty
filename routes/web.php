@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home.index');
+Route::get('/lang/{locale}', 'App\Http\Controllers\LocaleController@switch')->name('lang.switch');
+
 
 Route::get('/orders/list', 'App\Http\Controllers\OrderController@index')->name('order.list');
 Route::get('/orders/{id}', 'App\Http\Controllers\OrderController@show')->name('order.show');
