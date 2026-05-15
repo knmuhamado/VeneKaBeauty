@@ -20,6 +20,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'image' => $imageRule,
+            'storage' => 'required|in:local,gcs',
             'description' => 'required|string',
             'available' => 'required|boolean',
             'price' => 'required|numeric|gt:0',
@@ -42,6 +43,7 @@ class StoreProductRequest extends FormRequest
         $this->merge([
             'keyword' => is_array($keyword) ? $keyword : [],
             'available' => $this->boolean('available'),
+            'storage' => $this->input('storage', 'local'),
         ]);
     }
 }

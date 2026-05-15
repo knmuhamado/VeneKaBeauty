@@ -15,10 +15,6 @@ use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
-    public function __construct(
-        private ImageStorage $imageStorage
-    ) {}
-
     public function index(SearchProductRequest $request): View
     {
         $validated = $request->validated();
@@ -60,9 +56,10 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
         $image = $request->file('image');
+        $storage = app(ImageStorage::class, ['storage' => $request->input('storage')]);
 
         if ($image) {
-            $validated['image'] = $this->imageStorage->store($image);
+            $validated['image'] = $storage->store($image);
         }
 
         Product::create($validated);
@@ -89,10 +86,11 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $validated = $request->validated();
         $image = $request->file('image');
+        $storage = app(ImageStorage::class, ['storage' => $request->input('storage')]);
 
         if ($image) {
-            $this->imageStorage->delete($product->getImage());
-            $validated['image'] = $this->imageStorage->store($image);
+            $validated['image'] = $storage->store($image);
+            $this->deleteImage($product->getImage());
         }
 
         $product->update($validated);
@@ -105,10 +103,24 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $this->imageStorage->delete($product->getImage());
+        $this->deleteImage($product->getImage());
         $product->delete();
 
         return redirect()->route('admin.product.index')
             ->with('success', __('product.deleted_success'));
+    }
+
+    private function deleteImage(?string $imagePath): void
+    {
+        if (! $imagePath || $imagePath === 'products/default.png') {
+            return;
+        }
+
+        foreach (['local', 'gcs'] as $storage) {
+            try {
+                app(ImageStorage::class, ['storage' => $storage])->delete($imagePath);
+            } catch (\Throwable) {
+            }
+        }
     }
 }

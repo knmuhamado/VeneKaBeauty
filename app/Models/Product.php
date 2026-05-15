@@ -5,7 +5,8 @@
 namespace App\Models;
 
 use App\Utils\AssistantTextNormalizer;
-use App\Utils\ImageStorageService;
+use App\Utils\ImageGcsStorage;
+use App\Utils\ImageLocalStorage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'image',
+        'image_storage',
         'description',
         'available',
         'price',
@@ -84,6 +86,11 @@ class Product extends Model
         return $this->attributes['image'];
     }
 
+    public function getImageStorage(): ?string
+    {
+        return $this->attributes['image_storage'] ?? null;
+    }
+
     public function getImageUrl(): string
     {
         $imagePath = $this->getImage();
@@ -92,15 +99,30 @@ class Product extends Model
             return asset('images/default-product.png');
         }
 
-        /** @var ImageStorageService $imageStorage */
-        $imageStorage = app(ImageStorageService::class);
+        $localStorage = new ImageLocalStorage;
 
-        return $imageStorage->getUrl($imagePath);
+        if (file_exists(public_path('storage/'.$imagePath))) {
+            return $localStorage->getUrl($imagePath);
+        }
+
+        if (str_starts_with($imagePath, 'products/')) {
+            try {
+                return (new ImageGcsStorage)->getUrl($imagePath);
+            } catch (\Throwable) {
+            }
+        }
+
+        return $localStorage->getUrl($imagePath);
     }
 
     public function setImage(string $image): void
     {
         $this->attributes['image'] = $image;
+    }
+
+    public function setImageStorage(?string $imageStorage): void
+    {
+        $this->attributes['image_storage'] = $imageStorage;
     }
 
     public function getDescription(): string

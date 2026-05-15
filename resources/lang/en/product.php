@@ -48,6 +48,9 @@ return [
 
     'current_image' => 'Current Image',
     'new_image_optional' => 'New Image (optional)',
+    'storage' => 'Save image in',
+    'storage_local' => 'Local',
+    'storage_gcs' => 'GCS',
     'brand_optional' => 'Brand (optional)',
     'keywords_hint' => 'Keywords (comma separated)',
     'select_category' => 'Select a category',

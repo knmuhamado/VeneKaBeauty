@@ -10,5 +10,3 @@ interface PdfGenerator
 {
     public function generateOrderPdf(Order $order): string;
 }
-
-

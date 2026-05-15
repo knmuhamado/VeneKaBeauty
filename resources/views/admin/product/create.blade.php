@@ -53,6 +53,37 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">{{ __('product.storage') }}</label>
+            <div class="d-flex flex-wrap gap-3">
+                <div class="form-check">
+                    <input class="form-check-input @error('storage') is-invalid @enderror"
+                           type="radio"
+                           name="storage"
+                           id="storage-local-create"
+                           value="local"
+                           {{ old('storage', 'local') === 'local' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="storage-local-create">
+                        {{ __('product.storage_local') }}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input @error('storage') is-invalid @enderror"
+                           type="radio"
+                           name="storage"
+                           id="storage-gcs-create"
+                           value="gcs"
+                           {{ old('storage') === 'gcs' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="storage-gcs-create">
+                        {{ __('product.storage_gcs') }}
+                    </label>
+                </div>
+            </div>
+            @error('storage')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">{{ __('product.description') }}</label>
             <textarea name="description"
                       class="form-control @error('description') is-invalid @enderror"
