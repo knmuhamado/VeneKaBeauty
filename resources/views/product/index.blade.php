@@ -95,5 +95,10 @@
             </div>
         @endforeach
     </div>
+
+    {{-- Pagination --}}
+    <div class="d-flex justify-content-center mt-4">
+        {{ $products->links('pagination::simple-bootstrap-5') }}
+    </div>
 @endif
 @endsection
