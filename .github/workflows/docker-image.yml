@@ -1,0 +1,52 @@
+﻿name: Docker Image CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create .env file for production
+      run: |
+        echo "APP_NAME=VeneKaBeauty" > .env
+        echo "APP_ENV=production" >> .env
+        echo "APP_DEBUG=false" >> .env
+        echo "APP_KEY=base64:Ihvk/EEP6eD/GsZnGUtXU4dIG3ItogBQ4CxNt4OWdUQ=" >> .env
+        echo "APP_URL=http://localhost" >> .env
+        echo "" >> .env
+        echo "DB_CONNECTION=mysql" >> .env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+        echo "DB_PORT=3306" >> .env
+        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        echo "" >> .env
+        echo "NVIDIA_API_KEY=${{ secrets.NVIDIA_API_KEY }}" >> .env
+        echo "NVIDIA_CHAT_URL=https://integrate.api.nvidia.com/v1/chat/completions" >> .env
+        echo "NVIDIA_CHAT_MODEL=meta/llama-3.1-70b-instruct" >> .env
+        echo "" >> .env
+        echo "GOOGLE_CLOUD_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}" >> .env
+        echo "GOOGLE_CLOUD_STORAGE_BUCKET=${{ secrets.GOOGLE_BUCKET }}" >> .env
+        echo "FILESYSTEM_DISK=gcs" >> .env
+        echo "" >> .env
+        echo "SESSION_DRIVER=file" >> .env
+        echo "CACHE_STORE=file" >> .env
+        echo "LOG_CHANNEL=stack" >> .env
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag venekabeauty:latest
+
+    - name: Docker login
+      run: docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASS }}
+
+    - name: Tag and push to Docker Hub
+      run: |
+        docker tag venekabeauty:latest ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
+        docker push ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
