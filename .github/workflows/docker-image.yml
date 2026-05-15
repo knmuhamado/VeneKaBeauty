@@ -1,4 +1,4 @@
-﻿name: Docker Image CI
+name: Docker Image CI
 
 on:
   push:
@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -20,13 +19,11 @@ jobs:
         echo "APP_DEBUG=false" >> .env
         echo "APP_KEY=base64:Ihvk/EEP6eD/GsZnGUtXU4dIG3ItogBQ4CxNt4OWdUQ=" >> .env
         echo "APP_URL=http://localhost" >> .env
+        echo "APP_LOCALE=en" >> .env
+        echo "APP_FALLBACK_LOCALE=es" >> .env
         echo "" >> .env
-        echo "DB_CONNECTION=mysql" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_PORT=3306" >> .env
-        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        echo "DB_CONNECTION=sqlite" >> .env
+        echo "DB_DATABASE=/var/www/html/database/database.sqlite" >> .env
         echo "" >> .env
         echo "NVIDIA_API_KEY=${{ secrets.NVIDIA_API_KEY }}" >> .env
         echo "NVIDIA_CHAT_URL=https://integrate.api.nvidia.com/v1/chat/completions" >> .env
@@ -34,11 +31,14 @@ jobs:
         echo "" >> .env
         echo "GOOGLE_CLOUD_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}" >> .env
         echo "GOOGLE_CLOUD_STORAGE_BUCKET=${{ secrets.GOOGLE_BUCKET }}" >> .env
+        echo "GOOGLE_APPLICATION_CREDENTIALS=/var/www/html/storage/app/google/gcs-service-account.json" >> .env
         echo "FILESYSTEM_DISK=gcs" >> .env
         echo "" >> .env
         echo "SESSION_DRIVER=file" >> .env
         echo "CACHE_STORE=file" >> .env
         echo "LOG_CHANNEL=stack" >> .env
+        echo "LOG_STACK=single" >> .env
+        echo "QUEUE_CONNECTION=database" >> .env
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag venekabeauty:latest
@@ -48,5 +48,7 @@ jobs:
 
     - name: Tag and push to Docker Hub
       run: |
+        docker tag venekabeauty:latest ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
+        docker push ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
         docker tag venekabeauty:latest ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
         docker push ${{ secrets.DOCKERHUB_USER }}/venekabeauty:latest
