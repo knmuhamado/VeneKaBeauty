@@ -1,9 +1,10 @@
 FROM php:8.2-apache
 
+# Instalar dependencias del sistema incluyendo sqlite3
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    nodejs npm \
-    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath gd
+    nodejs npm sqlite3 \
+    && docker-php-ext-install pdo pdo_sqlite pdo_mysql zip mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -18,7 +19,6 @@ RUN mkdir -p storage/app/google
 
 RUN composer install --no-dev --optimize-autoloader
 
-# Instalar dependencias Node y compilar Vite
 RUN npm install && npm run build
 
 RUN chmod -R 777 storage bootstrap/cache
@@ -27,4 +27,9 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD sh -c "apache2-foreground"
+CMD sh -c "\
+    touch database/database.sqlite && \
+    chmod 777 database/database.sqlite && \
+    sqlite3 database/database.sqlite < database/entregable2_sqlite.sql && \
+    php artisan storage:link && \
+    apache2-foreground"
