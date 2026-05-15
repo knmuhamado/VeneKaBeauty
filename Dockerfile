@@ -3,8 +3,7 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
     nodejs npm sqlite3 \
-    && docker-php-ext-install pdo pdo_mysql zip mbstring exif pcntl bcmath gd \
-    && docker-php-ext-enable pdo_sqlite
+    && docker-php-ext-install pdo pdo_mysql zip mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -27,4 +26,4 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD ["/bin/sh", "-c", "touch database/database.sqlite && chmod 777 database/database.sqlite && sqlite3 database/database.sqlite < database/entregable2_sqlite.sql && php artisan storage:link && apache2-foreground"]"
+CMD ["/bin/sh", "-c", "touch database/database.sqlite && chmod 777 database/database.sqlite && sqlite3 database/database.sqlite < database/entregable2_sqlite.sql && php artisan storage:link && apache2-foreground"]
