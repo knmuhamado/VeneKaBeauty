@@ -31,6 +31,11 @@
                 <i class="bi bi-plus-square"></i>
                 {{ __('app.sidebar_new_category') }}
             </a>
+
+            <a href="{{ route('assistant.index') }}" class="sidebar-drawer__link">
+                <i class="bi bi-robot"></i>
+                {{ __('assistant.widget.eyebrow') }}
+            </a>
         @endif
 
         @if(auth()->user()->isClient())
@@ -38,14 +43,22 @@
                 <i class="bi bi-house"></i>
                 {{ __('app.sidebar_home') }}
             </a>
+
             <a href="{{ route('product.index') }}" class="sidebar-drawer__link">
                 <i class="bi bi-shop"></i>
                 {{ __('app.nav_products') }}
             </a>
+
             <a href="{{ route('order.list') }}" class="sidebar-drawer__link">
                 <i class="bi bi-bag-check"></i>
                 {{ __('app.nav_my_orders') }}
             </a>
+
+            <a href="{{ route('assistant.index') }}" class="sidebar-drawer__link">
+                <i class="bi bi-robot"></i>
+                {{ __('assistant.widget.eyebrow') }}
+            </a>
+        
         @endif
     </nav>
 </aside>

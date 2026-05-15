@@ -118,6 +118,10 @@
 
     @vite(['resources/js/app.js'])
 
+    @auth
+    <script src="{{ asset('js/sidebar.js') }}"></script>
+    @endauth
+
 
     @stack('scripts')
 </body>
