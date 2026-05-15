@@ -1,29 +1,40 @@
 FROM php:8.2-apache
 
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    nodejs npm sqlite3 \
-    && docker-php-ext-install pdo pdo_mysql zip mbstring exif pcntl bcmath gd
+    nodejs npm \
+    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath gd
 
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+# Configurar Apache
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+# Copiar el proyecto
 WORKDIR /var/www/html
 COPY . .
 
+# Crear directorio para credenciales de Google
 RUN mkdir -p storage/app/google
 
-RUN composer install --no-dev --optimize-autoloader
+# Instalar dependencias de GCS
+RUN composer require league/flysystem-google-cloud-storage --with-all-dependencies
+RUN composer update --no-dev --optimize-autoloader
 
+# Instalar dependencias Node y compilar Vite
 RUN npm install && npm run build
 
+# Permisos
 RUN chmod -R 777 storage bootstrap/cache
 
+# Activar mod_rewrite
 RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD ["/bin/sh", "-c", "touch database/database.sqlite && chmod 777 database/database.sqlite && sqlite3 database/database.sqlite < database/entregable2_sqlite.sql && php artisan storage:link && apache2-foreground"]
+# Comando de inicio
+CMD sh -c "php artisan storage:link && apache2-foreground"
