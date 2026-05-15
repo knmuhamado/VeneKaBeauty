@@ -30,7 +30,7 @@ class ProductController extends Controller
         }
 
         $viewData = [];
-        $viewData['products'] = $productQuery->get();
+        $viewData['products'] = $productQuery->paginate(9);
         $viewData['query'] = $query;
         $viewData['selectedCategories'] = $categoryIds;
         $viewData['categories'] = Category::getWithSelection($categoryIds);
