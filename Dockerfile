@@ -23,4 +23,4 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD sh -c "php artisan key:generate --force && php artisan migrate --force && apache2-foreground"
+CMD sh -c "apache2-foreground"
