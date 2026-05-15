@@ -1,0 +1,8 @@
+@"
+storage/app/google/gcs-service-account.json
+.env
+.env.production
+node_modules
+vendor
+.git
+"@ | Out-File -FilePath ".dockerignore" -Encoding utf8

@@ -26,6 +26,9 @@ class ImageLocalStorage implements ImageStorage
 
     public function getUrl(string $imagePath): string
     {
+        if (str_starts_with($imagePath, 'http')) {
+            return $imagePath;
+        }
         return asset('storage/'.$imagePath);
     }
 }
