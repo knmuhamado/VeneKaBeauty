@@ -244,17 +244,42 @@ class Product extends Model
     }
 
     // Business logic
-    public static function getAssistantRelevantProducts(array $terms, int $limit = 5): SupportCollection
+
+    public static function getAssistantRelevantProducts(string $message, int $limit = 5, ?array $detectedAssistantCategoryIds = null): SupportCollection
     {
-        $products = self::query()
+        $terms = AssistantTextNormalizer::extractTerms($message);
+        $categoryIds = $detectedAssistantCategoryIds ?? Category::detectAssistantCategoryIds($message);
+
+        $pool = static::candidatePoolForAssistant($categoryIds);
+
+        if ($pool->isEmpty()) {
+            $pool = static::candidatePoolForAssistant([]);
+        }
+
+        return static::rankAssistantPoolByTerms($pool, $terms, $limit);
+    }
+
+    private static function candidatePoolForAssistant(array $categoryIds): SupportCollection
+    {
+        $query = self::query()
             ->with('category')
             ->where('available', true)
-            ->latest('id')
-            ->limit(50)
-            ->get();
+            ->orderByDesc('id');
 
-        // No terms → return latest products as generic fallback
-        if (empty($terms)) {
+        if ($categoryIds !== []) {
+            $query->whereIn('category_id', $categoryIds);
+        }
+
+        return $query->get();
+    }
+
+    private static function rankAssistantPoolByTerms(SupportCollection $products, array $terms, int $limit): SupportCollection
+    {
+        if ($products->isEmpty()) {
+            return $products;
+        }
+
+        if ($terms === []) {
             return $products->take($limit)->values();
         }
 
@@ -265,7 +290,6 @@ class Product extends Model
 
         $hasMatches = $rankedProducts->contains(fn (array $row) => $row['score'] > 0);
 
-        // No matches at all → return latest products instead of empty collection
         if (! $hasMatches) {
             return $products->take($limit)->values();
         }

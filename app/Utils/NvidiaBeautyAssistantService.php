@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
@@ -14,13 +15,17 @@ class NvidiaBeautyAssistantService
 
     public function respond(string $message): array
     {
-        $terms = $this->extractAssistantTerms($message);
-        $products = Product::getAssistantRelevantProducts($terms, self::MAX_RECOMMENDED_PRODUCTS);
+        $categoryIds = Category::detectAssistantCategoryIds($message);
+        $products = Product::getAssistantRelevantProducts(
+            $message,
+            self::MAX_RECOMMENDED_PRODUCTS,
+            $categoryIds,
+        );
 
         $apiKey = (string) config('services.nvidia.api_key');
 
         if ($apiKey === '') {
-            return $this->fallbackResponse($message, $products, 'missing_api_key');
+            return $this->fallbackResponse($message, $products, 'missing_api_key', $categoryIds);
         }
 
         try {
@@ -42,19 +47,19 @@ class NvidiaBeautyAssistantService
                     'max_tokens' => 350,
                 ]);
         } catch (RequestException $e) {
-            return $this->fallbackResponse($message, $products, 'nvidia_request_exception');
+            return $this->fallbackResponse($message, $products, 'nvidia_request_exception', $categoryIds);
         } catch (Throwable $e) {
-            return $this->fallbackResponse($message, $products, 'nvidia_unexpected_exception');
+            return $this->fallbackResponse($message, $products, 'nvidia_unexpected_exception', $categoryIds);
         }
 
         if (! $response->successful()) {
-            return $this->fallbackResponse($message, $products, 'nvidia_error_'.$response->status());
+            return $this->fallbackResponse($message, $products, 'nvidia_error_'.$response->status(), $categoryIds);
         }
 
         $assistantText = $this->extractAssistantText($response->json());
 
         if ($assistantText === '') {
-            return $this->fallbackResponse($message, $products, 'empty_nvidia_response');
+            return $this->fallbackResponse($message, $products, 'empty_nvidia_response', $categoryIds);
         }
 
         return [
@@ -64,6 +69,7 @@ class NvidiaBeautyAssistantService
             'meta' => [
                 'source' => 'nvidia',
                 'model' => (string) config('services.nvidia.model'),
+                'assistant_category_ids' => $categoryIds,
             ],
         ];
     }
@@ -89,18 +95,25 @@ class NvidiaBeautyAssistantService
 
     private function formatProductLine(Product $product): string
     {
+        $na = __('assistant.backend.prompt_line.na');
         $keywords = implode(', ', $product->getKeyword());
 
         return sprintf(
-            '- ID:%d | %s | Tipo:%s | Marca:%s | Precio:%d | Categoria:%s | Keywords:%s | Descripcion:%s',
+            '- ID:%d | %s | %s:%s | %s:%s | %s:%d | %s:%s | %s:%s | %s:%s',
             $product->getId(),
             $product->getName(),
+            __('assistant.backend.prompt_line.type'),
             $product->getType(),
-            $product->getBrand() ?? 'N/A',
+            __('assistant.backend.prompt_line.brand'),
+            $product->getBrand() ?? $na,
+            __('assistant.backend.prompt_line.price'),
             $product->getPrice(),
-            $product->getCategory()?->getName() ?? 'N/A',
-            $keywords !== '' ? $keywords : 'N/A',
-            $product->getDescription()
+            __('assistant.backend.prompt_line.category'),
+            $product->getCategory()?->getName() ?? $na,
+            __('assistant.backend.prompt_line.keywords'),
+            $keywords !== '' ? $keywords : $na,
+            __('assistant.backend.prompt_line.description'),
+            $product->getDescription(),
         );
     }
 
@@ -110,27 +123,28 @@ class NvidiaBeautyAssistantService
             return '';
         }
 
-        $choiceContent = data_get($json, 'choices.0.message.content');
-        if (is_string($choiceContent) && trim($choiceContent) !== '') {
-            return trim($choiceContent);
-        }
+        $candidates = [
+            data_get($json, 'choices.0.message.content'),
+            data_get($json, 'output_text'),
+            data_get($json, 'message'),
+        ];
 
-        $outputText = data_get($json, 'output_text');
-        if (is_string($outputText) && trim($outputText) !== '') {
-            return trim($outputText);
-        }
-
-        $message = data_get($json, 'message');
-        if (is_string($message) && trim($message) !== '') {
-            return trim($message);
+        foreach ($candidates as $candidate) {
+            if (is_string($candidate) && trim($candidate) !== '') {
+                return trim($candidate);
+            }
         }
 
         return '';
     }
 
-    private function fallbackResponse(string $message, Collection $products, string $reason): array
-    {
-        $assistantMessage = $this->buildFallbackMessage($message, $products);
+    private function fallbackResponse(
+        string $message,
+        Collection $products,
+        string $reason,
+        array $assistantCategoryIds = [],
+    ): array {
+        $assistantMessage = $this->buildFallbackMessage($products, $assistantCategoryIds);
 
         return [
             'user_message' => $message,
@@ -139,23 +153,19 @@ class NvidiaBeautyAssistantService
             'meta' => [
                 'source' => 'fallback',
                 'reason' => $reason,
+                'assistant_category_ids' => $assistantCategoryIds,
             ],
         ];
     }
 
-    private function buildFallbackMessage(string $message, Collection $products): string
+    private function buildFallbackMessage(Collection $products, array $assistantCategoryIds): string
     {
-        $theme = $this->detectAssistantTheme($message);
-        $names = $products->pluck('name')->take(2)->implode(' y ');
+        $categoriesLabel = Category::commaSeparatedOrderedNamesForIds($assistantCategoryIds);
+        $names = $products->pluck('name')->take(2)->implode(__('assistant.backend.fallback.names_join_separator'));
 
-        $intro = match ($theme) {
-            'face' => __('assistant.backend.fallback.context.face'),
-            'hair' => __('assistant.backend.fallback.context.hair'),
-            'nails' => __('assistant.backend.fallback.context.nails'),
-            'fragrance' => __('assistant.backend.fallback.context.fragrance'),
-            'body' => __('assistant.backend.fallback.context.body'),
-            default => __('assistant.backend.fallback.context.general'),
-        };
+        $intro = $categoriesLabel !== ''
+            ? __('assistant.backend.fallback.context_for_categories', ['categories' => $categoriesLabel])
+            : __('assistant.backend.fallback.context_general');
 
         if ($names !== '') {
             return trim($intro.' '.__('assistant.backend.fallback.with_products', ['names' => $names]));
@@ -167,15 +177,5 @@ class NvidiaBeautyAssistantService
     private function buildProductPayload(Collection $products): array
     {
         return $products->map(fn (Product $product) => $product->toAssistantPayload())->all();
-    }
-
-    private function extractAssistantTerms(string $message): array
-    {
-        return AssistantTextNormalizer::extractTerms($message);
-    }
-
-    private function detectAssistantTheme(string $message): string
-    {
-        return AssistantTextNormalizer::detectTheme($message);
     }
 }

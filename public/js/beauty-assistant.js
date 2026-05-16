@@ -9,13 +9,6 @@ widgets.forEach((widget) => {
     const chatUrl = widget.querySelector('[data-beauty-assistant-chat-url]')?.value;
     const historyUrl = widget.querySelector('[data-beauty-assistant-history-url]')?.value;
     const productUrlTemplate = widget.querySelector('[data-beauty-assistant-product-url-template]')?.dataset.beautyAssistantProductUrlTemplate ?? '';
-    const productLabel = widget.querySelector('[data-beauty-assistant-product-label]')?.dataset.beautyAssistantProductLabel ?? 'Producto';
-    const youLabel = widget.querySelector('[data-beauty-assistant-you-label]')?.dataset.beautyAssistantYouLabel ?? 'Tú';
-    const assistantLabel = widget.querySelector('[data-beauty-assistant-assistant-label]')?.dataset.beautyAssistantAssistantLabel ?? 'Asistente';
-    const sendingLabel = widget.querySelector('[data-beauty-assistant-sending-label]')?.dataset.beautyAssistantSendingLabel ?? 'Enviando...';
-    const submitLabel = widget.querySelector('[data-beauty-assistant-submit-label]')?.dataset.beautyAssistantSubmitLabel ?? 'Enviar pregunta';
-    const sendErrorLabel = widget.querySelector('[data-beauty-assistant-send-error]')?.dataset.beautyAssistantSendError ?? 'No se pudo enviar el mensaje';
-    const fallbackErrorLabel = widget.querySelector('[data-beauty-assistant-fallback-error]')?.dataset.beautyAssistantFallbackError ?? 'Ahora mismo no pude procesar tu pregunta. Intenta de nuevo en unos segundos.';
 
     if (!form || !input || !submitButton || !chatUrl || !historyUrl) {
         return;
@@ -28,13 +21,16 @@ widgets.forEach((widget) => {
         const getLabel = (selector, fallback) => container.querySelector(selector)?.dataset[selectorToDatasetKey(selector)] ?? fallback;
 
         return {
-            product: getLabel('[data-beauty-assistant-product-label]', 'Producto'),
-            you: getLabel('[data-beauty-assistant-you-label]', 'Tú'),
-            assistant: getLabel('[data-beauty-assistant-assistant-label]', 'Asistente'),
-            sending: getLabel('[data-beauty-assistant-sending-label]', 'Enviando...'),
-            submit: getLabel('[data-beauty-assistant-submit-label]', 'Enviar pregunta'),
-            sendError: getLabel('[data-beauty-assistant-send-error]', 'No se pudo enviar el mensaje'),
-            fallbackError: getLabel('[data-beauty-assistant-fallback-error]', 'Ahora mismo no pude procesar tu pregunta. Intenta de nuevo en unos segundos.'),
+            product: getLabel('[data-beauty-assistant-product-label]', 'Product'),
+            productCta: getLabel('[data-beauty-assistant-product-cta]', 'View product'),
+            you: getLabel('[data-beauty-assistant-you-label]', 'You'),
+            assistant: getLabel('[data-beauty-assistant-assistant-label]', 'Assistant'),
+            sending: getLabel('[data-beauty-assistant-sending-label]', 'Sending...'),
+            submit: getLabel('[data-beauty-assistant-submit-label]', 'Send question'),
+            sendError: getLabel('[data-beauty-assistant-send-error]', 'The message could not be sent'),
+            fallbackError: getLabel('[data-beauty-assistant-fallback-error]', 'Something went wrong. Try again in a few seconds.'),
+            priceLocale: getLabel('[data-beauty-assistant-price-locale]', 'es-CO'),
+            priceCurrency: getLabel('[data-beauty-assistant-price-currency]', 'COP'),
         };
     }
 
@@ -98,7 +94,7 @@ widgets.forEach((widget) => {
                         <div class="beauty-assistant-widget__product-card-footer">
                             <span class="beauty-assistant-widget__product-card-price">${escapeHtml(price)}</span>
                             <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
-                                Ver producto
+                                ${labels.productCta}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                             </span>
                         </div>
@@ -129,9 +125,9 @@ widgets.forEach((widget) => {
             return '';
         }
 
-        return new Intl.NumberFormat('es-CO', {
+        return new Intl.NumberFormat(labels.priceLocale, {
             style: 'currency',
-            currency: 'COP',
+            currency: labels.priceCurrency,
             maximumFractionDigits: 0,
         }).format(number);
     }

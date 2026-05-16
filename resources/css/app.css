@@ -12,8 +12,8 @@
 
 /* ─── Beauty Assistant — Product Cards ──────────────────────────────────── */
 /*
-    Estas clases se generan dinámicamente en beauty-assistant.js via template
-    literals. Tailwind no las detecta en el scan estático, así que se declaran
+    Estas clases se generan dinámicamente en public/js/beauty-assistant.js via
+    template literals. Tailwind no las detecta en el scan estático, así que se declaran
     aquí como CSS puro para que siempre queden en el build.
 */
 

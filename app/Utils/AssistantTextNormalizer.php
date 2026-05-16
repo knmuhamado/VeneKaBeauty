@@ -32,36 +32,7 @@ class AssistantTextNormalizer
 
     public static function normalize(string $text): string
     {
-        // Only transliterate special characters (accents, ñ, etc.) to ASCII.
-        // Word-level canonicalization is handled separately in canonicalizeTerm.
         return Str::ascii(mb_strtolower($text));
-    }
-
-    public static function detectTheme(string $message): string
-    {
-        $terms = self::extractTerms($message);
-
-        if (array_intersect($terms, ['face', 'piel'])) {
-            return 'face';
-        }
-
-        if (in_array('cabello', $terms, true) || in_array('shampoo', $terms, true) || in_array('tinte', $terms, true)) {
-            return 'hair';
-        }
-
-        if (in_array('unas', $terms, true) || in_array('cuticula', $terms, true)) {
-            return 'nails';
-        }
-
-        if (in_array('fragancia', $terms, true)) {
-            return 'fragrance';
-        }
-
-        if (in_array('cuerpo', $terms, true) || in_array('masaje', $terms, true)) {
-            return 'body';
-        }
-
-        return 'general';
     }
 
     private static function canonicalizeTerm(string $term): string
@@ -69,10 +40,6 @@ class AssistantTextNormalizer
         return self::canonicalizationMap()[$term] ?? $term;
     }
 
-    /**
-     * Maps synonym/variant words to their canonical form.
-     * Used after ASCII normalization to unify terms before scoring.
-     */
     private static function canonicalizationMap(): array
     {
         return [
