@@ -8,6 +8,7 @@ use App\Models\BeautyConversation;
 use App\Utils\NvidiaBeautyAssistantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class BeautyAssistantApiController extends Controller
 {
@@ -29,22 +30,29 @@ class BeautyAssistantApiController extends Controller
         $conversation = $this->resolveConversation($user->getId());
         $message = (string) $request->validated()['message'];
 
-        $result = $conversation->getConnection()->transaction(function () use ($conversation, $message) {
-            $conversation->addMessage('user', $message);
+        try {
+            $result = $conversation->getConnection()->transaction(function () use ($conversation, $message) {
+                $conversation->addMessage('user', $message);
 
-            $assistantResult = $this->beautyAssistant->respond($message);
+                $assistantResult = $this->beautyAssistant->respond($message);
 
-            $conversation->addMessage(
-                'assistant',
-                (string) ($assistantResult['assistant_message'] ?? ''),
-                $assistantResult['recommended_products'] ?? [],
-                $assistantResult['meta'] ?? [],
-            );
+                $conversation->addMessage(
+                    'assistant',
+                    (string) ($assistantResult['assistant_message'] ?? ''),
+                    $assistantResult['recommended_products'] ?? [],
+                    $assistantResult['meta'] ?? [],
+                );
 
-            $this->touchConversation($conversation);
+                $this->touchConversation($conversation);
 
-            return $assistantResult;
-        });
+                return $assistantResult;
+            });
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('assistant.js.fallback_error'),
+            ], 503);
+        }
 
         return response()->json($this->buildChatPayload($conversation, $result));
     }

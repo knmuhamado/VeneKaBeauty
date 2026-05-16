@@ -36,13 +36,6 @@ return [
             'products' => 'Productos disponibles:',
             'instructions' => 'Instrucciones: recomienda máximo 2 opciones del listado con explicación corta y termina con una pregunta de seguimiento.',
         ],
-        'fallback' => [
-            'context_general' => 'Puedo ayudarte con una recomendación más precisa cuando indiques categoría u objetivo.',
-            'context_for_categories' => 'Según tu mensaje priorizamos el área: :categories.',
-            'names_join_separator' => ' y ',
-            'with_products' => 'Te sugiero revisar :names según lo que me cuentas. Si quieres, te ayudo a elegir una rutina de uso diaria y nocturna.',
-            'without_products' => 'No encontré productos relevantes por ahora. Si quieres, indica categoría u objetivo para recomendarte mejor.',
-        ],
         'prompt_line' => [
             'type' => 'Tipo',
             'brand' => 'Marca',

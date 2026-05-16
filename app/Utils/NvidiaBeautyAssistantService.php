@@ -25,7 +25,7 @@ class NvidiaBeautyAssistantService
         $apiKey = (string) config('services.nvidia.api_key');
 
         if ($apiKey === '') {
-            return $this->fallbackResponse($message, $products, 'missing_api_key', $categoryIds);
+            throw new \RuntimeException('Missing NVIDIA API key');
         }
 
         try {
@@ -44,28 +44,34 @@ class NvidiaBeautyAssistantService
                         ],
                     ],
                     'temperature' => 0.2,
-                    'max_tokens' => 350,
+                    'max_tokens' => 400,
                 ]);
         } catch (RequestException $e) {
-            return $this->fallbackResponse($message, $products, 'nvidia_request_exception', $categoryIds);
+            throw $e;
         } catch (Throwable $e) {
-            return $this->fallbackResponse($message, $products, 'nvidia_unexpected_exception', $categoryIds);
+            throw $e;
         }
 
         if (! $response->successful()) {
-            return $this->fallbackResponse($message, $products, 'nvidia_error_'.$response->status(), $categoryIds);
+            throw new \RuntimeException('NVIDIA API error: '.$response->status());
         }
 
         $assistantText = $this->extractAssistantText($response->json());
 
         if ($assistantText === '') {
-            return $this->fallbackResponse($message, $products, 'empty_nvidia_response', $categoryIds);
+            throw new \RuntimeException('Empty NVIDIA response');
         }
+
+        $recommendedIds = $this->extractRecommendedIds($assistantText);
+        $recommendedProducts = count($recommendedIds) > 0
+            ? $products->whereIn('id', $recommendedIds)
+                ->sortBy(fn ($p) => array_search($p->getId(), $recommendedIds))
+            : $products->take(2);
 
         return [
             'user_message' => $message,
-            'assistant_message' => $assistantText,
-            'recommended_products' => $this->buildProductPayload($products),
+            'assistant_message' => $this->cleanAssistantText($assistantText),
+            'recommended_products' => $this->buildProductPayload($recommendedProducts),
             'meta' => [
                 'source' => 'nvidia',
                 'model' => (string) config('services.nvidia.model'),
@@ -138,40 +144,18 @@ class NvidiaBeautyAssistantService
         return '';
     }
 
-    private function fallbackResponse(
-        string $message,
-        Collection $products,
-        string $reason,
-        array $assistantCategoryIds = [],
-    ): array {
-        $assistantMessage = $this->buildFallbackMessage($products, $assistantCategoryIds);
-
-        return [
-            'user_message' => $message,
-            'assistant_message' => $assistantMessage,
-            'recommended_products' => $this->buildProductPayload($products),
-            'meta' => [
-                'source' => 'fallback',
-                'reason' => $reason,
-                'assistant_category_ids' => $assistantCategoryIds,
-            ],
-        ];
-    }
-
-    private function buildFallbackMessage(Collection $products, array $assistantCategoryIds): string
+    private function extractRecommendedIds(string $assistantText): array
     {
-        $categoriesLabel = Category::commaSeparatedOrderedNamesForIds($assistantCategoryIds);
-        $names = $products->pluck('name')->take(2)->implode(__('assistant.backend.fallback.names_join_separator'));
-
-        $intro = $categoriesLabel !== ''
-            ? __('assistant.backend.fallback.context_for_categories', ['categories' => $categoriesLabel])
-            : __('assistant.backend.fallback.context_general');
-
-        if ($names !== '') {
-            return trim($intro.' '.__('assistant.backend.fallback.with_products', ['names' => $names]));
+        if (preg_match('/\n(?:PRODUCTS|PRODUCTOS):\s*([\d,\s]+)/i', $assistantText, $matches)) {
+            return array_map('intval', array_filter(array_map('trim', explode(',', $matches[1]))));
         }
 
-        return trim($intro.' '.__('assistant.backend.fallback.without_products'));
+        return [];
+    }
+
+    private function cleanAssistantText(string $text): string
+    {
+        return trim(preg_replace('/\n(?:PRODUCTS|PRODUCTOS):.*$/i', '', $text));
     }
 
     private function buildProductPayload(Collection $products): array

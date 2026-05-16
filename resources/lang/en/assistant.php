@@ -36,13 +36,6 @@ return [
             'products' => 'Available products:',
             'instructions' => 'Instructions: recommend at most 2 options from the list with a short explanation and end with a follow-up question.',
         ],
-        'fallback' => [
-            'context_general' => 'I can help with a more precise recommendation when you share a category or goal.',
-            'context_for_categories' => 'Based on your message we are focusing on: :categories.',
-            'names_join_separator' => ' and ',
-            'with_products' => 'I suggest reviewing :names based on what you told me. If you want, I can help you choose a daily and nightly routine.',
-            'without_products' => 'I could not find relevant products right now. If you want, share a category or goal so I can recommend better options.',
-        ],
         'prompt_line' => [
             'type' => 'Type',
             'brand' => 'Brand',
