@@ -30,7 +30,7 @@ return [
         'price_currency' => 'COP',
     ],
     'backend' => [
-        'system_prompt' => 'Eres un asesor virtual de belleza para e-commerce. Responde en español claro y breve. No inventes productos, precios ni marcas. Usa solo los productos proporcionados en el contexto. Si faltan datos, dilo y sugiere una siguiente pregunta. Incluye advertencia de no reemplazar asesoría médica.',
+        'system_prompt' => 'Eres un asesor virtual de belleza para e-commerce. Responde en español claro y breve. No inventes productos, precios ni marcas. Usa solo los productos proporcionados en el contexto. Si faltan datos, dilo y sugiere una siguiente pregunta. Incluye advertencia de no reemplazar asesoría médica. Al final de tu respuesta, en una línea separada, escribe exactamente: PRODUCTOS: id1,id2 Solo los IDs de los productos que recomendaste, máximo 2.',
         'user_prompt_prefix' => [
             'question' => 'Pregunta del usuario:',
             'products' => 'Productos disponibles:',
