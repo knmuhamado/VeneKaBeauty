@@ -27,26 +27,67 @@
                         class="beauty-assistant-widget__panel"
                         data-beauty-assistant-product-label="{{ __('assistant.js.product_label') }}"
                         data-beauty-assistant-product-cta="{{ __('assistant.js.product_cta') }}"
-                        data-beauty-assistant-product-url-template="{{ route('product.show', ['id' => '__PRODUCT_ID__']) }}"
                         data-beauty-assistant-you-label="{{ __('assistant.js.you') }}"
                         data-beauty-assistant-assistant-label="{{ __('assistant.js.assistant') }}"
                         data-beauty-assistant-sending-label="{{ __('assistant.js.sending') }}"
                         data-beauty-assistant-submit-label="{{ __('assistant.js.submit') }}"
-                        data-beauty-assistant-send-error="{{ __('assistant.js.send_error') }}"
                         data-beauty-assistant-fallback-error="{{ __('assistant.js.fallback_error') }}"
-                        data-beauty-assistant-price-locale="{{ __('assistant.js.price_locale') }}"
-                        data-beauty-assistant-price-currency="{{ __('assistant.js.price_currency') }}"
                     >
                         <div class="beauty-assistant-widget__messages" data-beauty-assistant-messages>
-                            <div class="beauty-assistant-widget__empty" data-beauty-assistant-empty>
-                                {{ __('assistant.widget.empty_example') }}
-                            </div>
+                            @if (empty($messages))
+                                <div class="beauty-assistant-widget__empty" data-beauty-assistant-empty>
+                                    {{ __('assistant.widget.empty_example') }}
+                                </div>
+                            @else
+                                @foreach ($messages as $message)
+                                    @php
+                                        $role = $message['role'] ?? 'assistant';
+                                        $products = array_slice($message['products'] ?? [], 0, 2);
+                                    @endphp
+
+                                    <article class="beauty-assistant-widget__message beauty-assistant-widget__message--{{ $role }}">
+                                        <div class="beauty-assistant-widget__bubble">
+                                            <div class="beauty-assistant-widget__role">
+                                                {{ $role === 'user' ? __('assistant.js.you') : __('assistant.js.assistant') }}
+                                            </div>
+                                            <div class="beauty-assistant-widget__content">{!! nl2br(e($message['content'] ?? '')) !!}</div>
+
+                                            @if (! empty($products))
+                                                <div class="beauty-assistant-widget__products">
+                                                    @foreach ($products as $product)
+                                                        @php
+                                                            $productUrl = $product['url'] ?? '#';
+                                                            $productName = $product['name'] ?? __('assistant.js.product_label');
+                                                            $productCategory = $product['category'] ?? '';
+                                                        @endphp
+
+                                                        <a class="beauty-assistant-widget__product-card" href="{{ $productUrl }}">
+                                                            <div class="beauty-assistant-widget__product-card-body">
+                                                                <span class="beauty-assistant-widget__product-card-label">{{ __('assistant.js.product_label') }}</span>
+                                                                <span class="beauty-assistant-widget__product-card-name">{{ $productName }}</span>
+                                                                @if ($productCategory !== '')
+                                                                    <span class="beauty-assistant-widget__product-card-meta">{{ $productCategory }}</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="beauty-assistant-widget__product-card-footer">
+                                                                <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
+                                                                    {{ __('assistant.js.product_cta') }}
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                                                </span>
+                                                            </div>
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </article>
+                                @endforeach
+                            @endif
                         </div>
 
                         <form class="beauty-assistant-widget__form" data-beauty-assistant-form>
                             @csrf
                             <input type="hidden" value="{{ route('api.beauty-assistant.chat') }}" data-beauty-assistant-chat-url>
-                            <input type="hidden" value="{{ route('api.beauty-assistant.history') }}" data-beauty-assistant-history-url>
 
                             <label class="visually-hidden" for="beauty-assistant-message">{{ __('assistant.widget.question_label') }}</label>
                             <textarea

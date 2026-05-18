@@ -307,20 +307,6 @@ class Product extends Model
             ->values();
     }
 
-    public function toAssistantPayload(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'price' => $this->getPrice(),
-            'type' => $this->getType(),
-            'brand' => $this->getBrand(),
-            'category' => $this->getCategory()?->getName(),
-            'keywords' => $this->getKeyword(),
-        ];
-    }
-
     private function getAssistantScore(array $terms): int
     {
         $haystack = AssistantTextNormalizer::normalize(implode(' ', [

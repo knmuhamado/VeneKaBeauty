@@ -7,10 +7,8 @@ widgets.forEach((widget) => {
     const input = widget.querySelector('[data-beauty-assistant-input]');
     const submitButton = widget.querySelector('[data-beauty-assistant-submit]');
     const chatUrl = widget.querySelector('[data-beauty-assistant-chat-url]')?.value;
-    const historyUrl = widget.querySelector('[data-beauty-assistant-history-url]')?.value;
-    const productUrlTemplate = widget.querySelector('[data-beauty-assistant-product-url-template]')?.dataset.beautyAssistantProductUrlTemplate ?? '';
 
-    if (!form || !input || !submitButton || !chatUrl || !historyUrl) {
+    if (!form || !input || !submitButton || !chatUrl) {
         return;
     }
 
@@ -27,10 +25,7 @@ widgets.forEach((widget) => {
             assistant: getLabel('[data-beauty-assistant-assistant-label]', 'Assistant'),
             sending: getLabel('[data-beauty-assistant-sending-label]', 'Sending...'),
             submit: getLabel('[data-beauty-assistant-submit-label]', 'Send question'),
-            sendError: getLabel('[data-beauty-assistant-send-error]', 'The message could not be sent'),
             fallbackError: getLabel('[data-beauty-assistant-fallback-error]', 'Something went wrong. Try again in a few seconds.'),
-            priceLocale: getLabel('[data-beauty-assistant-price-locale]', 'es-CO'),
-            priceCurrency: getLabel('[data-beauty-assistant-price-currency]', 'COP'),
         };
     }
 
@@ -79,10 +74,9 @@ widgets.forEach((widget) => {
         const itemsHtml = products
             .slice(0, 2)
             .map((product) => {
-                const url = getProductUrl(product);
+                const url = typeof product?.url === 'string' ? product.url : '#';
                 const name = escapeHtml(product.name ?? labels.product);
                 const category = escapeHtml(product.category ?? '');
-                const price = formatPrice(product.price);
 
                 return `
                     <a class="beauty-assistant-widget__product-card" href="${escapeHtml(url)}">
@@ -92,7 +86,6 @@ widgets.forEach((widget) => {
                             ${category !== '' ? `<span class="beauty-assistant-widget__product-card-meta">${category}</span>` : ''}
                         </div>
                         <div class="beauty-assistant-widget__product-card-footer">
-                            <span class="beauty-assistant-widget__product-card-price">${escapeHtml(price)}</span>
                             <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
                                 ${labels.productCta}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -104,32 +97,6 @@ widgets.forEach((widget) => {
             .join('');
 
         return `<div class="beauty-assistant-widget__products">${itemsHtml}</div>`;
-    }
-
-    function getProductUrl(product) {
-        if (typeof product?.url === 'string' && product.url.trim() !== '') {
-            return product.url;
-        }
-
-        if (product?.id && productUrlTemplate !== '') {
-            return productUrlTemplate.replace('__PRODUCT_ID__', String(product.id));
-        }
-
-        return '#';
-    }
-
-    function formatPrice(value) {
-        const number = Number(value);
-
-        if (Number.isNaN(number)) {
-            return '';
-        }
-
-        return new Intl.NumberFormat(labels.priceLocale, {
-            style: 'currency',
-            currency: labels.priceCurrency,
-            maximumFractionDigits: 0,
-        }).format(number);
     }
 
     const scrollToBottom = () => {
@@ -161,34 +128,6 @@ widgets.forEach((widget) => {
         ]);
     };
 
-    const loadHistory = async () => {
-        const response = await fetch(historyUrl, {
-            headers: {
-                Accept: 'application/json',
-            },
-            credentials: 'same-origin',
-        });
-
-        if (!response.ok) {
-            return;
-        }
-
-        const payload = await response.json();
-        const messages = readMessages(payload);
-
-        if (messages.length === 0) {
-            return;
-        }
-
-        if (emptyEl) {
-            emptyEl.remove();
-        }
-
-        replaceMessages(messages);
-
-        scrollToBottom();
-    };
-
     const submitMessage = async (event) => {
         event.preventDefault();
 
@@ -216,7 +155,7 @@ widgets.forEach((widget) => {
             });
 
             if (!response.ok) {
-                throw new Error(labels.sendError);
+                throw new Error('send_failed');
             }
 
             const payload = await response.json();
@@ -234,5 +173,5 @@ widgets.forEach((widget) => {
     };
 
     form.addEventListener('submit', submitMessage);
-    loadHistory().catch(() => {});
+    scrollToBottom();
 });

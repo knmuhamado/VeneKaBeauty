@@ -4,25 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BeautyAssistantChatRequest;
+use App\Http\Resources\BeautyAssistantChatResource;
 use App\Models\BeautyConversation;
 use App\Utils\NvidiaBeautyAssistantService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Throwable;
 
 class BeautyAssistantApiController extends Controller
 {
     public function __construct(private NvidiaBeautyAssistantService $beautyAssistant) {}
-
-    public function history(Request $request): JsonResponse
-    {
-        $conversation = $this->resolveConversation($request->user()->getId());
-
-        return response()->json([
-            'success' => true,
-            'messages' => $conversation->getMessagesPayload(),
-        ]);
-    }
 
     public function chat(BeautyAssistantChatRequest $request): JsonResponse
     {
@@ -31,7 +21,7 @@ class BeautyAssistantApiController extends Controller
         $message = (string) $request->validated()['message'];
 
         try {
-            $result = $conversation->getConnection()->transaction(function () use ($conversation, $message) {
+            $conversation->getConnection()->transaction(function () use ($conversation, $message) {
                 $conversation->addMessage('user', $message);
 
                 $assistantResult = $this->beautyAssistant->respond($message);
@@ -43,9 +33,7 @@ class BeautyAssistantApiController extends Controller
                     $assistantResult['meta'] ?? [],
                 );
 
-                $this->touchConversation($conversation);
-
-                return $assistantResult;
+                $conversation->touch();
             });
         } catch (Throwable $e) {
             return response()->json([
@@ -54,7 +42,9 @@ class BeautyAssistantApiController extends Controller
             ], 503);
         }
 
-        return response()->json($this->buildChatPayload($conversation, $result));
+        return response()->json(
+            (new BeautyAssistantChatResource($conversation))->resolve()
+        );
     }
 
     private function resolveConversation(int $userId): BeautyConversation
@@ -62,20 +52,5 @@ class BeautyAssistantApiController extends Controller
         return BeautyConversation::firstOrCreate([
             'user_id' => $userId,
         ]);
-    }
-
-    private function buildChatPayload(BeautyConversation $conversation, array $latest): array
-    {
-        return [
-            'success' => true,
-            'messages' => $conversation->getMessagesPayload(),
-            'latest' => $latest,
-        ];
-    }
-
-    private function touchConversation(BeautyConversation $conversation): void
-    {
-        $conversation->setLastMessageAt(now());
-        $conversation->save();
     }
 }

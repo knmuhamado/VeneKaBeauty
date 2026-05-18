@@ -57,12 +57,6 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    // relationship getters
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
     // Business logic
     public static function getWithSelection(array $selectedIds = []): Collection
     {
@@ -71,19 +65,6 @@ class Category extends Model
 
             return $category;
         });
-    }
-
-    public static function commaSeparatedOrderedNamesForIds(array $ids): string
-    {
-        if ($ids === []) {
-            return '';
-        }
-
-        return self::query()
-            ->whereIn('id', $ids)
-            ->orderBy('name')
-            ->pluck('name')
-            ->implode(', ');
     }
 
     public static function detectAssistantCategoryIds(string $message): array

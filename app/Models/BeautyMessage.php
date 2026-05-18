@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BeautyMessage extends Model
 {
@@ -41,11 +40,6 @@ class BeautyMessage extends Model
     public function getId(): int
     {
         return $this->attributes['id'];
-    }
-
-    public function getBeautyConversationId(): ?int
-    {
-        return $this->attributes['beauty_conversation_id'] ?? null;
     }
 
     public function setBeautyConversationId(int $id): void
@@ -114,27 +108,4 @@ class BeautyMessage extends Model
         return $this->created_at ?? null;
     }
 
-    public function getUpdatedAt()
-    {
-        return $this->updated_at ?? null;
-    }
-
-    // Relationships
-    public function conversation(): BelongsTo
-    {
-        return $this->belongsTo(BeautyConversation::class, 'beauty_conversation_id');
-    }
-
-    // Business logic
-    public function toApiPayload(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'role' => $this->getRole(),
-            'content' => $this->getContent(),
-            'products' => $this->getProducts(),
-            'meta' => $this->getMeta(),
-            'created_at' => optional($this->getCreatedAt())?->toIso8601String(),
-        ];
-    }
 }

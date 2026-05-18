@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Http\Resources\AssistantProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
@@ -69,7 +70,6 @@ class NvidiaBeautyAssistantService
             : $products->take(2);
 
         return [
-            'user_message' => $message,
             'assistant_message' => $this->cleanAssistantText($assistantText),
             'recommended_products' => $this->buildProductPayload($recommendedProducts),
             'meta' => [
@@ -160,6 +160,6 @@ class NvidiaBeautyAssistantService
 
     private function buildProductPayload(Collection $products): array
     {
-        return $products->map(fn (Product $product) => $product->toAssistantPayload())->all();
+        return AssistantProductResource::collection($products)->resolve();
     }
 }
