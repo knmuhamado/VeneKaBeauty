@@ -21,7 +21,6 @@ widgets.forEach((widget) => {
 
         return {
             product: getLabel('[data-beauty-assistant-product-label]', 'Product'),
-            productCta: getLabel('[data-beauty-assistant-product-cta]', 'View product'),
             you: getLabel('[data-beauty-assistant-you-label]', 'You'),
             assistant: getLabel('[data-beauty-assistant-assistant-label]', 'Assistant'),
             sending: getLabel('[data-beauty-assistant-sending-label]', 'Sending...'),
@@ -76,24 +75,17 @@ widgets.forEach((widget) => {
         const itemsHtml = products
             .slice(0, 2)
             .map((product) => {
-                const url = typeof product?.url === 'string' ? product.url : '#';
                 const name = escapeHtml(product.name ?? labels.product);
                 const category = escapeHtml(product.category ?? '');
 
                 return `
-                    <a class="beauty-assistant-widget__product-card" href="${escapeHtml(url)}">
+                    <div class="beauty-assistant-widget__product-card">
                         <div class="beauty-assistant-widget__product-card-body">
                             <span class="beauty-assistant-widget__product-card-label">${labels.product}</span>
                             <span class="beauty-assistant-widget__product-card-name">${name}</span>
                             ${category !== '' ? `<span class="beauty-assistant-widget__product-card-meta">${category}</span>` : ''}
                         </div>
-                        <div class="beauty-assistant-widget__product-card-footer">
-                            <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
-                                ${labels.productCta}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                            </span>
-                        </div>
-                    </a>
+                    </div>
                 `;
             })
             .join('');

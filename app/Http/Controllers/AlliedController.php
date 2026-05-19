@@ -13,7 +13,7 @@ class AlliedController extends Controller
 
         $viewData = [];
         $viewData['byCategory'] = collect($response['data'] ?? [])->groupBy('category');
-        $viewData['storeLink']  = $response['additionalData']['storePlantsLink'] ?? '#';
+        $viewData['storeLink'] = $response['additionalData']['storePlantsLink'] ?? '#';
 
         return view('allied.index')->with('viewData', $viewData);
     }
@@ -29,14 +29,14 @@ class AlliedController extends Controller
 
             Log::warning('AlliedController: respuesta no exitosa de la API', [
                 'status' => $response->status(),
-                'url'    => config('services.allied.url'),
+                'url' => config('services.allied.url'),
             ]);
 
             return [];
         } catch (\Throwable $e) {
             Log::error('AlliedController: fallo al consumir API aliada', [
                 'error' => $e->getMessage(),
-                'url'   => config('services.allied.url'),
+                'url' => config('services.allied.url'),
             ]);
 
             return [];

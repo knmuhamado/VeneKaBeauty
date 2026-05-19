@@ -29,8 +29,6 @@ class BeautyAssistantApiController extends Controller
                 $conversation->addMessage(
                     'assistant',
                     (string) ($assistantResult['assistant_message'] ?? ''),
-                    $assistantResult['recommended_products'] ?? [],
-                    $assistantResult['meta'] ?? [],
                 );
 
                 $conversation->touch();

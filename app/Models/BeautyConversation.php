@@ -42,14 +42,12 @@ class BeautyConversation extends Model
     }
 
     // Business logic
-    public function addMessage(string $role, string $content, array $products = [], array $meta = []): BeautyMessage
+    public function addMessage(string $role, string $content): BeautyMessage
     {
         $message = new BeautyMessage;
         $message->setBeautyConversationId($this->getId());
         $message->setRole($role);
         $message->setContent($content);
-        $message->setProducts($products);
-        $message->setMeta($meta);
         $message->save();
 
         return $message;

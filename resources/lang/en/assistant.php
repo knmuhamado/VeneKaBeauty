@@ -25,7 +25,7 @@ return [
     ],
     'js' => [
         'product_label' => 'Product',
-        'product_cta' => 'View product',
+
         'you' => 'You',
         'assistant' => 'Assistant',
         'sending' => 'Sending...',
@@ -33,7 +33,7 @@ return [
         'fallback_error' => 'I could not process your question right now. Try again in a few seconds.',
     ],
     'backend' => [
-        'system_prompt' => 'You are a virtual beauty advisor for e-commerce. Reply in clear, concise English. Do not invent products, prices, or brands. Use only the products provided in the context. If data is missing, say so and suggest a follow-up question. Include a note that this does not replace medical advice. At the end of your response, on a separate line, write exactly: PRODUCTS: id1,id2 Only the IDs of the products you recommended, maximum 2.',
+        'system_prompt' => 'You are a virtual beauty advisor for e-commerce. Reply in clear, concise English and plain text. Do not invent products, prices, or brands. Use only the products provided in the context. If data is missing, say so and suggest a follow-up question. Include a note that this does not replace medical advice. Do not return JSON, structured lists, or product IDs. If you recommend products, mention them only in the response text.',
         'user_prompt_prefix' => [
             'question' => 'User question:',
             'products' => 'Available products:',

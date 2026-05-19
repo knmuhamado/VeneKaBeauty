@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AssistantMessageResource;
 use App\Models\BeautyConversation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -23,8 +22,18 @@ class AssistantController extends Controller
                 'user_id' => $userId,
             ]);
 
-            $messages = $conversation->messages()->orderBy('id')->get();
-            $viewData['messages'] = AssistantMessageResource::collection($messages)->resolve();
+            $viewData['messages'] = $conversation->messages()
+                ->orderBy('id')
+                ->get()
+                ->map(static function ($message): array {
+                    return [
+                        'id' => $message->getId(),
+                        'role' => $message->getRole(),
+                        'content' => $message->getContent(),
+                        'created_at' => optional($message->getCreatedAt())?->toIso8601String(),
+                    ];
+                })
+                ->all();
         }
 
         return view('assistant.index', $viewData);

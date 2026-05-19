@@ -2,21 +2,16 @@
 
 namespace App\Utils;
 
-use App\Http\Resources\AssistantProductResource;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Http;
 use Throwable;
 
 class NvidiaBeautyAssistantService
 {
-    private const MAX_RECOMMENDED_PRODUCTS = 5;
-
     public function respond(string $message): array
     {
-        // Provide the assistant with all available products (no category filtering).
         $products = Product::getAssistantAvailableProducts();
 
         $apiKey = (string) config('services.nvidia.api_key');
@@ -59,17 +54,8 @@ class NvidiaBeautyAssistantService
             throw new \RuntimeException('Empty NVIDIA response');
         }
 
-        $recommendedNames = $this->extractRecommendedNames($assistantText);
-        $recommendedProducts = $this->resolveRecommendedProducts($recommendedNames, $products);
-
         return [
-            'assistant_message' => $this->cleanAssistantText($assistantText),
-            'recommended_products' => $this->buildProductPayload($recommendedProducts),
-            'meta' => [
-                'source' => 'nvidia',
-                'model' => (string) config('services.nvidia.model'),
-                'assistant_category_ids' => [],
-            ],
+            'assistant_message' => trim($assistantText),
         ];
     }
 
@@ -135,76 +121,5 @@ class NvidiaBeautyAssistantService
         }
 
         return '';
-    }
-
-    private function extractRecommendedNames(string $assistantText): array
-    {
-        if (preg_match('/\n(?:PRODUCTS|PRODUCTOS):\s*(.+)$/im', $assistantText, $matches)) {
-            $rawList = trim((string) $matches[1]);
-
-            if ($rawList === '') {
-                return [];
-            }
-
-            return array_values(array_filter(array_map(static function (string $item): string {
-                $item = trim($item);
-                $item = preg_replace('/^[-*\d\.\)\s]+/u', '', $item) ?? $item;
-                $item = preg_replace('/\s*\(.*$/u', '', $item) ?? $item;
-
-                return trim($item);
-            }, preg_split('/\s*,\s*/', $rawList) ?: [])));
-        }
-
-        return [];
-    }
-
-    private function resolveRecommendedProducts(array $recommendedNames, SupportCollection $products): SupportCollection
-    {
-        if ($recommendedNames === []) {
-            return $products->take(2);
-        }
-
-        $selected = collect();
-
-        foreach ($recommendedNames as $recommendedName) {
-            $normalizedName = trim((string) $recommendedName);
-
-            if ($normalizedName === '') {
-                continue;
-            }
-
-            $match = Product::query()
-                ->with('category')
-                ->where('available', true)
-                ->filterByName($normalizedName)
-                ->orderByDesc('id')
-                ->first();
-
-            if (! $match) {
-                $match = $products->first(function (Product $product) use ($normalizedName) {
-                    return str_contains(mb_strtolower($product->getName()), mb_strtolower($normalizedName));
-                });
-            }
-
-            if ($match && ! $selected->contains(fn (Product $product) => $product->getId() === $match->getId())) {
-                $selected->push($match);
-            }
-        }
-
-        if ($selected->isEmpty()) {
-            return $products->take(2);
-        }
-
-        return $selected->values();
-    }
-
-    private function cleanAssistantText(string $text): string
-    {
-        return trim(preg_replace('/\n(?:PRODUCTS|PRODUCTOS):.*$/i', '', $text));
-    }
-
-    private function buildProductPayload(Collection $products): array
-    {
-        return AssistantProductResource::collection($products)->resolve();
     }
 }

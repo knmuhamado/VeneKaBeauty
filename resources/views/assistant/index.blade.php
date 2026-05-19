@@ -28,7 +28,6 @@
                     <div
                         class="beauty-assistant-widget__panel"
                         data-beauty-assistant-product-label="{{ __('assistant.js.product_label') }}"
-                        data-beauty-assistant-product-cta="{{ __('assistant.js.product_cta') }}"
                         data-beauty-assistant-you-label="{{ __('assistant.js.you') }}"
                         data-beauty-assistant-assistant-label="{{ __('assistant.js.assistant') }}"
                         data-beauty-assistant-sending-label="{{ __('assistant.js.sending') }}"
@@ -59,12 +58,11 @@
                                                 <div class="beauty-assistant-widget__products">
                                                     @foreach ($products as $product)
                                                         @php
-                                                            $productUrl = $product['url'] ?? '#';
                                                             $productName = $product['name'] ?? __('assistant.js.product_label');
                                                             $productCategory = $product['category'] ?? '';
                                                         @endphp
 
-                                                        <a class="beauty-assistant-widget__product-card" href="{{ $productUrl }}">
+                                                        <div class="beauty-assistant-widget__product-card">
                                                             <div class="beauty-assistant-widget__product-card-body">
                                                                 <span class="beauty-assistant-widget__product-card-label">{{ __('assistant.js.product_label') }}</span>
                                                                 <span class="beauty-assistant-widget__product-card-name">{{ $productName }}</span>
@@ -72,13 +70,7 @@
                                                                     <span class="beauty-assistant-widget__product-card-meta">{{ $productCategory }}</span>
                                                                 @endif
                                                             </div>
-                                                            <div class="beauty-assistant-widget__product-card-footer">
-                                                                <span class="beauty-assistant-widget__product-card-cta" aria-hidden="true">
-                                                                    {{ __('assistant.js.product_cta') }}
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                                                </span>
-                                                            </div>
-                                                        </a>
+                                                        </div>
                                                     @endforeach
                                                 </div>
                                             @endif

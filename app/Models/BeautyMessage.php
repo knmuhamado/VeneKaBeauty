@@ -15,8 +15,6 @@ class BeautyMessage extends Model
      * $this->attributes['beauty_conversation_id']; - int - foreign key to conversation
      * $this->attributes['role']; - string - 'user' or 'assistant'
      * $this->attributes['content']; - string - message text
-     * $this->attributes['products']; - array - recommended products payload
-     * $this->attributes['meta']; - array - metadata for the message
      * $this->attributes['created_at']; - timestamp - creation date
      * $this->attributes['updated_at']; - timestamp - update date
      */
@@ -26,14 +24,10 @@ class BeautyMessage extends Model
         'beauty_conversation_id',
         'role',
         'content',
-        'products',
-        'meta',
     ];
 
     protected $casts = [
         'beauty_conversation_id' => 'integer',
-        'products' => 'array',
-        'meta' => 'array',
     ];
 
     // Getters / Setters
@@ -65,42 +59,6 @@ class BeautyMessage extends Model
     public function setContent(string $content): void
     {
         $this->attributes['content'] = $content;
-    }
-
-    public function getProducts(): array
-    {
-        $products = $this->attributes['products'] ?? $this->products ?? [];
-
-        if (is_string($products)) {
-            $decoded = json_decode($products, true);
-
-            return is_array($decoded) ? $decoded : [];
-        }
-
-        return is_array($products) ? $products : [];
-    }
-
-    public function setProducts(array $products): void
-    {
-        $this->attributes['products'] = json_encode($products, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function getMeta(): array
-    {
-        $meta = $this->attributes['meta'] ?? $this->meta ?? [];
-
-        if (is_string($meta)) {
-            $decoded = json_decode($meta, true);
-
-            return is_array($decoded) ? $decoded : [];
-        }
-
-        return is_array($meta) ? $meta : [];
-    }
-
-    public function setMeta(array $meta): void
-    {
-        $this->attributes['meta'] = json_encode($meta, JSON_UNESCAPED_UNICODE);
     }
 
     public function getCreatedAt()

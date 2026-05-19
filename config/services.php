@@ -48,7 +48,7 @@ return [
     ],
 
     'allied' => [
-    'url' => env('ALLIED_API_URL'),
+        'url' => env('ALLIED_API_URL'),
     ],
 
 ];
