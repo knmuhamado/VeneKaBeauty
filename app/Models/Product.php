@@ -4,7 +4,6 @@
 
 namespace App\Models;
 
-use App\Utils\AssistantTextNormalizer;
 use App\Utils\ImageGcsStorage;
 use App\Utils\ImageLocalStorage;
 use Illuminate\Database\Eloquent\Builder;
@@ -245,91 +244,17 @@ class Product extends Model
 
     // Business logic
 
-    public static function getAssistantRelevantProducts(string $message, int $limit = 5, ?array $detectedAssistantCategoryIds = null): SupportCollection
+    // Get all available products for the assistant prompt.
+    public static function getAssistantAvailableProducts(): EloquentCollection
     {
-        $terms = AssistantTextNormalizer::extractTerms($message);
-        $categoryIds = $detectedAssistantCategoryIds ?? Category::detectAssistantCategoryIds($message);
-
-        $pool = static::candidatePoolForAssistant($categoryIds);
-
-        if ($pool->isEmpty()) {
-            $pool = static::candidatePoolForAssistant([]);
-        }
-
-        return static::rankAssistantPoolByTerms($pool, $terms, $limit);
-    }
-
-    private static function candidatePoolForAssistant(array $categoryIds): SupportCollection
-    {
-        $query = self::query()
+        return self::query()
             ->with('category')
             ->where('available', true)
-            ->orderByDesc('id');
-
-        if ($categoryIds !== []) {
-            $query->whereIn('category_id', $categoryIds);
-        }
-
-        return $query->get();
+            ->orderByDesc('id')
+            ->get();
     }
 
-    private static function rankAssistantPoolByTerms(SupportCollection $products, array $terms, int $limit): SupportCollection
-    {
-        if ($products->isEmpty()) {
-            return $products;
-        }
-
-        if ($terms === []) {
-            return $products->take($limit)->values();
-        }
-
-        $rankedProducts = $products->map(fn (Product $product) => [
-            'product' => $product,
-            'score' => $product->getAssistantScore($terms),
-        ]);
-
-        $hasMatches = $rankedProducts->contains(fn (array $row) => $row['score'] > 0);
-
-        if (! $hasMatches) {
-            return $products->take($limit)->values();
-        }
-
-        return $rankedProducts
-            ->sort(function (array $a, array $b) {
-                if ($a['score'] === $b['score']) {
-                    return $b['product']->getId() <=> $a['product']->getId();
-                }
-
-                return $b['score'] <=> $a['score'];
-            })
-            ->take($limit)
-            ->pluck('product')
-            ->values();
-    }
-
-    private function getAssistantScore(array $terms): int
-    {
-        $haystack = AssistantTextNormalizer::normalize(implode(' ', [
-            $this->getName(),
-            $this->getDescription(),
-            $this->getBrand() ?? '',
-            implode(' ', $this->getKeyword()),
-            $this->getType(),
-            $this->getCategory()?->getName() ?? '',
-        ]));
-
-        $normalizedTerms = array_map(fn (string $term) => AssistantTextNormalizer::normalize($term), $terms);
-
-        $score = 0;
-
-        foreach ($normalizedTerms as $term) {
-            if ($term !== '' && str_contains($haystack, $term)) {
-                $score++;
-            }
-        }
-
-        return $score;
-    }
+    
 
     public function getAverageScore(): int
     {

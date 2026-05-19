@@ -3,7 +3,6 @@
 namespace App\Utils;
 
 use App\Http\Resources\AssistantProductResource;
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
@@ -16,12 +15,8 @@ class NvidiaBeautyAssistantService
 
     public function respond(string $message): array
     {
-        $categoryIds = Category::detectAssistantCategoryIds($message);
-        $products = Product::getAssistantRelevantProducts(
-            $message,
-            self::MAX_RECOMMENDED_PRODUCTS,
-            $categoryIds,
-        );
+        // Provide the assistant with all available products (no category filtering).
+        $products = Product::getAssistantAvailableProducts();
 
         $apiKey = (string) config('services.nvidia.api_key');
 
@@ -75,7 +70,7 @@ class NvidiaBeautyAssistantService
             'meta' => [
                 'source' => 'nvidia',
                 'model' => (string) config('services.nvidia.model'),
-                'assistant_category_ids' => $categoryIds,
+                'assistant_category_ids' => [],
             ],
         ];
     }
