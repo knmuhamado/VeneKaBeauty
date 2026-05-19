@@ -26,10 +26,14 @@ class AssistantController extends Controller
                 ->orderBy('id')
                 ->get()
                 ->map(static function ($message): array {
+                    $rawContent = (string) ($message->getContent() ?? '');
+                    $rawContent = trim($rawContent);
+                    $normalized = preg_replace("/(\r?\n){2,}/", "\n\n", $rawContent);
+
                     return [
                         'id' => $message->getId(),
                         'role' => $message->getRole(),
-                        'content' => $message->getContent(),
+                        'content' => $message->getNormalizedContent(),
                         'created_at' => optional($message->getCreatedAt())?->toIso8601String(),
                     ];
                 })

@@ -61,6 +61,16 @@ class BeautyMessage extends Model
         $this->attributes['content'] = $content;
     }
 
+    public function getNormalizedContent(): string
+    {
+        $rawContent = (string) ($this->attributes['content'] ?? '');
+        $rawContent = trim($rawContent);
+
+        $normalized = preg_replace("/(\r?\n){2,}/", "\n\n", $rawContent);
+
+        return (string) $normalized;
+    }
+
     public function getCreatedAt()
     {
         return $this->created_at ?? null;

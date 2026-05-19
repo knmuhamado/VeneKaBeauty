@@ -42,38 +42,13 @@
                                 </div>
                             @else
                                 @foreach ($messages as $message)
-                                    @php
-                                        $role = $message['role'] ?? 'assistant';
-                                        $products = array_slice($message['products'] ?? [], 0, 2);
-                                    @endphp
 
-                                    <article class="beauty-assistant-widget__message beauty-assistant-widget__message--{{ $role }}">
+                                    <article class="beauty-assistant-widget__message beauty-assistant-widget__message--{{ $message['role'] ?? 'assistant' }}">
                                         <div class="beauty-assistant-widget__bubble">
                                             <div class="beauty-assistant-widget__role">
-                                                {{ $role === 'user' ? __('assistant.js.you') : __('assistant.js.assistant') }}
+                                                {{ ($message['role'] ?? 'assistant') === 'user' ? __('assistant.js.you') : __('assistant.js.assistant') }}
                                             </div>
                                             <div class="beauty-assistant-widget__content">{!! nl2br(e($message['content'] ?? '')) !!}</div>
-
-                                            @if (! empty($products))
-                                                <div class="beauty-assistant-widget__products">
-                                                    @foreach ($products as $product)
-                                                        @php
-                                                            $productName = $product['name'] ?? __('assistant.js.product_label');
-                                                            $productCategory = $product['category'] ?? '';
-                                                        @endphp
-
-                                                        <div class="beauty-assistant-widget__product-card">
-                                                            <div class="beauty-assistant-widget__product-card-body">
-                                                                <span class="beauty-assistant-widget__product-card-label">{{ __('assistant.js.product_label') }}</span>
-                                                                <span class="beauty-assistant-widget__product-card-name">{{ $productName }}</span>
-                                                                @if ($productCategory !== '')
-                                                                    <span class="beauty-assistant-widget__product-card-meta">{{ $productCategory }}</span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @endif
                                         </div>
                                     </article>
                                 @endforeach
