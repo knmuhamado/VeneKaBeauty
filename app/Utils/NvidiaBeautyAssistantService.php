@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Http\Resources\AssistantProductResource;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Throwable;
@@ -58,11 +59,8 @@ class NvidiaBeautyAssistantService
             throw new \RuntimeException('Empty NVIDIA response');
         }
 
-        $recommendedIds = $this->extractRecommendedIds($assistantText);
-        $recommendedProducts = count($recommendedIds) > 0
-            ? $products->whereIn('id', $recommendedIds)
-                ->sortBy(fn ($p) => array_search($p->getId(), $recommendedIds))
-            : $products->take(2);
+        $recommendedNames = $this->extractRecommendedNames($assistantText);
+        $recommendedProducts = $this->resolveRecommendedProducts($recommendedNames, $products);
 
         return [
             'assistant_message' => $this->cleanAssistantText($assistantText),
@@ -139,13 +137,65 @@ class NvidiaBeautyAssistantService
         return '';
     }
 
-    private function extractRecommendedIds(string $assistantText): array
+    private function extractRecommendedNames(string $assistantText): array
     {
-        if (preg_match('/\n(?:PRODUCTS|PRODUCTOS):\s*([\d,\s]+)/i', $assistantText, $matches)) {
-            return array_map('intval', array_filter(array_map('trim', explode(',', $matches[1]))));
+        if (preg_match('/\n(?:PRODUCTS|PRODUCTOS):\s*(.+)$/im', $assistantText, $matches)) {
+            $rawList = trim((string) $matches[1]);
+
+            if ($rawList === '') {
+                return [];
+            }
+
+            return array_values(array_filter(array_map(static function (string $item): string {
+                $item = trim($item);
+                $item = preg_replace('/^[-*\d\.\)\s]+/u', '', $item) ?? $item;
+                $item = preg_replace('/\s*\(.*$/u', '', $item) ?? $item;
+
+                return trim($item);
+            }, preg_split('/\s*,\s*/', $rawList) ?: [])));
         }
 
         return [];
+    }
+
+    private function resolveRecommendedProducts(array $recommendedNames, SupportCollection $products): SupportCollection
+    {
+        if ($recommendedNames === []) {
+            return $products->take(2);
+        }
+
+        $selected = collect();
+
+        foreach ($recommendedNames as $recommendedName) {
+            $normalizedName = trim((string) $recommendedName);
+
+            if ($normalizedName === '') {
+                continue;
+            }
+
+            $match = Product::query()
+                ->with('category')
+                ->where('available', true)
+                ->filterByName($normalizedName)
+                ->orderByDesc('id')
+                ->first();
+
+            if (! $match) {
+                $match = $products->first(function (Product $product) use ($normalizedName) {
+                    return str_contains(mb_strtolower($product->getName()), mb_strtolower($normalizedName));
+                });
+            }
+
+            if ($match && ! $selected->contains(fn (Product $product) => $product->getId() === $match->getId())) {
+                $selected->push($match);
+            }
+        }
+
+        if ($selected->isEmpty()) {
+            return $products->take(2);
+        }
+
+        return $selected->values();
     }
 
     private function cleanAssistantText(string $text): string

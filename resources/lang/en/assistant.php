@@ -11,11 +11,17 @@ return [
         'placeholder' => 'Describe your skin, goal, or question...',
         'hint' => 'Only the messages in your conversation are saved while you use your account.',
         'submit' => 'Send question',
+        'clear_chat' => 'Clear chat',
+        'clear_chat_confirm' => 'Are you sure you want to clear the assistant chat?',
+        'chat_cleared' => 'Assistant chat cleared successfully.',
     ],
     'guest' => [
         'prompt' => 'Sign in to save your history and receive personalized recommendations.',
         'login' => 'Sign in',
         'register' => 'Create account',
+    ],
+    'controller' => [
+        'chat_cleared' => 'Assistant chat cleared successfully.',
     ],
     'js' => [
         'product_label' => 'Product',

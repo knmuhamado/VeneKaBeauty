@@ -11,11 +11,17 @@ return [
         'placeholder' => 'Describe tu piel, objetivo o duda...',
         'hint' => 'Solo se guardan los mensajes de tu conversación mientras uses tu cuenta.',
         'submit' => 'Enviar pregunta',
+        'clear_chat' => 'Borrar chat',
+        'clear_chat_confirm' => '¿Seguro que quieres borrar todo el chat del asistente?',
+        'chat_cleared' => 'Chat del asistente borrado correctamente.',
     ],
     'guest' => [
         'prompt' => 'Inicia sesión para guardar tu historial y recibir recomendaciones personalizadas.',
         'login' => 'Entrar',
         'register' => 'Crear cuenta',
+    ],
+    'controller' => [
+        'chat_cleared' => 'Chat del asistente borrado correctamente.',
     ],
     'js' => [
         'product_label' => 'Producto',

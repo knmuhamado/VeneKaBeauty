@@ -21,6 +21,7 @@ Route::post('/cart/confirm', 'App\Http\Controllers\CartController@confirm')->nam
 
 Route::get('/products', 'App\Http\Controllers\ProductController@index')->middleware('auth')->name('product.index');
 Route::get('/assistant', 'App\Http\Controllers\AssistantController@index')->middleware('auth')->name('assistant.index');
+Route::delete('/assistant/chat', 'App\Http\Controllers\AssistantController@destroy')->middleware('auth')->name('assistant.chat.destroy');
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->middleware('auth')->name('product.show');
 Route::get('/products/{productId}/reviews', 'App\Http\Controllers\ReviewController@productReviews')->name('product.review.index');
 

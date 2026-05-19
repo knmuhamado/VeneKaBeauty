@@ -6,6 +6,7 @@ widgets.forEach((widget) => {
     const form = widget.querySelector('[data-beauty-assistant-form]');
     const input = widget.querySelector('[data-beauty-assistant-input]');
     const submitButton = widget.querySelector('[data-beauty-assistant-submit]');
+    const clearForm = widget.querySelector('[data-beauty-assistant-clear-form]');
     const chatUrl = widget.querySelector('[data-beauty-assistant-chat-url]')?.value;
 
     if (!form || !input || !submitButton || !chatUrl) {
@@ -26,6 +27,7 @@ widgets.forEach((widget) => {
             sending: getLabel('[data-beauty-assistant-sending-label]', 'Sending...'),
             submit: getLabel('[data-beauty-assistant-submit-label]', 'Send question'),
             fallbackError: getLabel('[data-beauty-assistant-fallback-error]', 'Something went wrong. Try again in a few seconds.'),
+            clearConfirm: getLabel('[data-beauty-assistant-clear-confirm]', 'Are you sure you want to clear the assistant chat?'),
         };
     }
 
@@ -127,6 +129,16 @@ widgets.forEach((widget) => {
             },
         ]);
     };
+
+    if (clearForm) {
+        clearForm.addEventListener('submit', (event) => {
+            const confirmed = window.confirm(labels.clearConfirm);
+
+            if (!confirmed) {
+                event.preventDefault();
+            }
+        });
+    }
 
     const submitMessage = async (event) => {
         event.preventDefault();

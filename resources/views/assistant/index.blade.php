@@ -8,6 +8,8 @@
     ['label' => __('assistant.widget.title'), 'url' => '#'],
 ]])
 
+@include('layouts._success_alert')
+
 <div class="row">
     <div class="col-12">
         <section class="beauty-assistant-widget mb-5" data-beauty-assistant>
@@ -31,6 +33,7 @@
                         data-beauty-assistant-assistant-label="{{ __('assistant.js.assistant') }}"
                         data-beauty-assistant-sending-label="{{ __('assistant.js.sending') }}"
                         data-beauty-assistant-submit-label="{{ __('assistant.js.submit') }}"
+                        data-beauty-assistant-clear-confirm="{{ __('assistant.widget.clear_chat_confirm') }}"
                         data-beauty-assistant-fallback-error="{{ __('assistant.js.fallback_error') }}"
                     >
                         <div class="beauty-assistant-widget__messages" data-beauty-assistant-messages>
@@ -102,9 +105,19 @@
                                 <p class="beauty-assistant-widget__hint mb-0">
                                     {{ __('assistant.widget.hint') }}
                                 </p>
-                                <button type="submit" class="beauty-assistant-widget__button" data-beauty-assistant-submit>
-                                    {{ __('assistant.widget.submit') }}
-                                </button>
+                                <div class="d-flex flex-wrap gap-2 justify-content-end">
+                                    <form action="{{ route('assistant.chat.destroy') }}" method="POST" class="d-inline" data-beauty-assistant-clear-form>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-light btn-sm">
+                                            {{ __('assistant.widget.clear_chat') }}
+                                        </button>
+                                    </form>
+
+                                    <button type="submit" class="beauty-assistant-widget__button" data-beauty-assistant-submit>
+                                        {{ __('assistant.widget.submit') }}
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
