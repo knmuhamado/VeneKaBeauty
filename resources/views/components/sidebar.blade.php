@@ -36,6 +36,12 @@
                 <i class="bi bi-robot"></i>
                 {{ __('assistant.widget.eyebrow') }}
             </a>
+
+            <a href="{{ route('allied.index') }}" class="sidebar-drawer__link">
+                <i class="bi bi-shop me-1"></i>
+                {{ __('allied.title') }}
+            </a>
+
         @endif
 
         @if(auth()->user()->isClient())
@@ -57,6 +63,11 @@
             <a href="{{ route('assistant.index') }}" class="sidebar-drawer__link">
                 <i class="bi bi-robot"></i>
                 {{ __('assistant.widget.eyebrow') }}
+            </a>
+
+            <a href="{{ route('allied.index') }}" class="sidebar-drawer__link">
+                <i class="bi bi-shop me-1"></i>
+                {{ __('allied.title') }}
             </a>
         
         @endif
