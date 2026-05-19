@@ -12,7 +12,7 @@ class AssistantMessageResource extends JsonResource
         return [
             'id' => $this->resource->getId(),
             'role' => $this->resource->getRole(),
-            'content' => $this->resource->getContent(),
+            'content' => $this->resource->getNormalizedContent(),
             'created_at' => optional($this->resource->getCreatedAt())?->toIso8601String(),
         ];
     }

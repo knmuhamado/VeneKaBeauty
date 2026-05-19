@@ -3,10 +3,9 @@
 namespace App\Utils;
 
 use App\Models\Product;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Throwable;
+use RuntimeException;
 
 class NvidiaBeautyAssistantService
 {
@@ -17,41 +16,35 @@ class NvidiaBeautyAssistantService
         $apiKey = (string) config('services.nvidia.api_key');
 
         if ($apiKey === '') {
-            throw new \RuntimeException('Missing NVIDIA API key');
+            throw new RuntimeException('Missing NVIDIA API key');
         }
 
-        try {
-            $response = Http::withToken($apiKey)
-                ->timeout(60)
-                ->post((string) config('services.nvidia.chat_url'), [
-                    'model' => (string) config('services.nvidia.model'),
-                    'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => __('assistant.backend.system_prompt'),
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => $this->userPrompt($message, $products),
-                        ],
+        $response = Http::withToken($apiKey)
+            ->timeout(60)
+            ->post((string) config('services.nvidia.chat_url'), [
+                'model' => (string) config('services.nvidia.model'),
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => __('assistant.backend.system_prompt'),
                     ],
-                    'temperature' => 0.2,
-                    'max_tokens' => 400,
-                ]);
-        } catch (RequestException $e) {
-            throw $e;
-        } catch (Throwable $e) {
-            throw $e;
-        }
+                    [
+                        'role' => 'user',
+                        'content' => $this->userPrompt($message, $products),
+                    ],
+                ],
+                'temperature' => 0.2,
+                'max_tokens' => 400,
+            ]);
 
         if (! $response->successful()) {
-            throw new \RuntimeException('NVIDIA API error: '.$response->status());
+            throw new RuntimeException('NVIDIA API error: '.$response->status());
         }
 
         $assistantText = $this->extractAssistantText($response->json());
 
         if ($assistantText === '') {
-            throw new \RuntimeException('Empty NVIDIA response');
+            throw new RuntimeException('Empty NVIDIA response');
         }
 
         return [

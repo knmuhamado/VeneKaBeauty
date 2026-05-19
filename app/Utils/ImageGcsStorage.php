@@ -8,6 +8,8 @@ use App\Interfaces\ImageStorage;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use DateTimeImmutable;
+use Exception;
 
 class ImageGcsStorage implements ImageStorage
 {
@@ -32,7 +34,7 @@ class ImageGcsStorage implements ImageStorage
 
         if (! $keyFile || ! file_exists($keyFile)) {
             Log::warning('GCS credentials file not found', ['configured' => config('services.gcs.key_file'), 'resolved' => $keyFile]);
-            throw new \Exception('GCS credentials file not found at: '.$keyFile);
+            throw new Exception('GCS credentials file not found at: '.$keyFile);
         }
 
         try {
@@ -42,7 +44,7 @@ class ImageGcsStorage implements ImageStorage
             ]);
             $this->bucket = config('services.gcs.bucket');
             Log::info('GCS initialized successfully', ['bucket' => $this->bucket, 'keyFile' => $keyFile]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('GCS initialization failed', ['error' => $e->getMessage(), 'file' => $keyFile]);
             throw $e;
         }
@@ -66,7 +68,7 @@ class ImageGcsStorage implements ImageStorage
             );
 
             return $filename;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('GCS store operation failed', ['error' => $e->getMessage()]);
             throw $e;
         }
@@ -84,7 +86,7 @@ class ImageGcsStorage implements ImageStorage
             $object->delete();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('GCS delete operation failed', ['path' => $imagePath, 'error' => $e->getMessage()]);
             throw $e;
         }
@@ -95,6 +97,6 @@ class ImageGcsStorage implements ImageStorage
         $bucket = $this->storage->bucket($this->bucket);
         $object = $bucket->object($imagePath);
 
-        return $object->signedUrl(new \DateTimeImmutable('+1 day'));
+        return $object->signedUrl(new DateTimeImmutable('+1 day'));
     }
 }

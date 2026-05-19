@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AlliedController extends Controller
 {
@@ -27,14 +28,14 @@ class AlliedController extends Controller
                 return $response->json() ?? [];
             }
 
-            Log::warning('AlliedController: respuesta no exitosa de la API', [
+            Log::warning(__('allied.api_response_failure'), [
                 'status' => $response->status(),
                 'url' => config('services.allied.url'),
             ]);
 
             return [];
-        } catch (\Throwable $e) {
-            Log::error('AlliedController: fallo al consumir API aliada', [
+        } catch (Throwable $e) {
+            Log::error(__('allied.api_fetch_error'), [
                 'error' => $e->getMessage(),
                 'url' => config('services.allied.url'),
             ]);

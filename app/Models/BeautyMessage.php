@@ -73,6 +73,11 @@ class BeautyMessage extends Model
 
     public function getCreatedAt()
     {
-        return $this->created_at ?? null;
+        return $this->attributes['created_at'];
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
     }
 }

@@ -10,4 +10,6 @@ return [
     'stock' => 'Stock',
     'view' => 'Ver producto',
     'visit_store' => 'Visitar tienda',
+    'api_response_failure' => 'AlliedController: respuesta no exitosa de la API',
+    'api_fetch_error' => 'AlliedController: fallo al consumir API aliada',
 ];

@@ -10,4 +10,6 @@ return [
     'stock' => 'Stock',
     'view' => 'View product',
     'visit_store' => 'Visit store',
+    'api_response_failure' => 'AlliedController: unsuccessful API response',
+    'api_fetch_error' => 'AlliedController: failed to fetch allied API',
 ];
