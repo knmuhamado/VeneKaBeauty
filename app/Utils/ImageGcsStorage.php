@@ -5,11 +5,11 @@
 namespace App\Utils;
 
 use App\Interfaces\ImageStorage;
+use DateTimeImmutable;
+use Exception;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use DateTimeImmutable;
-use Exception;
 
 class ImageGcsStorage implements ImageStorage
 {
