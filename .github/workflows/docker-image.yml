@@ -39,6 +39,8 @@ jobs:
         echo "LOG_CHANNEL=stack" >> .env
         echo "LOG_STACK=single" >> .env
         echo "QUEUE_CONNECTION=database" >> .env
+        echo "" >> .env
+        echo "ALLIED_API_URL=http://136.112.218.174/api/plants" >> .env
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag venekabeauty:latest

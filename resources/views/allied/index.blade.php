@@ -10,42 +10,58 @@
 ]])
 
 <section class="mb-4">
-    <h2 class="mb-2">{{ __('allied.title') }}</h2>
-    <p class="text-muted mb-3 fs-5">{{ __('allied.subtitle') }}</p>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h2 class="mb-1">{{ __('allied.store_name') }}</h2>
+            <p class="text-muted mb-0 fs-5">{{ __('allied.subtitle') }}</p>
+        </div>
+        <a href="{{ $viewData['storeLink'] }}" target="_blank" class="btn btn-outline-secondary">
+            {{ __('allied.visit_store') }}
+        </a>
+    </div>
 </section>
 
-@if(empty($phones))
+@if($viewData['byCategory']->isEmpty())
     <div class="text-center text-muted py-5 border rounded-3">
         {{ __('allied.no_products') }}
     </div>
 @else
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach($phones as $phone)
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body d-flex flex-column">
+    @foreach($viewData['byCategory'] as $category => $products)
+        <h4 class="mt-4 mb-3">{{ $category }}</h4>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+            @foreach($products as $plant)
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body d-flex flex-column">
 
-                        <h5 class="card-title mb-1">{{ $phone['name'] }}</h5>
+                            <h5 class="card-title mb-1">{{ $plant['name'] }}</h5>
 
-                        <p class="text-muted small mb-1">
-                            <span class="badge bg-light text-dark border">{{ $phone['brand'] }}</span>
-                        </p>
+                            <p class="small text-muted flex-grow-1 mt-1">
+                                {{ $plant['description'] }}
+                            </p>
 
-                        <ul class="list-unstyled small text-muted flex-grow-1 mt-2">
-                            <li>{{ __('allied.memory') }}: {{ $phone['memory'] }} GB</li>
-                            <li>{{ __('allied.ram') }}: {{ $phone['ram'] }} GB</li>
-                            <li>{{ __('allied.battery') }}: {{ $phone['battery'] }} mAh</li>
-                            <li>{{ __('allied.stock') }}: {{ $phone['quantity'] }}</li>
-                        </ul>
+                            <ul class="list-unstyled small text-muted mt-2">
+                                @if($plant['color'] !== 'N/A')
+                                    <li>{{ __('allied.color') }}: {{ $plant['color'] }}</li>
+                                @endif
+                                <li>{{ __('allied.size') }}: {{ $plant['size'] }}</li>
+                                <li>{{ __('allied.stock') }}: {{ $plant['stock'] }}</li>
+                            </ul>
 
-                        <p class="fw-bold fs-5 mb-0 mt-3">
-                            ${{ number_format($phone['price'], 0, ',', '.') }}
-                        </p>
+                            <div class="d-flex align-items-center justify-content-between mt-3">
+                                <p class="fw-bold fs-5 mb-0">
+                                    ${{ number_format($plant['price'], 0, ',', '.') }}
+                                </p>
+                                <a href="{{ $plant['url'] }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                    {{ __('allied.view') }}
+                                </a>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+    @endforeach
 @endif
 @endsection

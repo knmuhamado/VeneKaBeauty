@@ -2,11 +2,12 @@
 
 return [
     'title'       => 'Allied Store',
-    'subtitle'    => 'Most purchased phones from our commercial partner.',
-    'back'        => 'Go back',
+    'store_name'  => 'Grow and Bloom',
+    'subtitle'    => 'Products available from our commercial partner.',
     'no_products' => 'No products available right now.',
-    'memory'      => 'Storage',
-    'ram'         => 'RAM',
-    'battery'     => 'Battery',
+    'color'       => 'Color',
+    'size'        => 'Size',
     'stock'       => 'Stock',
+    'view'        => 'View product',
+    'visit_store' => 'Visit store',
 ];

@@ -2,11 +2,12 @@
 
 return [
     'title'       => 'Tienda Aliada',
-    'subtitle'    => 'Teléfonos más comprados de nuestro aliado comercial.',
-    'back'        => 'Volver',
+    'store_name'  => 'Grow and Bloom',
+    'subtitle'    => 'Productos disponibles de nuestro aliado comercial.',
     'no_products' => 'No hay productos disponibles en este momento.',
-    'memory'      => 'Almacenamiento',
-    'ram'         => 'RAM',
-    'battery'     => 'Batería',
+    'color'       => 'Color',
+    'size'        => 'Tamaño',
     'stock'       => 'Stock',
+    'view'        => 'Ver producto',
+    'visit_store' => 'Visitar tienda',
 ];
