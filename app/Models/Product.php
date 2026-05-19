@@ -254,8 +254,6 @@ class Product extends Model
             ->get();
     }
 
-    
-
     public function getAverageScore(): int
     {
         if ($this->getReviews()->count() == 0) {

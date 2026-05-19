@@ -107,5 +107,4 @@ class BeautyMessage extends Model
     {
         return $this->created_at ?? null;
     }
-
 }

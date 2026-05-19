@@ -5,8 +5,8 @@ namespace App\Utils;
 use App\Http\Resources\AssistantProductResource;
 use App\Models\Product;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Http;
 use Throwable;
 

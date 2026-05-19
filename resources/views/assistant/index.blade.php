@@ -105,20 +105,18 @@
                                 <p class="beauty-assistant-widget__hint mb-0">
                                     {{ __('assistant.widget.hint') }}
                                 </p>
-                                <div class="d-flex flex-wrap gap-2 justify-content-end">
-                                    <form action="{{ route('assistant.chat.destroy') }}" method="POST" class="d-inline" data-beauty-assistant-clear-form>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-light btn-sm">
-                                            {{ __('assistant.widget.clear_chat') }}
-                                        </button>
-                                    </form>
-
-                                    <button type="submit" class="beauty-assistant-widget__button" data-beauty-assistant-submit>
-                                        {{ __('assistant.widget.submit') }}
-                                    </button>
-                                </div>
+                                <button type="submit" class="beauty-assistant-widget__button" data-beauty-assistant-submit>
+                                    {{ __('assistant.widget.submit') }}
+                                </button>
                             </div>
+                        </form>
+
+                        <form action="{{ route('assistant.chat.destroy') }}" method="POST" class="d-flex justify-content-end mt-3" data-beauty-assistant-clear-form>
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger rounded-pill btn-sm px-3">
+                                {{ __('assistant.widget.clear_chat') }}
+                            </button>
                         </form>
                     </div>
                 @else
