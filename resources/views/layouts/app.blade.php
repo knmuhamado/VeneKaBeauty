@@ -53,6 +53,10 @@
                             {{ __('user.register') }}
                         </a>
 
+                        <a class="nav-link" href="{{ route('allied.index') }}">
+                            <i class="bi bi-shop me-1"></i>{{ __('allied.title') }}
+                        </a>
+
                         {{-- Language dropdown --}}
                         <div class="dropdown">
                             <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button"
@@ -98,6 +102,10 @@
                                 {{ __('user.logout') }}
                             </button>
                         </form>
+
+                        <a class="nav-link" href="{{ route('allied.index') }}">
+                            <i class="bi bi-shop me-1"></i>{{ __('allied.title') }}
+                        </a>
 
                         {{-- Language dropdown --}}
                         <div class="dropdown">

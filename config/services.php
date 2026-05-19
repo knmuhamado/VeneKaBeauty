@@ -47,4 +47,9 @@ return [
         'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS'),
     ],
 
+    'allied_store' => [
+    'driver' => env('ALLIED_STORE_DRIVER', 'local'),
+    'url'    => env('ALLIED_STORE_API_URL'),
+    ],
+
 ];

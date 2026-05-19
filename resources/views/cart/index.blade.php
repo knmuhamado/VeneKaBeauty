@@ -29,12 +29,15 @@
             </thead>
             <tbody>
                 @foreach($viewData['products'] as $product)
-                    @php $cartItem = $viewData['cart'][(string) $product->getId()]; @endphp
+                    @php
+                        $cartItem = $viewData['cart'][(string) $product->getId()] ?? null;
+                        if (!$cartItem) continue;
+                    @endphp
                     <tr>
                         <td>{{ $product->getName() }}</td>
 
                         <td data-price="{{ $product->getPrice() }}">
-                            $ {{ number_format($product->getPrice(), 0, ',', '.') }}
+                            ${{ number_format($product->getPrice(), 0, ',', '.') }}
                         </td>
 
                         <td>
@@ -48,14 +51,12 @@
                                        min="1"
                                        class="form-control form-control-sm"
                                        style="width: 75px;">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                    ↺
-                                </button>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">↺</button>
                             </form>
                         </td>
 
                         <td data-subtotal>
-                            $ {{ number_format($product->getPrice() * $cartItem['quantity'], 0, ',', '.') }}
+                            ${{ number_format($product->getPrice() * $cartItem['quantity'], 0, ',', '.') }}
                         </td>
 
                         <td>
@@ -77,7 +78,7 @@
                 <tr>
                     <td colspan="3" class="text-end fw-bold">{{ __('cart.total') }}:</td>
                     <td colspan="2" class="fw-bold">
-                        $ {{ number_format($viewData['total'], 0, ',', '.') }}
+                        ${{ number_format($viewData['total'], 0, ',', '.') }}
                     </td>
                 </tr>
             </tfoot>
