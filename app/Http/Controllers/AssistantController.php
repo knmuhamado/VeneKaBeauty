@@ -19,12 +19,10 @@ class AssistantController extends Controller
         $userId = Auth::id();
 
         if ($userId) {
-            $conversation = BeautyConversation::firstOrCreate([
-                'user_id' => $userId,
-            ]);
+            $conversation = BeautyConversation::resolveForUser($userId);
 
             $viewData['messages'] = AssistantMessageResource::collection(
-                $conversation->messages()->orderBy('id')->get()
+                $conversation->orderedMessages()
             )->resolve();
         }
 

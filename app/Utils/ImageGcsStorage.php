@@ -24,7 +24,7 @@ class ImageGcsStorage implements ImageStorage
         $keyFileConfig = config('services.gcs.key_file');
 
         if (str_starts_with($keyFileConfig, 'storage/')) {
-            $keyFileConfig = substr($keyFileConfig, 8); // Remover "storage/"
+            $keyFileConfig = substr($keyFileConfig, 8);
         }
 
         // Convert to absolute path using storage_path()

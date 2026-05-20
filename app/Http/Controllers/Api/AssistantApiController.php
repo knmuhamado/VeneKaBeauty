@@ -10,30 +10,24 @@ use App\Utils\NvidiaBeautyAssistantService;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
-class BeautyAssistantApiController extends Controller
+class AssistantApiController extends Controller
 {
     public function __construct(private NvidiaBeautyAssistantService $beautyAssistant) {}
 
     public function chat(BeautyAssistantChatRequest $request): JsonResponse
     {
         $user = $request->user();
-        $conversation = $this->resolveConversation($user->getId());
+        $conversation = BeautyConversation::resolveForUser($user->getId());
         $message = (string) $request->validated()['message'];
 
         try {
-            $conversation->getConnection()->transaction(function () use ($conversation, $message) {
-                $conversation->addMessage('user', $message);
+            $assistantResult = $this->beautyAssistant->respond($message);
 
-                $assistantResult = $this->beautyAssistant->respond($message);
-
-                $conversation->addMessage(
-                    'assistant',
-                    (string) ($assistantResult['assistant_message'] ?? ''),
-                );
-
-                $conversation->touch();
-            });
-        } catch (Throwable $e) {
+            $conversation->addExchange(
+                $message,
+                (string) ($assistantResult['assistant_message'] ?? ''),
+            );
+        } catch (Throwable) {
             return response()->json([
                 'success' => false,
                 'message' => __('assistant.js.fallback_error'),
@@ -43,12 +37,5 @@ class BeautyAssistantApiController extends Controller
         return response()->json(
             (new BeautyAssistantChatResource($conversation))->resolve()
         );
-    }
-
-    private function resolveConversation(int $userId): BeautyConversation
-    {
-        return BeautyConversation::firstOrCreate([
-            'user_id' => $userId,
-        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +31,16 @@ class BeautyConversation extends Model
         return $this->attributes['id'];
     }
 
+    public function getCreatedAt()
+    {
+        return $this->attributes['created_at'];
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->attributes['updated_at'];
+    }
+
     // Relationships
     public function user(): BelongsTo
     {
@@ -42,6 +53,16 @@ class BeautyConversation extends Model
     }
 
     // Business logic
+    public static function resolveForUser(int $userId): self
+    {
+        return self::firstOrCreate(['user_id' => $userId]);
+    }
+
+    public function orderedMessages(): Collection
+    {
+        return $this->messages()->orderBy('id')->get();
+    }
+
     public function addMessage(string $role, string $content): BeautyMessage
     {
         $message = new BeautyMessage;
@@ -51,5 +72,14 @@ class BeautyConversation extends Model
         $message->save();
 
         return $message;
+    }
+
+    public function addExchange(string $userMessage, string $assistantMessage): void
+    {
+        $this->getConnection()->transaction(function () use ($userMessage, $assistantMessage) {
+            $this->addMessage('user', $userMessage);
+            $this->addMessage('assistant', $assistantMessage);
+            $this->touch();
+        });
     }
 }
