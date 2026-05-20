@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BeautyAssistantChatRequest extends FormRequest
+class AssistantChatRequest extends FormRequest
 {
     public function authorize(): bool
     {

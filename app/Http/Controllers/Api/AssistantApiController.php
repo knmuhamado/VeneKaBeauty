@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BeautyAssistantChatRequest;
-use App\Http\Resources\BeautyAssistantChatResource;
+use App\Http\Requests\AssistantChatRequest;
+use App\Http\Resources\AssistantChatResource;
 use App\Models\BeautyConversation;
 use App\Utils\NvidiaBeautyAssistantService;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +14,7 @@ class AssistantApiController extends Controller
 {
     public function __construct(private NvidiaBeautyAssistantService $beautyAssistant) {}
 
-    public function chat(BeautyAssistantChatRequest $request): JsonResponse
+    public function chat(AssistantChatRequest $request): JsonResponse
     {
         $user = $request->user();
         $conversation = BeautyConversation::resolveForUser($user->getId());
@@ -35,7 +35,7 @@ class AssistantApiController extends Controller
         }
 
         return response()->json(
-            (new BeautyAssistantChatResource($conversation))->resolve()
+            (new AssistantChatResource($conversation))->resolve()
         );
     }
 }
